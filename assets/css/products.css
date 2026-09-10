@@ -1,0 +1,188 @@
+/* Shared product cards + grid — structure + CSS vars (Elementor overrides vars) */
+
+.ta-products-empty {
+	margin: 0;
+	color: #666666;
+}
+
+.ta-products-grid {
+	--ta-cols: 4;
+	--ta-grid-gap: 20px;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-cols), minmax(0, 1fr));
+	gap: var(--ta-grid-gap);
+	width: 100%;
+}
+
+.ta-product-card {
+	--ta-card-bg: #ffffff;
+	--ta-card-border: #eeeeee;
+	--ta-card-radius: 8px;
+	--ta-body-pad-top: 16px;
+	--ta-body-pad-right: 16px;
+	--ta-body-pad-bottom: 16px;
+	--ta-body-pad-left: 16px;
+	--ta-title-color: #222222;
+	--ta-title-hover: #C9A84C;
+	--ta-price-color: #222222;
+	--ta-btn-bg: #C9A84C;
+	--ta-btn-color: #ffffff;
+	--ta-btn-bg-hover: #b8953f;
+	--ta-btn-color-hover: #ffffff;
+	--ta-btn-pad-top: 10px;
+	--ta-btn-pad-right: 16px;
+	--ta-btn-pad-bottom: 10px;
+	--ta-btn-pad-left: 16px;
+	--ta-btn-radius: 6px;
+	--ta-badge-bg: #C9A84C;
+	--ta-badge-color: #ffffff;
+	--ta-img-zoom: 1.05;
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ta-product-card__inner {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: var(--ta-card-bg);
+	border: 1px solid var(--ta-card-border);
+	border-radius: var(--ta-card-radius);
+	overflow: hidden;
+	transition: box-shadow 0.3s ease, transform 0.3s ease;
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.ta-product-card__inner:hover {
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.ta-product-card__media {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	aspect-ratio: 1 / 1;
+	background: #f6f6f6;
+}
+
+.ta-product-card__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.4s ease;
+}
+
+.ta-product-card__inner:hover .ta-product-card__image {
+	transform: scale(var(--ta-img-zoom));
+}
+
+.ta-product-card__badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 2;
+	padding: 5px 10px;
+	border-radius: 4px;
+	background: var(--ta-badge-bg);
+	color: var(--ta-badge-color);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	line-height: 1;
+}
+
+.ta-product-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: var(--ta-body-pad-top) var(--ta-body-pad-right) var(--ta-body-pad-bottom) var(--ta-body-pad-left);
+	flex: 1;
+	box-sizing: border-box;
+}
+
+.ta-product-card__title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.35;
+}
+
+.ta-product-card__title a {
+	color: var(--ta-title-color);
+	text-decoration: none !important;
+	transition: color 0.2s ease;
+}
+
+.ta-product-card__title a:hover {
+	color: var(--ta-title-hover);
+}
+
+.ta-product-card__price {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--ta-price-color);
+}
+
+.ta-product-card__price .amount {
+	color: var(--ta-price-color);
+}
+
+.ta-product-card__price del {
+	opacity: 0.55;
+	font-weight: 500;
+	margin-right: 6px;
+}
+
+.ta-product-card__price ins {
+	text-decoration: none;
+	color: #C9A84C;
+}
+
+.ta-product-card__excerpt {
+	font-size: 13px;
+	line-height: 1.5;
+	color: #666666;
+}
+
+.ta-product-card__rating {
+	line-height: 1;
+}
+
+.ta-product-card__actions {
+	margin-top: auto;
+	padding-top: 6px;
+}
+
+.ta-product-card__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--ta-btn-pad-top) var(--ta-btn-pad-right) var(--ta-btn-pad-bottom) var(--ta-btn-pad-left);
+	border: 1px solid var(--ta-btn-bg) !important;
+	border-radius: var(--ta-btn-radius);
+	background: var(--ta-btn-bg) !important;
+	background-color: var(--ta-btn-bg) !important;
+	color: var(--ta-btn-color) !important;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.2;
+	text-decoration: none !important;
+	cursor: pointer;
+	transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+	box-sizing: border-box;
+}
+
+.ta-product-card__btn:hover,
+.ta-product-card__btn:focus {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+	background: var(--ta-btn-bg-hover) !important;
+	background-color: var(--ta-btn-bg-hover) !important;
+	border-color: var(--ta-btn-bg-hover) !important;
+	color: var(--ta-btn-color-hover) !important;
+}

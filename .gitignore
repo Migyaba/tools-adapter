@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs & temp
+*.log
+*.tmp
+.cache/
+
+# Dependencies (if added later)
+node_modules/
+vendor/
+
+# Build / packaging
+*.zip
+dist/
+build/
+
+# Local env / secrets — never commit
+.env
+.env.*
+*.pem
+*.key
+
+# WordPress local copies (optional)
+wp-config.php

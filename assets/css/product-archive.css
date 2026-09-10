@@ -1,0 +1,111 @@
+/* Product Archive */
+
+.ta-products-archive {
+	width: 100%;
+	position: relative;
+}
+
+.ta-archive__toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+.ta-archive__count {
+	margin: 0;
+	font-size: 14px;
+	color: #555555;
+}
+
+.ta-archive__orderby select {
+	min-width: 180px;
+	padding: 8px 12px;
+	border: 1px solid #dddddd;
+	border-radius: 6px;
+	background: #ffffff;
+	font-size: 14px;
+	color: #222222;
+}
+
+.ta-products-archive__grid {
+	--ta-cols: 3;
+	--ta-grid-gap: 20px;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-cols), minmax(0, 1fr));
+	gap: var(--ta-grid-gap);
+	width: 100%;
+}
+
+.ta-products-archive__grid .ta-products-empty {
+	grid-column: 1 / -1;
+}
+
+.ta-archive__pagination-wrap {
+	margin-top: 28px;
+}
+
+.ta-archive__pagination {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px;
+}
+
+.ta-archive__page {
+	min-width: 40px;
+	height: 40px;
+	padding: 0 12px;
+	border: 1px solid #dddddd;
+	border-radius: 6px;
+	background: #ffffff;
+	color: #222222;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.ta-archive__page:hover {
+	border-color: #C9A84C;
+	color: #C9A84C;
+}
+
+.ta-archive__page.is-active {
+	background: #C9A84C;
+	border-color: #C9A84C;
+	color: #ffffff;
+}
+
+/* Category filter active state */
+.vv-product-category.is-active {
+	background-color: var(--vv-hover-bg, #C9A84C) !important;
+	border-color: var(--vv-hover-border, #C9A84C) !important;
+}
+
+.vv-product-category.is-active .vv-category-name,
+.vv-product-category.is-active .vv-category-count {
+	color: var(--vv-hover-name, #ffffff) !important;
+}
+
+.vv-product-categories--filter .vv-product-category {
+	cursor: pointer;
+	font: inherit;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}

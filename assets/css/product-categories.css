@@ -1,0 +1,93 @@
+/* =========================================
+   CATÉGORIES PRODUITS — structure only
+   Les valeurs visuelles viennent d’Elementor (CSS vars).
+   ========================================= */
+
+.vv-product-categories {
+	--vv-columns: 4;
+	--vv-gap: 16px;
+	--vv-item-pad-top: 15px;
+	--vv-item-pad-right: 20px;
+	--vv-item-pad-bottom: 15px;
+	--vv-item-pad-left: 20px;
+	--vv-item-min-height: 60px;
+	--vv-item-gap: 5px;
+	--vv-item-radius: 6px;
+	--vv-item-bg: #ffffff;
+	--vv-item-border: #dddddd;
+	--vv-name-color: #222222;
+	--vv-count-color: #777777;
+	--vv-hover-bg: #C9A84C;
+	--vv-hover-border: #C9A84C;
+	--vv-hover-name: #ffffff;
+	--vv-hover-count: #ffffff;
+	--vv-hover-lift: 3px;
+
+	display: grid;
+	grid-template-columns: repeat(var(--vv-columns), minmax(0, 1fr));
+	gap: var(--vv-gap);
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.vv-product-category {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--vv-item-gap);
+	min-height: var(--vv-item-min-height);
+	padding: var(--vv-item-pad-top) var(--vv-item-pad-right) var(--vv-item-pad-bottom) var(--vv-item-pad-left);
+	background-color: var(--vv-item-bg);
+	border: 1px solid var(--vv-item-border);
+	border-radius: var(--vv-item-radius);
+	text-align: center;
+	text-decoration: none !important;
+	transition:
+		background-color 0.3s ease,
+		border-color 0.3s ease,
+		color 0.3s ease,
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.vv-category-name {
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.4;
+	color: var(--vv-name-color);
+	transition: color 0.3s ease;
+}
+
+.vv-category-count {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--vv-count-color);
+	transition: color 0.3s ease;
+}
+
+.vv-product-category:hover {
+	background-color: var(--vv-hover-bg);
+	border-color: var(--vv-hover-border);
+	transform: translateY(calc(var(--vv-hover-lift) * -1));
+}
+
+.vv-product-category:hover .vv-category-name {
+	color: var(--vv-hover-name);
+}
+
+.vv-product-category:hover .vv-category-count {
+	color: var(--vv-hover-count);
+}
+
+.vv-product-category:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--vv-hover-bg) 25%, transparent);
+}
+
+.vv-no-categories {
+	margin: 0;
+	color: #666666;
+}
