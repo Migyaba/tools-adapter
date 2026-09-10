@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 1.3.4  
+**Version :** 1.4.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -34,8 +34,20 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 - Filtrage AJAX (archive + prix) avec nonces WordPress
 - Cartes produit réutilisables (`Product_Card`)
 - Requêtes WooCommerce centralisées (`Products_Query`)
+- Catégories Produits : disposition « Carte » ou « Cercle », avec repli automatique sur une image produit si la catégorie n'a pas d'image
 - Traductions front : français (source), anglais (`en_US`), polonais (`pl_PL`)
 - Styles et scripts chargés à la demande par widget
+
+## Historique des versions
+
+### 1.4.0
+- Widget **Catégories Produits** : nouveau contrôle « Disposition image » avec styles **Carte** (existant) et **Cercle** (avatar centré, image + nom + compteur)
+- Repli automatique sur l'image d'un produit de la catégorie quand aucune image de catégorie n'est définie (ordre : plus récent ou aléatoire)
+- Nouveaux réglages de style dédiés au cercle (taille, espacement, fond, bordure, ombre)
+- Toggle « Afficher le nom » indépendant du compteur, pour un affichage 100 % personnalisable
+
+### 1.3.4
+- Version initiale publiée
 
 ## Structure
 

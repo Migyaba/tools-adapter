@@ -67,6 +67,114 @@ class Product_Categories extends Widget_Base {
 		);
 
 		$this->add_control(
+			'display_style',
+			[
+				'label'   => esc_html__( 'Style d’affichage', 'tools-adapter' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'buttons',
+				'options' => [
+					'buttons'     => esc_html__( 'Boutons / grille', 'tools-adapter' ),
+					'image_cards' => esc_html__( 'Cartes avec image', 'tools-adapter' ),
+				],
+			]
+		);
+
+		$this->add_control(
+			'show_category_image',
+			[
+				'label'        => esc_html__( 'Image catégorie', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [
+					'display_style' => 'image_cards',
+				],
+			]
+		);
+
+		$this->add_control(
+			'category_image_size',
+			[
+				'label'     => esc_html__( 'Taille image', 'tools-adapter' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'woocommerce_thumbnail',
+				'options'   => [
+					'thumbnail'             => esc_html__( 'Miniature', 'tools-adapter' ),
+					'woocommerce_thumbnail' => esc_html__( 'WooCommerce miniature', 'tools-adapter' ),
+					'medium'                => esc_html__( 'Moyenne', 'tools-adapter' ),
+					'large'                 => esc_html__( 'Grande', 'tools-adapter' ),
+					'full'                  => esc_html__( 'Originale', 'tools-adapter' ),
+				],
+				'condition' => [
+					'display_style'       => 'image_cards',
+					'show_category_image' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'image_layout',
+			[
+				'label'     => esc_html__( 'Disposition image', 'tools-adapter' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'card',
+				'options'   => [
+					'card'   => esc_html__( 'Carte (image pleine largeur)', 'tools-adapter' ),
+					'circle' => esc_html__( 'Cercle (avatar centré)', 'tools-adapter' ),
+				],
+				'condition' => [
+					'display_style'       => 'image_cards',
+					'show_category_image' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'image_fallback',
+			[
+				'label'        => esc_html__( 'Image de repli (produit)', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'description'  => esc_html__( 'Si la catégorie n’a pas d’image définie, utiliser automatiquement l’image d’un de ses produits.', 'tools-adapter' ),
+				'condition'    => [
+					'display_style'       => 'image_cards',
+					'show_category_image' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'image_fallback_order',
+			[
+				'label'     => esc_html__( 'Produit choisi', 'tools-adapter' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'recent',
+				'options'   => [
+					'recent' => esc_html__( 'Le plus récent', 'tools-adapter' ),
+					'random' => esc_html__( 'Aléatoire', 'tools-adapter' ),
+				],
+				'condition' => [
+					'display_style'       => 'image_cards',
+					'show_category_image' => 'yes',
+					'image_fallback'      => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'show_category_name',
+			[
+				'label'        => esc_html__( 'Afficher le nom', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Oui', 'tools-adapter' ),
+				'label_off'    => esc_html__( 'Non', 'tools-adapter' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			]
+		);
+
+		$this->add_control(
 			'multi_select',
 			[
 				'label'        => esc_html__( 'Sélection multiple', 'tools-adapter' ),
@@ -332,6 +440,32 @@ class Product_Categories extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
+			'image_height',
+			[
+				'label'      => esc_html__( 'Hauteur image', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 80,
+						'max' => 360,
+					],
+				],
+				'default'    => [
+					'size' => 150,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-image-height: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'display_style'       => 'image_cards',
+					'show_category_image' => 'yes',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
 			'item_width',
 			[
 				'label'      => esc_html__( 'Largeur bouton', 'tools-adapter' ),
@@ -394,7 +528,8 @@ class Product_Categories extends Widget_Base {
 				],
 				'default'   => 'center',
 				'selectors' => [
-					'{{WRAPPER}} .vv-product-category' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} .vv-product-category:not(.vv-product-category--image-card)' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} .vv-product-category__content' => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -634,6 +769,93 @@ class Product_Categories extends Widget_Base {
 
 		$this->end_controls_section();
 
+		/* ═══════════════ STYLE: CIRCLE LAYOUT ═══════════════ */
+		$this->start_controls_section(
+			'section_style_circle',
+			[
+				'label'     => esc_html__( 'Cartes image — Cercle', 'tools-adapter' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'display_style' => 'image_cards',
+					'image_layout'  => 'circle',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'circle_size',
+			[
+				'label'      => esc_html__( 'Taille du cercle', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 60,
+						'max' => 300,
+					],
+				],
+				'default'    => [
+					'size' => 110,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-circle-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'circle_bg',
+			[
+				'label'     => esc_html__( 'Fond du cercle', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#f6f6f6',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-circle-bg: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'circle_gap',
+			[
+				'label'      => esc_html__( 'Espace image / texte', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 40,
+					],
+				],
+				'default'    => [
+					'size' => 14,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-circle-gap: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'     => 'circle_border',
+				'selector' => '{{WRAPPER}} .vv-product-category--circle-layout .vv-product-category__media',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'circle_shadow',
+				'selector' => '{{WRAPPER}} .vv-product-category--circle-layout .vv-product-category__media',
+			]
+		);
+
+		$this->end_controls_section();
+
 		/* ═══════════════ STYLE: TYPOGRAPHY ═══════════════ */
 		$this->start_controls_section(
 			'section_style_typography',
@@ -684,6 +906,100 @@ class Product_Categories extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Find a fallback thumbnail from one of the category's products,
+	 * used when the category itself has no WooCommerce image set.
+	 *
+	 * @param int    $term_id Category term ID.
+	 * @param string $order   'recent' or 'random'.
+	 * @return int Attachment ID, or 0 if none found.
+	 */
+	private function get_fallback_product_thumbnail_id( $term_id, $order = 'recent' ) {
+		$term_id = absint( $term_id );
+		if ( ! $term_id ) {
+			return 0;
+		}
+
+		$product_ids = get_posts(
+			[
+				'post_type'           => 'product',
+				'post_status'         => 'publish',
+				'posts_per_page'      => 1,
+				'fields'              => 'ids',
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+				'orderby'             => ( 'random' === $order ) ? 'rand' : 'date',
+				'order'               => 'DESC',
+				'tax_query'           => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+					[
+						'taxonomy' => 'product_cat',
+						'field'    => 'term_id',
+						'terms'    => [ $term_id ],
+					],
+				],
+				'meta_query'          => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					[
+						'key'     => '_thumbnail_id',
+						'compare' => 'EXISTS',
+					],
+				],
+			]
+		);
+
+		if ( empty( $product_ids ) ) {
+			return 0;
+		}
+
+		return absint( get_post_thumbnail_id( $product_ids[0] ) );
+	}
+
+	/**
+	 * Render the optional category image used by the image-card display.
+	 * Falls back to a product image from the category when no category
+	 * image is set and the fallback option is enabled.
+	 *
+	 * @param \WP_Term|null $category Category term, or null for the "All" button.
+	 * @param array         $settings Widget settings.
+	 */
+	private function render_category_visual( $category, array $settings ) {
+		if ( 'image_cards' !== ( $settings['display_style'] ?? 'buttons' ) || 'yes' !== ( $settings['show_category_image'] ?? 'yes' ) ) {
+			return;
+		}
+
+		$image_size    = ! empty( $settings['category_image_size'] ) ? $settings['category_image_size'] : 'woocommerce_thumbnail';
+		$term_id       = ( $category && ! empty( $category->term_id ) ) ? (int) $category->term_id : 0;
+		$thumbnail_id  = $term_id ? absint( get_term_meta( $term_id, 'thumbnail_id', true ) ) : 0;
+		$used_fallback = false;
+
+		if ( ! $thumbnail_id && $term_id && 'yes' === ( $settings['image_fallback'] ?? 'yes' ) ) {
+			$thumbnail_id  = $this->get_fallback_product_thumbnail_id( $term_id, $settings['image_fallback_order'] ?? 'recent' );
+			$used_fallback = (bool) $thumbnail_id;
+		}
+
+		$media_class = 'vv-product-category__media';
+		if ( $used_fallback ) {
+			$media_class .= ' vv-product-category__media--fallback';
+		}
+		?>
+		<span class="<?php echo esc_attr( $media_class ); ?>" aria-hidden="true">
+			<?php
+			if ( $thumbnail_id ) {
+				echo wp_get_attachment_image(
+					$thumbnail_id,
+					$image_size,
+					false,
+					[
+						'class' => 'vv-product-category__image',
+					]
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			} else {
+				echo '<span class="vv-product-category__placeholder"></span>';
+			}
+			?>
+		</span>
+		<?php
+	}
+
 	public function get_script_depends() {
 		return [ 'tools-adapter-archive' ];
 	}
@@ -696,8 +1012,11 @@ class Product_Categories extends Widget_Base {
 			return;
 		}
 
-		$settings = $this->get_settings_for_display();
-		$mode     = $settings['filter_mode'] ?? 'links';
+		$settings     = $this->get_settings_for_display();
+		$mode         = $settings['filter_mode'] ?? 'links';
+		$display      = $settings['display_style'] ?? 'buttons';
+		$image_layout = $settings['image_layout'] ?? 'card';
+		$show_name    = 'yes' === ( $settings['show_category_name'] ?? 'yes' );
 
 		$args = [
 			'taxonomy'   => 'product_cat',
@@ -740,6 +1059,12 @@ class Product_Categories extends Widget_Base {
 		if ( 'filter' === $mode ) {
 			$wrapper_class .= ' vv-product-categories--filter';
 		}
+		if ( 'image_cards' === $display ) {
+			$wrapper_class .= ' vv-product-categories--image-cards';
+			if ( 'circle' === $image_layout ) {
+				$wrapper_class .= ' vv-product-categories--circle-layout';
+			}
+		}
 		?>
 		<div
 			class="<?php echo esc_attr( $wrapper_class ); ?>"
@@ -751,29 +1076,49 @@ class Product_Categories extends Widget_Base {
 			<?php if ( 'filter' === $mode && 'yes' === ( $settings['show_all_button'] ?? '' ) ) : ?>
 				<button
 					type="button"
-					class="vv-product-category vv-product-category--all<?php echo empty( $active_ids ) ? ' is-active' : ''; ?>"
+					class="vv-product-category vv-product-category--all<?php echo 'image_cards' === $display ? ' vv-product-category--image-card' : ''; ?><?php echo ( 'image_cards' === $display && 'circle' === $image_layout ) ? ' vv-product-category--circle-layout' : ''; ?><?php echo empty( $active_ids ) ? ' is-active' : ''; ?>"
 					data-category-id="0"
 					data-category-filter
 				>
-					<span class="vv-category-name"><?php echo esc_html( \tools_adapter_translate( $settings['all_button_text'] ?: __( 'Tous', 'tools-adapter' ) ) ); ?></span>
+					<?php $this->render_category_visual( null, $settings ); ?>
+					<span class="vv-product-category__content">
+						<?php if ( $show_name ) : ?>
+							<span class="vv-category-name"><?php echo esc_html( \tools_adapter_translate( $settings['all_button_text'] ?: __( 'Tous', 'tools-adapter' ) ) ); ?></span>
+						<?php endif; ?>
+					</span>
 				</button>
 			<?php endif; ?>
 
 			<?php foreach ( $categories as $category ) : ?>
 				<?php
 				$is_active = in_array( (int) $category->term_id, $active_ids, true );
+				$item_class = 'vv-product-category';
+				if ( 'image_cards' === $display ) {
+					$item_class .= ' vv-product-category--image-card';
+					if ( 'circle' === $image_layout ) {
+						$item_class .= ' vv-product-category--circle-layout';
+					}
+				}
+				if ( $is_active ) {
+					$item_class .= ' is-active';
+				}
 				if ( 'filter' === $mode ) :
 					?>
 					<button
 						type="button"
-						class="vv-product-category<?php echo $is_active ? ' is-active' : ''; ?>"
+						class="<?php echo esc_attr( $item_class ); ?>"
 						data-category-id="<?php echo esc_attr( (string) $category->term_id ); ?>"
 						data-category-filter
 					>
-						<span class="vv-category-name"><?php echo esc_html( $category->name ); ?></span>
-						<?php if ( 'yes' === $settings['show_count'] ) : ?>
-							<span class="vv-category-count"><?php echo esc_html( $prefix . $category->count . $suffix ); ?></span>
-						<?php endif; ?>
+						<?php $this->render_category_visual( $category, $settings ); ?>
+						<span class="vv-product-category__content">
+							<?php if ( $show_name ) : ?>
+								<span class="vv-category-name"><?php echo esc_html( $category->name ); ?></span>
+							<?php endif; ?>
+							<?php if ( 'yes' === $settings['show_count'] ) : ?>
+								<span class="vv-category-count"><?php echo esc_html( $prefix . $category->count . $suffix ); ?></span>
+							<?php endif; ?>
+						</span>
 					</button>
 				<?php else :
 					$category_link = get_term_link( $category );
@@ -785,14 +1130,19 @@ class Product_Categories extends Widget_Base {
 					?>
 					<a
 						href="<?php echo esc_url( $category_link ); ?>"
-						class="vv-product-category"
+						class="<?php echo esc_attr( $item_class ); ?>"
 						target="<?php echo esc_attr( $target ); ?>"
 						<?php echo $rel ? 'rel="' . esc_attr( $rel ) . '"' : ''; ?>
 					>
-						<span class="vv-category-name"><?php echo esc_html( $category->name ); ?></span>
-						<?php if ( 'yes' === $settings['show_count'] ) : ?>
-							<span class="vv-category-count"><?php echo esc_html( $prefix . $category->count . $suffix ); ?></span>
-						<?php endif; ?>
+						<?php $this->render_category_visual( $category, $settings ); ?>
+						<span class="vv-product-category__content">
+							<?php if ( $show_name ) : ?>
+								<span class="vv-category-name"><?php echo esc_html( $category->name ); ?></span>
+							<?php endif; ?>
+							<?php if ( 'yes' === $settings['show_count'] ) : ?>
+								<span class="vv-category-count"><?php echo esc_html( $prefix . $category->count . $suffix ); ?></span>
+							<?php endif; ?>
+						</span>
 					</a>
 				<?php endif; ?>
 			<?php endforeach; ?>

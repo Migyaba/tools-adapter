@@ -22,6 +22,11 @@
 	--vv-hover-name: #ffffff;
 	--vv-hover-count: #ffffff;
 	--vv-hover-lift: 3px;
+	--vv-image-height: 150px;
+	--vv-image-bg: #f6f6f6;
+	--vv-circle-size: 110px;
+	--vv-circle-bg: #f6f6f6;
+	--vv-circle-gap: 14px;
 
 	display: grid;
 	grid-template-columns: repeat(var(--vv-columns), minmax(0, 1fr));
@@ -50,6 +55,14 @@
 		transform 0.3s ease,
 		box-shadow 0.3s ease;
 	box-sizing: border-box;
+	width: 100%;
+}
+
+.vv-product-category__content {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--vv-item-gap);
 	width: 100%;
 }
 
@@ -85,6 +98,97 @@
 .vv-product-category:focus {
 	outline: none;
 	box-shadow: 0 0 0 3px color-mix(in srgb, var(--vv-hover-bg) 25%, transparent);
+}
+
+.vv-product-categories--image-cards .vv-product-category {
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	gap: 0;
+	min-height: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.vv-product-categories--image-cards .vv-product-category__media {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: var(--vv-image-height);
+	overflow: hidden;
+	background: var(--vv-image-bg);
+}
+
+.vv-product-categories--image-cards .vv-product-category__image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.35s ease;
+}
+
+.vv-product-categories--image-cards .vv-product-category__placeholder {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background:
+		linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0)),
+		var(--vv-image-bg);
+}
+
+.vv-product-categories--image-cards .vv-product-category__content {
+	flex-wrap: wrap;
+	padding: var(--vv-item-pad-top) var(--vv-item-pad-right) var(--vv-item-pad-bottom) var(--vv-item-pad-left);
+	box-sizing: border-box;
+}
+
+.vv-product-categories--image-cards .vv-product-category:hover .vv-product-category__image,
+.vv-product-categories--image-cards .vv-product-category.is-active .vv-product-category__image {
+	transform: scale(1.04);
+}
+
+/* Circle layout (avatar-style — image + name + count stacked, centered) */
+.vv-product-categories--image-cards .vv-product-category--circle-layout {
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	background: transparent;
+	border: none;
+	box-shadow: none;
+	padding: 0;
+	overflow: visible;
+	width: auto;
+}
+
+.vv-product-categories--image-cards .vv-product-category--circle-layout .vv-product-category__media {
+	width: var(--vv-circle-size);
+	height: var(--vv-circle-size);
+	flex: 0 0 auto;
+	border-radius: 50%;
+	background: var(--vv-circle-bg);
+}
+
+.vv-product-categories--image-cards .vv-product-category--circle-layout .vv-product-category__image,
+.vv-product-categories--image-cards .vv-product-category--circle-layout .vv-product-category__placeholder {
+	border-radius: 50%;
+}
+
+.vv-product-categories--image-cards .vv-product-category--circle-layout .vv-product-category__content {
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	margin-top: var(--vv-circle-gap);
+	padding: 0;
+}
+
+.vv-product-categories--image-cards .vv-product-category--circle-layout:hover,
+.vv-product-categories--image-cards .vv-product-category--circle-layout:focus {
+	background: transparent;
+	box-shadow: none;
+}
+
+.vv-product-categories--circle-layout.vv-product-categories {
+	justify-items: center;
 }
 
 .vv-no-categories {
