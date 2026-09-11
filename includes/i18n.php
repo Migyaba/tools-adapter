@@ -92,6 +92,8 @@ add_action( 'wp_ajax_tools_adapter_filter_archive', 'tools_adapter_load_textdoma
 add_action( 'wp_ajax_nopriv_tools_adapter_filter_archive', 'tools_adapter_load_textdomain', 0 );
 add_action( 'wp_ajax_tools_adapter_filter_products', 'tools_adapter_load_textdomain', 0 );
 add_action( 'wp_ajax_nopriv_tools_adapter_filter_products', 'tools_adapter_load_textdomain', 0 );
+add_action( 'wp_ajax_tools_adapter_contact_submit', 'tools_adapter_load_textdomain', 0 );
+add_action( 'wp_ajax_nopriv_tools_adapter_contact_submit', 'tools_adapter_load_textdomain', 0 );
 
 /**
  * Translate a front string (also works for Elementor-saved French defaults).

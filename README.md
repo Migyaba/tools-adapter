@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 1.9.0  
+**Version :** 2.0.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -51,6 +51,12 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 | **Produits récemment consultés** | Historique client-side (localStorage) rendu en cartes produit réelles |
 | **Compte à rebours promo** | Minuteur configurable (date fixe ou fin de promo du produit) |
 | **Barre de stock / urgence** | Message + barre de progression selon le stock restant du produit |
+| **Mega Menu** | Menu de navigation horizontal avec panneaux mega-menu, option collant au défilement, repli mobile |
+| **Bandeau cookies (RGPD)** | Bannière de consentement avec catégories de cookies personnalisables, mémorisée par cookie navigateur |
+| **Popup preuve sociale** | Notifications flottantes rotatives — messages personnalisés ou commandes WooCommerce récentes |
+| **Formulaire de contact** | Formulaire stylisé avec envoi AJAX par e-mail, anti-spam (honeypot + limite de fréquence) |
+| **Carte Google Maps** | Intégration par adresse (sans clé API) ou code d'intégration personnalisé, carte d'infos flottante |
+| **Grille de blog** | Grille personnalisable d'articles WordPress (catégories, colonnes, extrait, pagination) |
 
 ## Fonctionnalités
 
@@ -66,10 +72,23 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 - Sélecteur de variations visuel : remplace automatiquement les listes déroulantes WooCommerce par des pastilles de couleur ou pilules de texte sur toutes les pages produit variable, en conservant la compatibilité totale avec le script de variations natif
 - 5 widgets de découverte & filtrage (Phase 4) : Filtre par attributs, Marques, Produits récemment consultés, Compte à rebours promo, Barre de stock/urgence
 - L'Archive/Grille Produits peut désormais être filtrée par n'importe quel attribut WooCommerce global (couleur, taille…), en plus des catégories et du prix, via le même mécanisme AJAX partagé
+- 6 widgets « site-wide & navigation » (Phase 5) : Mega Menu, Bandeau cookies (RGPD), Popup preuve sociale, Formulaire de contact, Carte Google Maps, Grille de blog — complétant l'ensemble des 5 phases prévues
+- Nouvel endpoint AJAX `Ajax_Contact`, protégé par nonce et par une limite de fréquence anti-spam (5 envois / minute / IP)
 - Traductions front : français (source), anglais (`en_US`), polonais (`pl_PL`)
 - Styles et scripts chargés à la demande par widget
 
 ## Historique des versions
+
+### 2.0.0
+- 6 nouveaux widgets « site-wide & navigation » (Phase 5), qui complètent l'ensemble des 5 phases de la feuille de route :
+  - **Mega Menu** : rendu à partir de n'importe quel menu WordPress (Apparence → Menus), panneaux mega-menu multi-colonnes pour les éléments ayant des sous-menus, option collante au défilement, repli mobile avec bouton burger, breakpoint personnalisable
+  - **Bandeau cookies (RGPD)** : message personnalisable, boutons Accepter / Refuser / Personnaliser, catégories de cookies configurables (repeater, catégories verrouillables), mémorisation via cookie navigateur (nom et durée personnalisables), disposition barre pleine largeur ou boîte flottante, position haut/bas, événement JS `tools-adapter:cookie-consent` émis pour s'intégrer à des scripts tiers (Analytics, pixels…)
+  - **Popup preuve sociale** : notifications flottantes rotatives dans un coin de l'écran — messages entièrement personnalisés (repeater) ou générés automatiquement à partir des commandes WooCommerce récentes (produit + ville + délai relatif), délais et position configurables
+  - **Formulaire de contact** : champs nom/e-mail/téléphone/sujet/message personnalisables, envoi AJAX par e-mail (`wp_mail`, en-tête Reply-To automatique), protection anti-spam (champ honeypot invisible + limite de 5 envois/minute/IP côté serveur), messages de succès/erreur personnalisables
+  - **Carte Google Maps** : intégration par simple adresse (aucune clé API requise) ou via un code d'intégration Google Maps personnalisé, effet noir & blanc au repos, carte d'informations flottante (titre, adresse, horaires, bouton itinéraire) positionnable dans les 4 coins
+  - **Grille de blog** : grille d'articles WordPress natifs (catégories, tri, colonnes responsives), image mise en avant, badge catégorie, date/auteur, extrait de longueur réglable, lien « Lire la suite », pagination native WordPress optionnelle
+- Nouvel endpoint AJAX `Ajax_Contact`, protégé par nonce et par une limite de fréquence anti-spam
+- L'ensemble des 5 phases de la feuille de route « Tools Adapter » est désormais implémenté : 33 widgets Elementor au total, tous personnalisables de façon professionnelle (contenu et style)
 
 ### 1.9.0
 - 5 nouveaux widgets « découverte & filtrage » (Phase 4) :
@@ -145,6 +164,7 @@ tools-adapter/
 │   ├── ajax-cart.php          # AJAX mini-panier (lecture/retrait)
 │   ├── ajax-quick-view.php    # AJAX vue rapide produit
 │   ├── ajax-recently-viewed.php # AJAX produits récemment consultés
+│   ├── ajax-contact.php       # AJAX formulaire de contact
 │   ├── variation-swatches.php # Swatches visuels pour variations WooCommerce
 │   ├── products-query.php     # Requêtes WooCommerce
 │   ├── product-card.php       # Rendu carte produit

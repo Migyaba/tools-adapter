@@ -1,0 +1,118 @@
+/* Formulaire de contact */
+
+.ta-contact-form {
+	--ta-cf-gap: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--ta-cf-gap);
+	width: 100%;
+}
+
+.ta-contact-form__row {
+	width: 100%;
+}
+
+.ta-contact-form__input,
+.ta-contact-form__textarea {
+	display: block;
+	width: 100%;
+	border: 1px solid #e2e2e2;
+	background-color: #f7f7f7;
+	font-size: 15px;
+	padding: 14px 16px;
+	transition: border-color 0.2s ease;
+	font-family: inherit;
+}
+
+.ta-contact-form__textarea {
+	resize: vertical;
+	min-height: 120px;
+}
+
+.ta-contact-form__input:focus,
+.ta-contact-form__textarea:focus {
+	outline: none;
+	border-color: #C9A84C;
+}
+
+.ta-contact-form__honeypot {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.ta-contact-form__submit {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 14px 32px;
+	background-color: #1c1c1c;
+	color: #ffffff;
+	border: none;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: opacity 0.2s ease, transform 0.15s ease;
+	align-self: flex-start;
+}
+
+.ta-cf-btn-width--full .ta-contact-form__submit {
+	display: flex;
+	width: 100%;
+	align-self: stretch;
+}
+
+.ta-contact-form__submit:hover {
+	opacity: 0.9;
+}
+
+.ta-contact-form__submit:active {
+	transform: scale(0.98);
+}
+
+.ta-contact-form__submit:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.ta-contact-form__spinner {
+	display: none;
+	width: 14px;
+	height: 14px;
+	border: 2px solid currentColor;
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: ta-contact-form-spin 0.7s linear infinite;
+}
+
+.ta-contact-form.is-submitting .ta-contact-form__spinner {
+	display: inline-block;
+}
+
+@keyframes ta-contact-form-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.ta-contact-form__notice {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.ta-contact-form__notice[hidden] {
+	display: none;
+}
+
+.ta-contact-form__notice--success {
+	color: #2e7d32;
+}
+
+.ta-contact-form__notice--error {
+	color: #c0392b;
+}

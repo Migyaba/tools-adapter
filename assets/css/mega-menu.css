@@ -1,0 +1,182 @@
+/* Mega Menu */
+
+.ta-mega-menu {
+	position: relative;
+	width: 100%;
+	z-index: 100;
+	transition: box-shadow 0.2s ease;
+}
+
+.ta-mega-menu.ta-mega-menu--sticky.is-stuck {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.ta-mega-menu__inner {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding: 16px 24px;
+}
+
+.ta-mega-menu__logo {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.ta-mega-menu__logo img {
+	max-height: 40px;
+	width: auto;
+	display: block;
+}
+
+.ta-mega-menu__list {
+	--ta-mega-gap: 28px;
+	display: flex;
+	align-items: center;
+	flex: 1;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: var(--ta-mega-gap);
+	justify-content: flex-end;
+}
+
+.ta-mega-menu__item {
+	position: relative;
+}
+
+.ta-mega-menu__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: 600;
+	white-space: nowrap;
+	transition: color 0.2s ease;
+}
+
+.ta-mega-menu__caret {
+	font-size: 10px;
+	transition: transform 0.2s ease;
+}
+
+.ta-mega-menu__item.has-panel:hover .ta-mega-menu__caret,
+.ta-mega-menu__item.has-panel.is-open .ta-mega-menu__caret {
+	transform: rotate(180deg);
+}
+
+.ta-mega-menu__panel {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	min-width: 260px;
+	padding: 20px;
+	margin-top: 12px;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(8px);
+	transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+	z-index: 10;
+}
+
+.ta-mega-menu__item.has-panel:hover .ta-mega-menu__panel,
+.ta-mega-menu__item.has-panel.is-open .ta-mega-menu__panel {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.ta-mega-menu__panel-columns {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: 8px 24px;
+}
+
+.ta-mega-menu__panel-link {
+	display: block;
+	padding: 6px 0;
+	text-decoration: none;
+	font-size: 14px;
+	white-space: nowrap;
+	transition: color 0.2s ease;
+}
+
+.ta-mega-menu__toggle {
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	gap: 5px;
+	width: 34px;
+	height: 34px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	margin-left: auto;
+}
+
+.ta-mega-menu__toggle-bar {
+	display: block;
+	width: 100%;
+	height: 2px;
+	background-color: currentColor;
+	border-radius: 2px;
+	transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/*
+ * Mobile layout is toggled via the ".ta-mega-menu--mobile" class, added by
+ * JS when the viewport is narrower than the widget's configurable
+ * "data-breakpoint" (rather than a fixed CSS @media query).
+ */
+.ta-mega-menu--mobile .ta-mega-menu__toggle {
+	display: flex;
+}
+
+.ta-mega-menu--mobile .ta-mega-menu__list {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	flex-direction: column;
+	align-items: stretch;
+	background-color: inherit;
+	padding: 12px 24px 20px;
+	gap: 4px;
+}
+
+.ta-mega-menu--mobile.is-mobile-open .ta-mega-menu__list {
+	display: flex;
+}
+
+.ta-mega-menu--mobile .ta-mega-menu__link {
+	width: 100%;
+	justify-content: space-between;
+	padding: 10px 0;
+}
+
+.ta-mega-menu--mobile .ta-mega-menu__panel {
+	position: static;
+	display: none;
+	width: 100%;
+	box-shadow: none;
+	margin-top: 0;
+	padding: 8px 0 8px 16px;
+	opacity: 1;
+	visibility: visible;
+	transform: none;
+}
+
+.ta-mega-menu--mobile .ta-mega-menu__item.has-panel.is-open .ta-mega-menu__panel {
+	display: block;
+}
+
+.ta-mega-menu--mobile .ta-mega-menu__panel-columns {
+	grid-template-columns: 1fr;
+}

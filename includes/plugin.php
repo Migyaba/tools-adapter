@@ -34,6 +34,7 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-cart.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-quick-view.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-recently-viewed.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-contact.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/variation-swatches.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/products-query.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/product-card.php';
@@ -41,6 +42,7 @@ final class Plugin {
 		new Ajax_Cart();
 		new Ajax_Quick_View();
 		new Ajax_Recently_Viewed();
+		new Ajax_Contact();
 		new Variation_Swatches();
 
 		add_action( 'wp_footer', [ $this, 'print_current_product_id' ] );
@@ -112,6 +114,12 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/recently-viewed.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/sale-countdown.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/stock-urgency.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/mega-menu.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/cookie-banner.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/social-proof.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/contact-form.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/google-map.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/blog-grid.php';
 
 		$widgets_manager->register( new Widgets\Product_Categories() );
 		$widgets_manager->register( new Widgets\Price_Filter() );
@@ -140,6 +148,12 @@ final class Plugin {
 		$widgets_manager->register( new Widgets\Recently_Viewed() );
 		$widgets_manager->register( new Widgets\Sale_Countdown() );
 		$widgets_manager->register( new Widgets\Stock_Urgency() );
+		$widgets_manager->register( new Widgets\Mega_Menu() );
+		$widgets_manager->register( new Widgets\Cookie_Banner() );
+		$widgets_manager->register( new Widgets\Social_Proof() );
+		$widgets_manager->register( new Widgets\Contact_Form() );
+		$widgets_manager->register( new Widgets\Google_Map() );
+		$widgets_manager->register( new Widgets\Blog_Grid() );
 	}
 
 	/**
@@ -330,5 +344,28 @@ final class Plugin {
 		if ( class_exists( 'WooCommerce' ) ) {
 			wp_enqueue_script( 'tools-adapter-recently-viewed' );
 		}
+
+		// Phase 5 — site-wide & navigation.
+		wp_register_style( 'tools-adapter-mega-menu', TOOLS_ADAPTER_URL . 'assets/css/mega-menu.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-cookie-banner', TOOLS_ADAPTER_URL . 'assets/css/cookie-banner.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-social-proof', TOOLS_ADAPTER_URL . 'assets/css/social-proof.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-contact-form', TOOLS_ADAPTER_URL . 'assets/css/contact-form.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-google-map', TOOLS_ADAPTER_URL . 'assets/css/google-map.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-blog-grid', TOOLS_ADAPTER_URL . 'assets/css/blog-grid.css', [], TOOLS_ADAPTER_VERSION );
+
+		wp_register_script( 'tools-adapter-mega-menu', TOOLS_ADAPTER_URL . 'assets/js/mega-menu.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-cookie-banner', TOOLS_ADAPTER_URL . 'assets/js/cookie-banner.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-social-proof', TOOLS_ADAPTER_URL . 'assets/js/social-proof.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-contact-form', TOOLS_ADAPTER_URL . 'assets/js/contact-form.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		wp_localize_script(
+			'tools-adapter-contact-form',
+			'ToolsAdapterContactForm',
+			[
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'action'  => Ajax_Contact::ACTION,
+				'nonce'   => wp_create_nonce( Ajax_Contact::NONCE ),
+			]
+		);
 	}
 }

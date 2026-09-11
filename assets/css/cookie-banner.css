@@ -1,0 +1,178 @@
+/* Bandeau cookies (RGPD) */
+
+.ta-cookie-banner {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	transform: translateY(100%);
+	opacity: 0;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.ta-cookie-banner[hidden] {
+	display: none;
+}
+
+.ta-cookie-banner--bottom {
+	bottom: 0;
+	transform: translateY(100%);
+}
+
+.ta-cookie-banner--top {
+	top: 0;
+	transform: translateY(-100%);
+}
+
+.ta-cookie-banner.is-visible {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+.ta-cookie-banner__inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 20px 28px;
+}
+
+.ta-cookie-banner__main {
+	flex: 1 1 320px;
+	min-width: 0;
+}
+
+.ta-cookie-banner__text {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.ta-cookie-banner__link {
+	margin-left: 4px;
+	text-decoration: underline;
+}
+
+.ta-cookie-banner__categories {
+	margin-top: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.ta-cookie-banner__categories[hidden] {
+	display: none;
+}
+
+.ta-cookie-banner__category {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.ta-cookie-banner__category input {
+	margin-top: 3px;
+	flex-shrink: 0;
+}
+
+.ta-cookie-banner__category-name {
+	display: block;
+	font-weight: 700;
+}
+
+.ta-cookie-banner__category-desc {
+	display: block;
+	opacity: 0.75;
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.ta-cookie-banner__save {
+	align-self: flex-start;
+	margin-top: 4px;
+}
+
+.ta-cookie-banner__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+}
+
+.ta-cookie-banner__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 11px 22px;
+	font-size: 13px;
+	font-weight: 700;
+	border: none;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.ta-cookie-banner__btn:hover {
+	opacity: 0.88;
+}
+
+.ta-cookie-banner__btn:active {
+	transform: scale(0.97);
+}
+
+.ta-cookie-banner__btn--secondary {
+	background: transparent;
+	border: 1px solid currentColor;
+}
+
+/* Floating box layout (bottom/top-left corner card instead of full-width bar) */
+.ta-cookie-layout--box.ta-cookie-banner {
+	left: auto;
+	right: 24px;
+	max-width: 420px;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.ta-cookie-layout--box.ta-cookie-banner--bottom {
+	bottom: 24px;
+}
+
+.ta-cookie-layout--box.ta-cookie-banner--top {
+	top: 24px;
+}
+
+.ta-cookie-layout--box .ta-cookie-banner__inner {
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.ta-cookie-layout--box .ta-cookie-banner__actions {
+	justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+	.ta-cookie-banner__inner {
+		flex-direction: column;
+		align-items: stretch;
+		padding: 18px 20px;
+	}
+
+	.ta-cookie-banner__actions {
+		justify-content: stretch;
+	}
+
+	.ta-cookie-banner__btn {
+		flex: 1;
+	}
+
+	.ta-cookie-layout--box.ta-cookie-banner {
+		left: 16px;
+		right: 16px;
+		max-width: none;
+	}
+}
