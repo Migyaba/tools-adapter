@@ -1,0 +1,133 @@
+/* Témoignages */
+
+.ta-testimonials {
+	--ta-gap: 24px;
+	position: relative;
+	width: 100%;
+}
+
+.ta-testimonials__grid {
+	--ta-cols: 3;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-cols), minmax(0, 1fr));
+	gap: var(--ta-gap);
+}
+
+.ta-testimonials--carousel .ta-testimonials__track {
+	display: flex;
+	overflow: hidden;
+}
+
+.ta-testimonial--slide {
+	flex: 0 0 100%;
+	min-width: 0;
+}
+
+.ta-testimonial {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	background: #ffffff;
+	padding: 32px 28px;
+	border-radius: 12px;
+	position: relative;
+}
+
+.ta-testimonial__quote-icon {
+	font-size: 48px;
+	line-height: 1;
+	font-family: Georgia, serif;
+	color: #eeeeee;
+}
+
+.ta-testimonial__rating {
+	color: #C9A84C;
+	letter-spacing: 2px;
+}
+
+.ta-testimonial__quote {
+	margin: 0;
+	font-size: 15px;
+	line-height: 1.6;
+	color: #333333;
+	flex: 1 1 auto;
+}
+
+.ta-testimonial__author {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.ta-testimonial__avatar {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	object-fit: cover;
+	flex: 0 0 auto;
+}
+
+.ta-testimonial__meta {
+	min-width: 0;
+}
+
+.ta-testimonial__name {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.ta-testimonial__role {
+	margin: 2px 0 0;
+	font-size: 13px;
+}
+
+/* Shared simple carousel nav (testimonials + future widgets) */
+
+.ta-carousel__arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid #dddddd;
+	background: #ffffff;
+	font-size: 22px;
+	line-height: 1;
+	cursor: pointer;
+	z-index: 2;
+}
+
+.ta-carousel__arrow--prev {
+	left: -20px;
+}
+
+.ta-carousel__arrow--next {
+	right: -20px;
+}
+
+.ta-carousel__dots {
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 20px;
+}
+
+.ta-carousel__dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	border: 0;
+	padding: 0;
+	background: #dddddd;
+	cursor: pointer;
+}
+
+.ta-carousel__dot.is-active {
+	background: #C9A84C;
+}

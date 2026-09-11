@@ -76,6 +76,13 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/faq-accordion.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/trust-badges.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/category-banner.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/testimonials.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/team-members.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/pricing-table.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/timeline.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/before-after.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/table-of-contents.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/reading-progress-bar.php';
 
 		$widgets_manager->register( new Widgets\Product_Categories() );
 		$widgets_manager->register( new Widgets\Price_Filter() );
@@ -89,6 +96,13 @@ final class Plugin {
 		$widgets_manager->register( new Widgets\Faq_Accordion() );
 		$widgets_manager->register( new Widgets\Trust_Badges() );
 		$widgets_manager->register( new Widgets\Category_Banner() );
+		$widgets_manager->register( new Widgets\Testimonials() );
+		$widgets_manager->register( new Widgets\Team_Members() );
+		$widgets_manager->register( new Widgets\Pricing_Table() );
+		$widgets_manager->register( new Widgets\Timeline() );
+		$widgets_manager->register( new Widgets\Before_After() );
+		$widgets_manager->register( new Widgets\Table_Of_Contents() );
+		$widgets_manager->register( new Widgets\Reading_Progress_Bar() );
 	}
 
 	/**
@@ -195,5 +209,19 @@ final class Plugin {
 
 		wp_register_script( 'tools-adapter-stats', TOOLS_ADAPTER_URL . 'assets/js/stats-counters.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/js/faq-accordion.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		// Phase 2 — contenu & preuve sociale.
+		wp_register_style( 'tools-adapter-testimonials', TOOLS_ADAPTER_URL . 'assets/css/testimonials.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-team', TOOLS_ADAPTER_URL . 'assets/css/team.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-pricing-table', TOOLS_ADAPTER_URL . 'assets/css/pricing-table.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-timeline', TOOLS_ADAPTER_URL . 'assets/css/timeline.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-before-after', TOOLS_ADAPTER_URL . 'assets/css/before-after.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-toc', TOOLS_ADAPTER_URL . 'assets/css/table-of-contents.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-reading-progress', TOOLS_ADAPTER_URL . 'assets/css/reading-progress.css', [], TOOLS_ADAPTER_VERSION );
+
+		wp_register_script( 'tools-adapter-carousel', TOOLS_ADAPTER_URL . 'assets/js/simple-carousel.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-before-after', TOOLS_ADAPTER_URL . 'assets/js/before-after.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-toc', TOOLS_ADAPTER_URL . 'assets/js/table-of-contents.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-reading-progress', TOOLS_ADAPTER_URL . 'assets/js/reading-progress.js', [], TOOLS_ADAPTER_VERSION, true );
 	}
 }

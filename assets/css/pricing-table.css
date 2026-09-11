@@ -1,0 +1,130 @@
+/* Tableau de tarifs */
+
+.ta-pricing {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	background: #ffffff;
+	padding: 40px 32px;
+	border-radius: 16px;
+	width: 100%;
+}
+
+.ta-pricing.is-featured {
+	background: #1c1c1c;
+}
+
+.ta-pricing.is-featured .ta-pricing__title,
+.ta-pricing.is-featured .ta-pricing__subtitle,
+.ta-pricing.is-featured .ta-pricing__period,
+.ta-pricing.is-featured .ta-pricing__feature {
+	color: #ffffff;
+}
+
+.ta-pricing__ribbon {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	padding: 4px 12px;
+	background: #C9A84C;
+	color: #ffffff;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	border-radius: 20px;
+}
+
+.ta-pricing__title {
+	margin: 0;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.ta-pricing__subtitle {
+	margin: 6px 0 0;
+	font-size: 13px;
+}
+
+.ta-pricing__price-row {
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 4px;
+	margin: 24px 0;
+}
+
+.ta-pricing__currency {
+	font-size: 24px;
+	font-weight: 700;
+	color: #C9A84C;
+}
+
+.ta-pricing__price {
+	font-size: 52px;
+	font-weight: 800;
+	line-height: 1;
+	color: #C9A84C;
+}
+
+.ta-pricing__period {
+	font-size: 15px;
+	margin-bottom: 8px;
+}
+
+.ta-pricing__features {
+	list-style: none;
+	margin: 0 0 28px;
+	padding: 0;
+	width: 100%;
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.ta-pricing__feature {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 14px;
+}
+
+.ta-pricing__feature--excluded {
+	opacity: 0.5;
+	text-decoration: line-through;
+}
+
+.ta-pricing__feature-icon {
+	flex: 0 0 auto;
+	font-weight: 700;
+}
+
+.ta-pricing__feature-icon--yes {
+	color: #3aa76d;
+}
+
+.ta-pricing__feature-icon--no {
+	color: #cccccc;
+}
+
+.ta-pricing__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 14px 24px;
+	background: #1c1c1c;
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: 600;
+	text-decoration: none;
+	border-radius: 6px;
+	transition: opacity 0.2s ease;
+}
+
+.ta-pricing__btn:hover {
+	opacity: 0.85;
+}

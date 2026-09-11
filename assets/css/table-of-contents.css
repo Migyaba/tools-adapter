@@ -1,0 +1,89 @@
+/* Table des matières */
+
+.ta-toc {
+	background: #f7f7f7;
+	padding: 24px;
+	border-radius: 8px;
+	width: 100%;
+}
+
+.ta-toc__title {
+	margin: 0 0 14px;
+	font-size: 17px;
+	font-weight: 700;
+	color: #1c1c1c;
+}
+
+button.ta-toc__title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	background: none;
+	border: 0;
+	cursor: pointer;
+	padding: 0;
+	font-family: inherit;
+}
+
+button.ta-toc__title::after {
+	content: "\2212";
+	font-size: 14px;
+}
+
+.ta-toc.is-collapsed button.ta-toc__title::after {
+	content: "\002B";
+}
+
+.ta-toc.is-collapsed .ta-toc__list {
+	display: none;
+}
+
+.ta-toc__empty {
+	margin: 0;
+	font-size: 13px;
+	font-style: italic;
+	color: #999999;
+}
+
+.ta-toc__ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	counter-reset: ta-toc-counter;
+}
+
+.ta-toc__item {
+	margin-bottom: 8px;
+}
+
+.ta-toc__item--level-3 {
+	margin-left: 16px;
+}
+
+.ta-toc__item--level-4 {
+	margin-left: 32px;
+}
+
+.ta-toc__ul--numbered > .ta-toc__item--level-2 {
+	counter-increment: ta-toc-counter;
+}
+
+.ta-toc__ul--numbered > .ta-toc__item--level-2 > a::before {
+	content: counter(ta-toc-counter) ". ";
+	font-weight: 700;
+}
+
+.ta-toc__list a {
+	display: block;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #444444;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.ta-toc__list a:hover,
+.ta-toc__list a.is-active {
+	color: #C9A84C;
+}

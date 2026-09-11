@@ -1,0 +1,71 @@
+/* Équipe */
+
+.ta-team {
+	--ta-team-cols: 4;
+	--ta-team-gap: 24px;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-team-cols), minmax(0, 1fr));
+	gap: var(--ta-team-gap);
+	width: 100%;
+}
+
+.ta-team__member {
+	display: flex;
+	flex-direction: column;
+}
+
+.ta-team-align--center .ta-team__member {
+	align-items: center;
+	text-align: center;
+}
+
+.ta-team__photo {
+	width: 120px;
+	height: 120px;
+	object-fit: cover;
+	margin-bottom: 16px;
+}
+
+.ta-team-photo--circle .ta-team__photo {
+	border-radius: 50%;
+}
+
+.ta-team-photo--square .ta-team__photo {
+	border-radius: 12px;
+}
+
+.ta-team__name {
+	margin: 0;
+	font-size: 17px;
+	font-weight: 700;
+}
+
+.ta-team__role {
+	margin: 4px 0 0;
+	font-size: 13px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.ta-team__bio {
+	margin: 10px 0 0;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.ta-team__social {
+	display: flex;
+	gap: 12px;
+	margin-top: 14px;
+}
+
+.ta-team__social a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	font-size: 14px;
+	transition: color 0.2s ease;
+}

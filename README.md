@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 1.6.0  
+**Version :** 1.7.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -35,6 +35,13 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 | **FAQ Accordéon** | Questions/réponses repliables avec balisage SEO schema.org FAQPage |
 | **Bloc réassurance** | Icônes + texte (livraison, paiement sécurisé, retours...) |
 | **Bannière catégorie** | Hero pour une catégorie WooCommerce (image avec repli produit, description, compteur, CTA) |
+| **Témoignages** | Avis clients en grille ou carrousel (photo, note, citation) |
+| **Équipe** | Grille de membres avec photo, poste, bio et réseaux sociaux |
+| **Tableau de tarifs** | Carte de plan (prix, fonctionnalités incluses/exclues, bouton, ruban « populaire ») |
+| **Timeline** | Frise chronologique verticale, alternée ou en colonne unique |
+| **Avant / Après** | Slider comparatif de deux images (glisser à la souris ou au doigt) |
+| **Table des matières** | Sommaire auto-généré à partir des titres de la page, avec surlignage de la section active |
+| **Barre de progression** | Barre fixe indiquant l'avancement de lecture de la page |
 
 ## Fonctionnalités
 
@@ -44,10 +51,23 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 - Catégories Produits : disposition « Carte » ou « Cercle », avec repli automatique sur une image produit si la catégorie n'a pas d'image
 - Archive Produits : 4 types de pagination (numérotée classique, précédent/suivant, « charger plus », défilement infini), entièrement personnalisables et synchronisés entre le premier affichage et l'AJAX
 - 7 widgets de mise en page générale (Phase 1) : Hero, Bande CTA, Compteurs animés, Logos partenaires, FAQ Accordéon, Bloc réassurance, Bannière catégorie — tous avec contrôles de contenu et de style complets (couleurs, typographie, espacement, bordures, ombres, responsive)
+- 7 widgets de contenu & preuve sociale (Phase 2) : Témoignages, Équipe, Tableau de tarifs, Timeline, Avant/Après, Table des matières, Barre de progression — même niveau de personnalisation complète
 - Traductions front : français (source), anglais (`en_US`), polonais (`pl_PL`)
 - Styles et scripts chargés à la demande par widget
 
 ## Historique des versions
+
+### 1.7.0
+- 7 nouveaux widgets « contenu & preuve sociale » (Phase 2) :
+  - **Témoignages** : repeater avis clients (photo, nom, fonction, note, citation), disposition grille ou carrousel (flèches, puces, lecture automatique)
+  - **Équipe** : repeater membres (photo, nom, poste, bio, réseaux sociaux Facebook/X/Instagram/LinkedIn), photo ronde ou carrée
+  - **Tableau de tarifs** : une carte de plan par widget (nom, prix, période, liste de fonctionnalités incluses/exclues, bouton, ruban « populaire », style mis en avant)
+  - **Timeline** : frise chronologique verticale alternée ou en colonne unique, icônes personnalisables par étape
+  - **Avant / Après** : slider comparatif de deux images, orientation horizontale/verticale, position initiale réglable, libellés personnalisables
+  - **Table des matières** : sommaire généré automatiquement à partir des titres H2/H3/H4 de la page, numérotation, repli, surlignage de la section active au scroll
+  - **Barre de progression de lecture** : barre fixe (haut ou bas) suivant l'avancement de lecture de toute la page ou d'une zone ciblée
+- Nouveau script partagé `simple-carousel.js` (carrousel léger réutilisable, flèches/puces/autoplay/swipe tactile)
+- Chaque widget dispose d'un onglet Style complet (couleurs, typographie, espacement responsive, bordures, ombres) pour une personnalisation totale
 
 ### 1.6.0
 - 7 nouveaux widgets de mise en page générale, indépendants de WooCommerce (sauf Bannière catégorie), pour construire des pages professionnelles complètes :
