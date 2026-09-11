@@ -43,7 +43,13 @@ final class Plugin {
 		new Ajax_Quick_View();
 		new Ajax_Recently_Viewed();
 		new Ajax_Contact();
-		new Variation_Swatches();
+
+		// "Sélecteur de variations visuel" is a global feature (not an
+		// Elementor widget) — only patch WooCommerce's variation dropdowns
+		// when it is enabled in the Tools Adapter settings page.
+		if ( Admin_Settings::is_feature_enabled( 'variation_swatches' ) ) {
+			new Variation_Swatches();
+		}
 
 		add_action( 'wp_footer', [ $this, 'print_current_product_id' ] );
 
@@ -74,6 +80,9 @@ final class Plugin {
 	 * récemment consultés" tracker and other WooCommerce-aware scripts).
 	 */
 	public function print_current_product_id() {
+		if ( ! Admin_Settings::is_widget_enabled( 'tools-adapter-recently-viewed' ) ) {
+			return;
+		}
 		if ( ! function_exists( 'is_product' ) || ! is_product() ) {
 			return;
 		}
@@ -87,73 +96,58 @@ final class Plugin {
 	 */
 	public function register_widgets( $widgets_manager ) {
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/products-widget-controls.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-categories.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/price-filter.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-grid.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-carousel.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-archive.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/hero-banner.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/cta-band.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/stats-counters.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/logos-grid.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/faq-accordion.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/trust-badges.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/category-banner.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/testimonials.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/team-members.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/pricing-table.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/timeline.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/before-after.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/table-of-contents.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/reading-progress-bar.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/mini-cart.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/sticky-add-to-cart.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/size-guide.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/attribute-filter.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/brands-grid.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/recently-viewed.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/sale-countdown.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/stock-urgency.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/mega-menu.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/cookie-banner.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/social-proof.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/contact-form.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/google-map.php';
-		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/blog-grid.php';
 
-		$widgets_manager->register( new Widgets\Product_Categories() );
-		$widgets_manager->register( new Widgets\Price_Filter() );
-		$widgets_manager->register( new Widgets\Product_Grid() );
-		$widgets_manager->register( new Widgets\Product_Carousel() );
-		$widgets_manager->register( new Widgets\Product_Archive() );
-		$widgets_manager->register( new Widgets\Hero_Banner() );
-		$widgets_manager->register( new Widgets\Cta_Band() );
-		$widgets_manager->register( new Widgets\Stats_Counters() );
-		$widgets_manager->register( new Widgets\Logos_Grid() );
-		$widgets_manager->register( new Widgets\Faq_Accordion() );
-		$widgets_manager->register( new Widgets\Trust_Badges() );
-		$widgets_manager->register( new Widgets\Category_Banner() );
-		$widgets_manager->register( new Widgets\Testimonials() );
-		$widgets_manager->register( new Widgets\Team_Members() );
-		$widgets_manager->register( new Widgets\Pricing_Table() );
-		$widgets_manager->register( new Widgets\Timeline() );
-		$widgets_manager->register( new Widgets\Before_After() );
-		$widgets_manager->register( new Widgets\Table_Of_Contents() );
-		$widgets_manager->register( new Widgets\Reading_Progress_Bar() );
-		$widgets_manager->register( new Widgets\Mini_Cart() );
-		$widgets_manager->register( new Widgets\Sticky_Add_To_Cart() );
-		$widgets_manager->register( new Widgets\Size_Guide() );
-		$widgets_manager->register( new Widgets\Attribute_Filter() );
-		$widgets_manager->register( new Widgets\Brands_Grid() );
-		$widgets_manager->register( new Widgets\Recently_Viewed() );
-		$widgets_manager->register( new Widgets\Sale_Countdown() );
-		$widgets_manager->register( new Widgets\Stock_Urgency() );
-		$widgets_manager->register( new Widgets\Mega_Menu() );
-		$widgets_manager->register( new Widgets\Cookie_Banner() );
-		$widgets_manager->register( new Widgets\Social_Proof() );
-		$widgets_manager->register( new Widgets\Contact_Form() );
-		$widgets_manager->register( new Widgets\Google_Map() );
-		$widgets_manager->register( new Widgets\Blog_Grid() );
+		// slug (as returned by the widget's get_name()) => [ file, class name ].
+		// The slug is what the settings page ("Réglages Tools Adapter") uses
+		// to enable/disable each widget individually — a widget whose slug
+		// is disabled there is simply never registered with Elementor.
+		$widgets = [
+			'tools-adapter-product-categories' => [ 'product-categories.php', 'Product_Categories' ],
+			'tools-adapter-price-filter'        => [ 'price-filter.php', 'Price_Filter' ],
+			'tools-adapter-product-grid'        => [ 'product-grid.php', 'Product_Grid' ],
+			'tools-adapter-product-carousel'    => [ 'product-carousel.php', 'Product_Carousel' ],
+			'tools-adapter-product-archive'     => [ 'product-archive.php', 'Product_Archive' ],
+			'tools-adapter-hero-banner'          => [ 'hero-banner.php', 'Hero_Banner' ],
+			'tools-adapter-cta-band'             => [ 'cta-band.php', 'Cta_Band' ],
+			'tools-adapter-stats'                => [ 'stats-counters.php', 'Stats_Counters' ],
+			'tools-adapter-logos'                => [ 'logos-grid.php', 'Logos_Grid' ],
+			'tools-adapter-faq'                  => [ 'faq-accordion.php', 'Faq_Accordion' ],
+			'tools-adapter-trust-badges'         => [ 'trust-badges.php', 'Trust_Badges' ],
+			'tools-adapter-category-banner'      => [ 'category-banner.php', 'Category_Banner' ],
+			'tools-adapter-testimonials'         => [ 'testimonials.php', 'Testimonials' ],
+			'tools-adapter-team'                 => [ 'team-members.php', 'Team_Members' ],
+			'tools-adapter-pricing-table'        => [ 'pricing-table.php', 'Pricing_Table' ],
+			'tools-adapter-timeline'             => [ 'timeline.php', 'Timeline' ],
+			'tools-adapter-before-after'         => [ 'before-after.php', 'Before_After' ],
+			'tools-adapter-toc'                  => [ 'table-of-contents.php', 'Table_Of_Contents' ],
+			'tools-adapter-reading-progress'    => [ 'reading-progress-bar.php', 'Reading_Progress_Bar' ],
+			'tools-adapter-mini-cart'            => [ 'mini-cart.php', 'Mini_Cart' ],
+			'tools-adapter-sticky-atc'           => [ 'sticky-add-to-cart.php', 'Sticky_Add_To_Cart' ],
+			'tools-adapter-size-guide'           => [ 'size-guide.php', 'Size_Guide' ],
+			'tools-adapter-attribute-filter'     => [ 'attribute-filter.php', 'Attribute_Filter' ],
+			'tools-adapter-brands'               => [ 'brands-grid.php', 'Brands_Grid' ],
+			'tools-adapter-recently-viewed'      => [ 'recently-viewed.php', 'Recently_Viewed' ],
+			'tools-adapter-sale-countdown'       => [ 'sale-countdown.php', 'Sale_Countdown' ],
+			'tools-adapter-stock-urgency'        => [ 'stock-urgency.php', 'Stock_Urgency' ],
+			'tools-adapter-mega-menu'            => [ 'mega-menu.php', 'Mega_Menu' ],
+			'tools-adapter-cookie-banner'        => [ 'cookie-banner.php', 'Cookie_Banner' ],
+			'tools-adapter-social-proof'         => [ 'social-proof.php', 'Social_Proof' ],
+			'tools-adapter-contact-form'         => [ 'contact-form.php', 'Contact_Form' ],
+			'tools-adapter-google-map'           => [ 'google-map.php', 'Google_Map' ],
+			'tools-adapter-blog-grid'            => [ 'blog-grid.php', 'Blog_Grid' ],
+		];
+
+		foreach ( $widgets as $slug => $data ) {
+			list( $file, $class ) = $data;
+
+			if ( ! Admin_Settings::is_widget_enabled( $slug ) ) {
+				continue;
+			}
+
+			require_once TOOLS_ADAPTER_PATH . 'includes/widgets/' . $file;
+			$class_name = __NAMESPACE__ . '\\Widgets\\' . $class;
+			$widgets_manager->register( new $class_name() );
+		}
 	}
 
 	/**
@@ -313,7 +307,7 @@ final class Plugin {
 			]
 		);
 
-		if ( function_exists( 'is_product' ) && is_product() ) {
+		if ( function_exists( 'is_product' ) && is_product() && Admin_Settings::is_feature_enabled( 'variation_swatches' ) ) {
 			wp_enqueue_style( 'tools-adapter-variation-swatches' );
 			wp_enqueue_script( 'tools-adapter-variation-swatches' );
 		}
@@ -340,8 +334,9 @@ final class Plugin {
 
 		// Always enqueue the tracker (not just when the widget is present):
 		// visits must be recorded on every product page so the widget has
-		// data to display later, on any other page of the site.
-		if ( class_exists( 'WooCommerce' ) ) {
+		// data to display later, on any other page of the site. Skipped
+		// entirely when the widget is disabled in the settings page.
+		if ( class_exists( 'WooCommerce' ) && Admin_Settings::is_widget_enabled( 'tools-adapter-recently-viewed' ) ) {
 			wp_enqueue_script( 'tools-adapter-recently-viewed' );
 		}
 

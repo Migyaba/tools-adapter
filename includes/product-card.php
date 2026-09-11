@@ -28,7 +28,9 @@ final class Product_Card {
 		$show_badge   = ( $settings['show_sale_badge'] ?? 'yes' ) === 'yes';
 		$show_button  = ( $settings['show_add_to_cart'] ?? 'yes' ) === 'yes';
 		$show_excerpt = ( $settings['show_excerpt'] ?? '' ) === 'yes';
-		$show_quick_view = ( $settings['show_quick_view'] ?? '' ) === 'yes';
+		// The per-card toggle only takes effect if the "Vue rapide produit"
+		// feature is also enabled in the Tools Adapter settings page.
+		$show_quick_view = ( $settings['show_quick_view'] ?? '' ) === 'yes' && Admin_Settings::is_feature_enabled( 'quick_view' );
 		$image_size   = $settings['image_size'] ?? 'woocommerce_thumbnail';
 		$title_tag    = self::sanitize_tag( $settings['title_html_tag'] ?? 'h3' );
 

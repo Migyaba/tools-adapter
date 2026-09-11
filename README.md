@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 2.0.0  
+**Version :** 2.1.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -17,7 +17,17 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 1. Téléchargez ou clonez ce dépôt dans `wp-content/plugins/tools-adapter/`
 2. Activez **Tools Adapter** dans **Extensions**
 3. Vérifiez qu’Elementor et WooCommerce sont actifs
-4. Dans Elementor, ouvrez la catégorie **Tools Adapter** pour ajouter les widgets
+4. Dans le menu d'administration **Tools Adapter**, choisissez les widgets à activer (tous activés par défaut)
+5. Dans Elementor, ouvrez la catégorie **Tools Adapter** pour ajouter les widgets activés
+
+## Page de réglages
+
+Le menu d'administration **Tools Adapter** (icône de prise, dans la barre latérale de wp-admin) donne accès à une page de réglages permettant d'activer ou de désactiver individuellement chacun des 33 widgets, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation), ainsi que 2 fonctionnalités globales (Vue rapide produit, Sélecteur de variations visuel).
+
+- Tous les widgets sont **activés par défaut** (aucune configuration requise, rétrocompatible avec les installations existantes)
+- Un widget désactivé disparaît immédiatement du panneau Elementor et n'enregistre plus aucun style ni script sur le site
+- Recherche instantanée, activation/désactivation en masse (globale ou par catégorie), compteurs en temps réel
+- Réglages enregistrés via l'API Settings native de WordPress (nonce, capability `manage_options`)
 
 ## Widgets inclus
 
@@ -78,6 +88,15 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 - Styles et scripts chargés à la demande par widget
 
 ## Historique des versions
+
+### 2.1.0
+- Nouvelle **page de réglages** dans l'administration WordPress (menu « Tools Adapter ») :
+  - Active/désactive individuellement chacun des 33 widgets Elementor, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation)
+  - 2 fonctionnalités globales également commutables : Vue rapide produit, Sélecteur de variations visuel
+  - Recherche instantanée, activation/désactivation en masse (globale ou par catégorie), compteurs en temps réel, avertissement de modifications non enregistrées
+  - Un widget désactivé disparaît du panneau Elementor et n'enregistre plus aucun style/script — aucun impact sur les performances des sites qui n'utilisent pas certains widgets
+  - Tout est activé par défaut : rétrocompatible avec les installations existantes, aucune action requise après la mise à jour
+  - Réglages persistés via l'API Settings native de WordPress (`register_setting`, nonce, capability `manage_options`), un lien « Réglages » est aussi ajouté sur la page des extensions
 
 ### 2.0.0
 - 6 nouveaux widgets « site-wide & navigation » (Phase 5), qui complètent l'ensemble des 5 phases de la feuille de route :
@@ -165,6 +184,7 @@ tools-adapter/
 │   ├── ajax-quick-view.php    # AJAX vue rapide produit
 │   ├── ajax-recently-viewed.php # AJAX produits récemment consultés
 │   ├── ajax-contact.php       # AJAX formulaire de contact
+│   ├── admin-settings.php     # Page de réglages (activer/désactiver les widgets)
 │   ├── variation-swatches.php # Swatches visuels pour variations WooCommerce
 │   ├── products-query.php     # Requêtes WooCommerce
 │   ├── product-card.php       # Rendu carte produit
