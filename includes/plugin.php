@@ -33,13 +33,17 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-archive.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-cart.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-quick-view.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-recently-viewed.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/variation-swatches.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/products-query.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/product-card.php';
 		new Ajax_Archive();
 		new Ajax_Cart();
 		new Ajax_Quick_View();
+		new Ajax_Recently_Viewed();
 		new Variation_Swatches();
+
+		add_action( 'wp_footer', [ $this, 'print_current_product_id' ] );
 
 		add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
@@ -61,6 +65,17 @@ final class Plugin {
 				'icon'  => 'fa fa-plug',
 			]
 		);
+	}
+
+	/**
+	 * Expose the current product ID to the front-end (used by the "Produits
+	 * récemment consultés" tracker and other WooCommerce-aware scripts).
+	 */
+	public function print_current_product_id() {
+		if ( ! function_exists( 'is_product' ) || ! is_product() ) {
+			return;
+		}
+		printf( '<script>window.ToolsAdapterCurrentProductId = %d;</script>', (int) get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -92,6 +107,11 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/mini-cart.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/sticky-add-to-cart.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/size-guide.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/attribute-filter.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/brands-grid.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/recently-viewed.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/sale-countdown.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/stock-urgency.php';
 
 		$widgets_manager->register( new Widgets\Product_Categories() );
 		$widgets_manager->register( new Widgets\Price_Filter() );
@@ -115,6 +135,11 @@ final class Plugin {
 		$widgets_manager->register( new Widgets\Mini_Cart() );
 		$widgets_manager->register( new Widgets\Sticky_Add_To_Cart() );
 		$widgets_manager->register( new Widgets\Size_Guide() );
+		$widgets_manager->register( new Widgets\Attribute_Filter() );
+		$widgets_manager->register( new Widgets\Brands_Grid() );
+		$widgets_manager->register( new Widgets\Recently_Viewed() );
+		$widgets_manager->register( new Widgets\Sale_Countdown() );
+		$widgets_manager->register( new Widgets\Stock_Urgency() );
 	}
 
 	/**
@@ -277,6 +302,33 @@ final class Plugin {
 		if ( function_exists( 'is_product' ) && is_product() ) {
 			wp_enqueue_style( 'tools-adapter-variation-swatches' );
 			wp_enqueue_script( 'tools-adapter-variation-swatches' );
+		}
+
+		// Phase 4 — découverte & filtrage.
+		wp_register_style( 'tools-adapter-attribute-filter', TOOLS_ADAPTER_URL . 'assets/css/attribute-filter.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-brands', TOOLS_ADAPTER_URL . 'assets/css/brands.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-recently-viewed', TOOLS_ADAPTER_URL . 'assets/css/recently-viewed.css', [ 'tools-adapter-products' ], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-sale-countdown', TOOLS_ADAPTER_URL . 'assets/css/sale-countdown.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-stock-urgency', TOOLS_ADAPTER_URL . 'assets/css/stock-urgency.css', [], TOOLS_ADAPTER_VERSION );
+
+		wp_register_script( 'tools-adapter-recently-viewed', TOOLS_ADAPTER_URL . 'assets/js/recently-viewed.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-countdown', TOOLS_ADAPTER_URL . 'assets/js/countdown.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		wp_localize_script(
+			'tools-adapter-recently-viewed',
+			'ToolsAdapterRecentlyViewed',
+			[
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'action'  => Ajax_Recently_Viewed::ACTION,
+				'nonce'   => wp_create_nonce( Ajax_Recently_Viewed::NONCE ),
+			]
+		);
+
+		// Always enqueue the tracker (not just when the widget is present):
+		// visits must be recorded on every product page so the widget has
+		// data to display later, on any other page of the site.
+		if ( class_exists( 'WooCommerce' ) ) {
+			wp_enqueue_script( 'tools-adapter-recently-viewed' );
 		}
 	}
 }

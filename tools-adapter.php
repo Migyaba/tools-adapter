@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Tools Adapter
  * Description: Extension Elementor — widgets WooCommerce (archive filtrable, catégories, prix, grille & carrousel).
- * Version:     1.8.0
+ * Version:     1.9.0
  * Author:      Miguel Missetcho
  * Author URI:  https://miguelmissetcho.com/
  * Text Domain: tools-adapter
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TOOLS_ADAPTER_VERSION', '1.8.0' );
+define( 'TOOLS_ADAPTER_VERSION', '1.9.0' );
 define( 'TOOLS_ADAPTER_FILE', __FILE__ );
 define( 'TOOLS_ADAPTER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TOOLS_ADAPTER_URL', plugin_dir_url( __FILE__ ) );

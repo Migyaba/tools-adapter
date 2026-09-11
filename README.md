@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 1.8.0  
+**Version :** 1.9.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -46,6 +46,11 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 | **Barre panier collante** | Barre fixe en bas de page produit (image, prix, quantité, ajout au panier) |
 | **Vue rapide produit** | Bouton « œil » sur chaque carte produit ouvrant une fiche AJAX en modale |
 | **Guide des tailles** | Bouton ouvrant un tableau de correspondance des tailles personnalisable |
+| **Filtre par attributs** | Pastilles/pilules pour filtrer l'Archive/Grille par un attribut WooCommerce (couleur, taille…) |
+| **Marques** | Grille de logos de marques (taxonomie native ou attribut personnalisé) |
+| **Produits récemment consultés** | Historique client-side (localStorage) rendu en cartes produit réelles |
+| **Compte à rebours promo** | Minuteur configurable (date fixe ou fin de promo du produit) |
+| **Barre de stock / urgence** | Message + barre de progression selon le stock restant du produit |
 
 ## Fonctionnalités
 
@@ -59,10 +64,23 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 - 4 widgets de conversion boutique (Phase 3) : Mini-panier AJAX, Barre panier collante, Vue rapide produit, Guide des tailles
 - Bouton « Vue rapide » optionnel sur les cartes produit (Grille, Carrousel, Archive), ouvrant une fiche produit complète (galerie, prix, formulaire d'ajout au panier réel) sans quitter la page
 - Sélecteur de variations visuel : remplace automatiquement les listes déroulantes WooCommerce par des pastilles de couleur ou pilules de texte sur toutes les pages produit variable, en conservant la compatibilité totale avec le script de variations natif
+- 5 widgets de découverte & filtrage (Phase 4) : Filtre par attributs, Marques, Produits récemment consultés, Compte à rebours promo, Barre de stock/urgence
+- L'Archive/Grille Produits peut désormais être filtrée par n'importe quel attribut WooCommerce global (couleur, taille…), en plus des catégories et du prix, via le même mécanisme AJAX partagé
 - Traductions front : français (source), anglais (`en_US`), polonais (`pl_PL`)
 - Styles et scripts chargés à la demande par widget
 
 ## Historique des versions
+
+### 1.9.0
+- 5 nouveaux widgets « découverte & filtrage » (Phase 4) :
+  - **Filtre par attributs** : expose n'importe quel attribut WooCommerce global (couleur, taille…) en pastilles ou pilules cliquables, synchronisé avec l'Archive/Grille Produits via l'AJAX partagé (comme le filtre de catégories existant)
+  - **Marques** : grille de logos cliquables (taxonomie native `product_brand` si disponible, sinon tout attribut utilisé comme marque), niveaux de gris au repos, repli sur le nom si pas de logo
+  - **Produits récemment consultés** : suivi 100% client-side (localStorage, aucune donnée serveur), hydraté en vraies cartes produit via un nouvel endpoint AJAX dédié
+  - **Compte à rebours promo** : minuteur configurable — date fixe ou fin de promo automatique du produit courant (`_sale_price_dates_to`), libellés et textes entièrement personnalisables
+  - **Barre de stock / urgence** : message + barre de progression n'apparaissant que sous un seuil de stock configurable, pour créer un sentiment d'urgence sur les pages produit
+- `Ajax_Archive` étendu pour accepter des filtres par attributs (`attribute_filters`) en plus des catégories et du prix, avec la même cohérence premier-affichage/AJAX que le reste de l'archive
+- Nouveau helper partagé `Products_Query::get_attribute_taxonomy_options()` (liste des attributs WooCommerce globaux disponibles)
+- Nouvel endpoint AJAX `Ajax_Recently_Viewed`, protégé par nonce
 
 ### 1.8.0
 - 4 nouveaux widgets « conversion boutique » (Phase 3) :
@@ -126,6 +144,7 @@ tools-adapter/
 │   ├── ajax-price-filter.php  # AJAX filtre prix
 │   ├── ajax-cart.php          # AJAX mini-panier (lecture/retrait)
 │   ├── ajax-quick-view.php    # AJAX vue rapide produit
+│   ├── ajax-recently-viewed.php # AJAX produits récemment consultés
 │   ├── variation-swatches.php # Swatches visuels pour variations WooCommerce
 │   ├── products-query.php     # Requêtes WooCommerce
 │   ├── product-card.php       # Rendu carte produit

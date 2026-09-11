@@ -293,4 +293,27 @@ final class Products_Query {
 
 		return $options;
 	}
+
+	/**
+	 * List of registered global WooCommerce product attributes (taxonomy slug => label).
+	 * Used by the "Filtre par attributs" widget to let the admin pick which
+	 * attribute (color, size…) a given filter instance should expose.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function get_attribute_taxonomy_options() {
+		if ( ! function_exists( 'wc_get_attribute_taxonomies' ) ) {
+			return [];
+		}
+
+		$options = [];
+		foreach ( (array) wc_get_attribute_taxonomies() as $attribute ) {
+			$taxonomy = wc_attribute_taxonomy_name( $attribute->attribute_name );
+			if ( taxonomy_exists( $taxonomy ) ) {
+				$options[ $taxonomy ] = $attribute->attribute_label;
+			}
+		}
+
+		return $options;
+	}
 }

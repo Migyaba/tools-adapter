@@ -28,6 +28,7 @@
 				minPrice: c.minPrice,
 				maxPrice: c.maxPrice,
 				categoryIds: Array.isArray(c.categoryIds) ? c.categoryIds.slice() : [],
+				attributeFilters: c.attributeFilters && typeof c.attributeFilters === 'object' ? Object.assign({}, c.attributeFilters) : {},
 				updateUrl: !!c.updateUrl,
 				cardSettings: c.cardSettings || {},
 				paginationSettings: c.paginationSettings || {},
@@ -89,6 +90,20 @@
 		});
 	}
 
+	function syncAttributeButtons(state) {
+		document.querySelectorAll('[data-ta-attribute-filter]').forEach(function (wrap) {
+			var taxonomy = wrap.getAttribute('data-taxonomy');
+			var active = ( state.attributeFilters && state.attributeFilters[taxonomy] ) || [];
+			wrap.querySelectorAll('[data-attribute-term]').forEach(function (btn) {
+				var slug = btn.getAttribute('data-attribute-term');
+				btn.classList.toggle('is-active', active.indexOf(slug) !== -1);
+				if (btn.type === 'checkbox') {
+					btn.checked = active.indexOf(slug) !== -1;
+				}
+			});
+		});
+	}
+
 	function setAppendLoading(archive, on) {
 		var loader = archive.querySelector('[data-loader]');
 		if (loader) {
@@ -146,6 +161,7 @@
 			per_page: state.perPage,
 			orderby: state.orderby,
 			category_ids: JSON.stringify(state.categoryIds || []),
+			attribute_filters: JSON.stringify(state.attributeFilters || {}),
 			card_settings: JSON.stringify(state.cardSettings || {}),
 			pagination_settings: JSON.stringify(state.paginationSettings || {}),
 		};
@@ -192,6 +208,7 @@
 					updateUrl(state);
 				}
 				syncCategoryButtons(state);
+				syncAttributeButtons(state);
 				$(document.body).trigger('ta_archive_updated', [response.data]);
 			})
 			.always(function () {
@@ -347,6 +364,47 @@
 		});
 	}
 
+	function bindAttributeFilters() {
+		document.querySelectorAll('[data-ta-attribute-filter]').forEach(function (wrap) {
+			if (wrap.dataset.taBound === '1') {
+				return;
+			}
+			wrap.dataset.taBound = '1';
+			var taxonomy = wrap.getAttribute('data-taxonomy');
+
+			wrap.addEventListener('click', function (e) {
+				var btn = e.target.closest('[data-attribute-term]');
+				if (!btn || !wrap.contains(btn)) {
+					return;
+				}
+				e.preventDefault();
+
+				var archive = getArchive();
+				if (!archive) {
+					return;
+				}
+
+				var state = getState(archive);
+				var slug = btn.getAttribute('data-attribute-term');
+				if (!state.attributeFilters[taxonomy]) {
+					state.attributeFilters[taxonomy] = [];
+				}
+				var list = state.attributeFilters[taxonomy];
+				var idx = list.indexOf(slug);
+				if (idx === -1) {
+					list.push(slug);
+				} else {
+					list.splice(idx, 1);
+				}
+				if (!list.length) {
+					delete state.attributeFilters[taxonomy];
+				}
+
+				refresh(archive, { resetPage: true });
+			});
+		});
+	}
+
 	/**
 	 * Hook price filter forms into archive when present.
 	 */
@@ -426,10 +484,12 @@
 	function boot() {
 		document.querySelectorAll('[data-ta-archive="1"]').forEach(bindArchive);
 		bindCategoryFilters();
+		bindAttributeFilters();
 		bindPriceForms();
 
 		document.querySelectorAll('[data-ta-archive="1"]').forEach(function (archive) {
 			syncCategoryButtons(getState(archive));
+			syncAttributeButtons(getState(archive));
 		});
 	}
 
@@ -443,6 +503,7 @@
 			'tools-adapter-product-archive',
 			'tools-adapter-product-categories',
 			'tools-adapter-price-filter',
+			'tools-adapter-attribute-filter',
 		].forEach(function (widget) {
 			elementorFrontend.hooks.addAction('frontend/element_ready/' + widget + '.default', function () {
 				boot();
@@ -475,6 +536,15 @@
 			}
 			var state = getState(archive);
 			state.categoryIds = ids || [];
+			refresh(archive, { resetPage: true });
+		},
+		setAttributeFilters: function (filters) {
+			var archive = getArchive();
+			if (!archive) {
+				return;
+			}
+			var state = getState(archive);
+			state.attributeFilters = filters || {};
 			refresh(archive, { resetPage: true });
 		},
 	};

@@ -1,0 +1,47 @@
+/* Marques */
+
+.ta-brands {
+	--ta-brands-cols: 5;
+	--ta-brands-gap: 16px;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-brands-cols), minmax(0, 1fr));
+	gap: var(--ta-brands-gap);
+	width: 100%;
+}
+
+.ta-brands__item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #ffffff;
+	border-radius: 8px;
+	padding: 20px;
+	aspect-ratio: 2 / 1;
+	text-decoration: none;
+}
+
+.ta-brands__logo {
+	max-height: 60px;
+	max-width: 100%;
+	object-fit: contain;
+	filter: grayscale(100%);
+	opacity: 0.7;
+	transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+.ta-brands--no-grayscale .ta-brands__logo {
+	filter: none;
+	opacity: 1;
+}
+
+.ta-brands__item:hover .ta-brands__logo {
+	filter: none;
+	opacity: 1;
+}
+
+.ta-brands__name {
+	font-size: 15px;
+	font-weight: 700;
+	color: #1c1c1c;
+	text-align: center;
+}

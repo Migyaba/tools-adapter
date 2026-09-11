@@ -1,0 +1,18 @@
+/* Produits récemment consultés */
+
+.ta-recently-viewed__title {
+	margin: 0 0 16px;
+	font-size: 18px;
+	font-weight: 700;
+	color: #1c1c1c;
+}
+
+.ta-recently-viewed__grid {
+	--ta-cols: 4;
+}
+
+.ta-recently-viewed__empty {
+	font-size: 13px;
+	color: #888888;
+	text-align: center;
+}

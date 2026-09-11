@@ -53,6 +53,7 @@ final class Ajax_Archive {
 		$orderby      = isset( $_POST['orderby'] ) ? sanitize_text_field( wp_unslash( $_POST['orderby'] ) ) : 'menu_order';
 		$render_mode  = isset( $_POST['render_mode'] ) ? sanitize_key( wp_unslash( $_POST['render_mode'] ) ) : 'woocommerce';
 		$category_ids        = $this->parse_category_ids();
+		$attribute_filters   = $this->parse_attribute_filters();
 		$card_settings       = $this->parse_card_settings();
 		$pagination_settings = $this->parse_pagination_settings();
 
@@ -123,6 +124,19 @@ final class Ajax_Archive {
 			];
 		}
 
+		// Attribute filters (one entry per taxonomy, e.g. pa_color, pa_size…).
+		foreach ( $attribute_filters as $attr_taxonomy => $term_slugs ) {
+			if ( ! taxonomy_exists( $attr_taxonomy ) || empty( $term_slugs ) ) {
+				continue;
+			}
+			$query_args['tax_query'][] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				'taxonomy' => $attr_taxonomy,
+				'field'    => 'slug',
+				'terms'    => $term_slugs,
+				'operator' => 'IN',
+			];
+		}
+
 		$query_args = $this->apply_ordering( $query_args, $orderby );
 		$query_args = apply_filters( 'tools_adapter_archive_query_args', $query_args, $_POST );
 
@@ -168,9 +182,39 @@ final class Ajax_Archive {
 				'min_price'     => $min_price,
 				'max_price'     => $max_price,
 				'category_ids'  => $category_ids,
+				'attribute_filters' => $attribute_filters,
 				'render_mode'   => $render_mode,
 			]
 		);
+	}
+
+	/**
+	 * Parse the JSON-encoded attribute filters map: { "pa_color": ["red"], "pa_size": ["m","l"] }.
+	 *
+	 * @return array<string, string[]>
+	 */
+	private function parse_attribute_filters() {
+		$raw = isset( $_POST['attribute_filters'] ) ? wp_unslash( $_POST['attribute_filters'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+
+		if ( ! is_string( $raw ) || '' === $raw ) {
+			return [];
+		}
+
+		$decoded = json_decode( $raw, true );
+		if ( ! is_array( $decoded ) ) {
+			return [];
+		}
+
+		$filters = [];
+		foreach ( $decoded as $taxonomy => $terms ) {
+			$taxonomy = sanitize_key( $taxonomy );
+			if ( ! is_array( $terms ) || empty( $terms ) ) {
+				continue;
+			}
+			$filters[ $taxonomy ] = array_values( array_filter( array_map( 'sanitize_title', $terms ) ) );
+		}
+
+		return $filters;
 	}
 
 	/**

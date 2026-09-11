@@ -1,0 +1,37 @@
+/* Barre de stock / urgence */
+
+.ta-stock-urgency {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 14px 0;
+}
+
+.ta-stock-urgency__text {
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #c0392b;
+}
+
+.ta-stock-urgency__icon {
+	font-size: 15px;
+}
+
+.ta-stock-urgency__track {
+	width: 100%;
+	height: 6px;
+	border-radius: 4px;
+	background: #f3dede;
+	overflow: hidden;
+}
+
+.ta-stock-urgency__bar {
+	height: 100%;
+	background: #c0392b;
+	border-radius: 4px;
+	transition: width 0.3s ease;
+}
