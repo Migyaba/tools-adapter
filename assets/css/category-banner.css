@@ -1,0 +1,85 @@
+/* Bannière catégorie */
+
+.ta-cat-banner {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	background-color: #1c1c1c;
+	background-size: cover;
+	background-position: center;
+	overflow: hidden;
+}
+
+.ta-cat-banner__overlay {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.ta-cat-banner__content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 40px;
+	max-width: 640px;
+}
+
+.ta-cat-banner-align-left .ta-cat-banner__content {
+	align-items: flex-start;
+	text-align: left;
+}
+
+.ta-cat-banner-align-center .ta-cat-banner__content {
+	align-items: center;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.ta-cat-banner-align-right .ta-cat-banner__content {
+	align-items: flex-end;
+	text-align: right;
+	margin-left: auto;
+}
+
+.ta-cat-banner__title {
+	margin: 0;
+	font-size: 36px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.ta-cat-banner__description {
+	margin: 0;
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+.ta-cat-banner__description p {
+	margin: 0;
+}
+
+.ta-cat-banner__count {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.ta-cat-banner__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 6px;
+	padding: 12px 28px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: opacity 0.2s ease;
+}
+
+.ta-cat-banner__btn:hover {
+	opacity: 0.85;
+}

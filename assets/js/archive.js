@@ -30,6 +30,7 @@
 				categoryIds: Array.isArray(c.categoryIds) ? c.categoryIds.slice() : [],
 				updateUrl: !!c.updateUrl,
 				cardSettings: c.cardSettings || {},
+				paginationSettings: c.paginationSettings || {},
 				renderMode: c.renderMode || 'archive',
 			};
 		}
@@ -88,22 +89,54 @@
 		});
 	}
 
-	function refresh(archive, opts) {
+	function setAppendLoading(archive, on) {
+		var loader = archive.querySelector('[data-loader]');
+		if (loader) {
+			loader.hidden = !on;
+		}
+		var btn = archive.querySelector('[data-load-more]');
+		if (btn) {
+			btn.disabled = on;
+			if (on) {
+				var loadingText = btn.getAttribute('data-loading-text');
+				if (loadingText) {
+					btn.textContent = loadingText;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Fetch a page of products.
+	 *
+	 * opts.page: page to request (defaults to state.page).
+	 * opts.resetPage: force page 1 (used by filters/sort changes).
+	 * opts.append: append results to the grid instead of replacing it
+	 *              (used by "load more" / infinite scroll).
+	 */
+	function fetchPage(archive, opts) {
 		opts = opts || {};
 		var state = getState(archive);
 		if (opts.resetPage) {
 			state.page = 1;
 		}
+		if (opts.page != null) {
+			state.page = opts.page;
+		}
+		var append = !!opts.append;
 
 		if (!cfg.ajaxUrl) {
 			return;
 		}
 
-		if (archive._taXhr && archive._taXhr.abort) {
-			archive._taXhr.abort();
+		if (!append) {
+			if (archive._taXhr && archive._taXhr.abort) {
+				archive._taXhr.abort();
+			}
+			setLoading(archive, true);
+		} else {
+			setAppendLoading(archive, true);
 		}
-
-		setLoading(archive, true);
 
 		var data = {
 			action: cfg.action,
@@ -114,6 +147,7 @@
 			orderby: state.orderby,
 			category_ids: JSON.stringify(state.categoryIds || []),
 			card_settings: JSON.stringify(state.cardSettings || {}),
+			pagination_settings: JSON.stringify(state.paginationSettings || {}),
 		};
 
 		if (state.minPrice != null && state.minPrice !== '') {
@@ -123,7 +157,7 @@
 			data.max_price = state.maxPrice;
 		}
 
-		archive._taXhr = $.ajax({
+		var xhr = $.ajax({
 			url: cfg.ajaxUrl,
 			type: 'POST',
 			dataType: 'json',
@@ -136,7 +170,11 @@
 
 				var grid = archive.querySelector('[data-archive-grid]');
 				if (grid) {
-					grid.innerHTML = response.data.html || '';
+					if (append) {
+						grid.insertAdjacentHTML('beforeend', response.data.html || '');
+					} else {
+						grid.innerHTML = response.data.html || '';
+					}
 				}
 
 				var countEl = archive.querySelector('[data-result-count]');
@@ -147,15 +185,84 @@
 				var pagWrap = archive.querySelector('[data-pagination]');
 				if (pagWrap) {
 					pagWrap.innerHTML = response.data.pagination || '';
+					bindPaginationWrap(archive, pagWrap);
 				}
 
-				updateUrl(state);
+				if (!append) {
+					updateUrl(state);
+				}
 				syncCategoryButtons(state);
 				$(document.body).trigger('ta_archive_updated', [response.data]);
 			})
 			.always(function () {
-				setLoading(archive, false);
+				if (!append) {
+					setLoading(archive, false);
+				} else {
+					setAppendLoading(archive, false);
+				}
 			});
+
+		if (!append) {
+			archive._taXhr = xhr;
+		}
+	}
+
+	function refresh(archive, opts) {
+		fetchPage(archive, opts);
+	}
+
+	/**
+	 * Bind "load more" click + (re)initialize infinite-scroll observer for
+	 * the current [data-pagination] markup (called on boot and after every
+	 * AJAX render, since the pagination wrap's innerHTML is replaced each time).
+	 */
+	function bindPaginationWrap(archive, pagWrap) {
+		var loadMoreBtn = pagWrap.querySelector('[data-load-more]');
+		if (loadMoreBtn) {
+			loadMoreBtn.addEventListener('click', function (e) {
+				e.preventDefault();
+				var state = getState(archive);
+				var page = parseInt(loadMoreBtn.getAttribute('data-page'), 10) || state.page + 1;
+				fetchPage(archive, { page: page, append: true });
+			});
+		}
+
+		setupInfiniteObserver(archive, pagWrap);
+	}
+
+	function setupInfiniteObserver(archive, pagWrap) {
+		if (archive._taInfiniteObserver) {
+			archive._taInfiniteObserver.disconnect();
+			archive._taInfiniteObserver = null;
+		}
+
+		var infiniteEl = pagWrap.querySelector('[data-infinite]');
+		if (!infiniteEl || infiniteEl.getAttribute('data-has-more') !== '1') {
+			return;
+		}
+
+		var sentinel = infiniteEl.querySelector('[data-sentinel]');
+		if (!sentinel || !('IntersectionObserver' in window)) {
+			return;
+		}
+
+		var offset = parseInt(infiniteEl.getAttribute('data-offset'), 10) || 300;
+		var nextPage = parseInt(infiniteEl.getAttribute('data-next-page'), 10) || getState(archive).page + 1;
+
+		var observer = new IntersectionObserver(
+			function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						observer.disconnect();
+						fetchPage(archive, { page: nextPage, append: true });
+					}
+				});
+			},
+			{ rootMargin: '0px 0px ' + offset + 'px 0px' }
+		);
+
+		observer.observe(sentinel);
+		archive._taInfiniteObserver = observer;
 	}
 
 	function bindArchive(archive) {
@@ -170,12 +277,24 @@
 			if (!pageBtn || !archive.contains(pageBtn)) {
 				return;
 			}
+			// "Load more" buttons also carry [data-page] (for the next page
+			// number) but are handled separately in append mode.
+			if (pageBtn.hasAttribute('data-load-more') || pageBtn.disabled) {
+				return;
+			}
 			e.preventDefault();
 			var state = getState(archive);
 			state.page = parseInt(pageBtn.getAttribute('data-page'), 10) || 1;
 			refresh(archive);
 			archive.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		});
+
+		// Bind the pagination markup already present on first paint
+		// (load-more click handler + infinite-scroll observer).
+		var initialPagWrap = archive.querySelector('[data-pagination]');
+		if (initialPagWrap) {
+			bindPaginationWrap(archive, initialPagWrap);
+		}
 
 		var orderby = archive.querySelector('[data-orderby]');
 		if (orderby) {

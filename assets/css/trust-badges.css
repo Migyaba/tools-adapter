@@ -1,0 +1,63 @@
+/* Bloc réassurance */
+
+.ta-trust {
+	--ta-trust-cols: 4;
+	--ta-trust-gap: 24px;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-trust-cols), minmax(0, 1fr));
+	gap: var(--ta-trust-gap);
+	width: 100%;
+}
+
+.ta-trust--dividers .ta-trust__item {
+	position: relative;
+}
+
+.ta-trust--dividers .ta-trust__item:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	top: 10%;
+	right: calc(var(--ta-trust-gap) / -2);
+	bottom: 10%;
+	width: 1px;
+	background: #e5e5e5;
+}
+
+.ta-trust__item {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.ta-trust-layout--column .ta-trust__item {
+	flex-direction: column;
+	text-align: center;
+}
+
+.ta-trust__icon {
+	display: inline-flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	background: #f6f6f6;
+	line-height: 1;
+}
+
+.ta-trust__text {
+	min-width: 0;
+}
+
+.ta-trust__title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.ta-trust__description {
+	margin: 4px 0 0;
+	font-size: 13px;
+	line-height: 1.4;
+}

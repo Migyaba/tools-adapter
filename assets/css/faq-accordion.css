@@ -1,0 +1,72 @@
+/* FAQ Accordéon */
+
+.ta-faq {
+	--ta-faq-gap: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--ta-faq-gap);
+	width: 100%;
+}
+
+.ta-faq__item {
+	border: 1px solid #e5e5e5;
+}
+
+.ta-faq__question {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	width: 100%;
+	padding: 16px 20px;
+	border: 0;
+	background: #f7f7f7;
+	font-size: 16px;
+	font-weight: 600;
+	text-align: left;
+	cursor: pointer;
+	transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.ta-faq__icon {
+	position: relative;
+	display: inline-flex;
+	flex: 0 0 auto;
+	width: 18px;
+	height: 18px;
+	align-items: center;
+	justify-content: center;
+}
+
+.ta-faq__icon-open {
+	display: none;
+}
+
+.ta-faq__item.is-open .ta-faq__icon-closed {
+	display: none;
+}
+
+.ta-faq__item.is-open .ta-faq__icon-open {
+	display: inline-flex;
+}
+
+.ta-faq__answer {
+	max-height: 0;
+	overflow: hidden;
+	background: #ffffff;
+	transition: max-height 0.3s ease;
+}
+
+.ta-faq__answer-inner {
+	padding: 4px 20px 18px;
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+.ta-faq__answer-inner p:first-child {
+	margin-top: 0;
+}
+
+.ta-faq__answer-inner p:last-child {
+	margin-bottom: 0;
+}

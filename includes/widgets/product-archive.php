@@ -144,6 +144,171 @@ class Product_Archive extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
+			'section_pagination',
+			[
+				'label'     => esc_html__( 'Pagination', 'tools-adapter' ),
+				'condition' => [ 'show_pagination' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'pagination_type',
+			[
+				'label'   => esc_html__( 'Type de pagination', 'tools-adapter' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'numbers',
+				'options' => [
+					'numbers'   => esc_html__( 'Numérotée (classique)', 'tools-adapter' ),
+					'prev_next' => esc_html__( 'Précédent / Suivant', 'tools-adapter' ),
+					'load_more' => esc_html__( 'Bouton « Charger plus »', 'tools-adapter' ),
+					'infinite'  => esc_html__( 'Défilement infini', 'tools-adapter' ),
+				],
+			]
+		);
+
+		$this->add_control(
+			'show_prev_next',
+			[
+				'label'        => esc_html__( 'Flèches précédent/suivant', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [ 'pagination_type' => 'numbers' ],
+			]
+		);
+
+		$this->add_control(
+			'pagination_end_size',
+			[
+				'label'       => esc_html__( 'Pages en bord', 'tools-adapter' ),
+				'description' => esc_html__( 'Nombre de pages toujours visibles au début et à la fin.', 'tools-adapter' ),
+				'type'        => Controls_Manager::NUMBER,
+				'min'         => 1,
+				'max'         => 5,
+				'default'     => 1,
+				'condition'   => [ 'pagination_type' => 'numbers' ],
+			]
+		);
+
+		$this->add_control(
+			'pagination_mid_size',
+			[
+				'label'       => esc_html__( 'Pages autour de la page active', 'tools-adapter' ),
+				'description' => esc_html__( 'Nombre de pages visibles avant/après la page en cours.', 'tools-adapter' ),
+				'type'        => Controls_Manager::NUMBER,
+				'min'         => 0,
+				'max'         => 5,
+				'default'     => 2,
+				'condition'   => [ 'pagination_type' => 'numbers' ],
+			]
+		);
+
+		$this->add_control(
+			'prev_text',
+			[
+				'label'      => esc_html__( 'Texte « Précédent »', 'tools-adapter' ),
+				'type'       => Controls_Manager::TEXT,
+				'default'    => '‹',
+				'conditions' => [
+					'relation' => 'or',
+					'terms'    => [
+						[
+							'relation' => 'and',
+							'terms'    => [
+								[ 'name' => 'pagination_type', 'operator' => '==', 'value' => 'numbers' ],
+								[ 'name' => 'show_prev_next', 'operator' => '==', 'value' => 'yes' ],
+							],
+						],
+						[ 'name' => 'pagination_type', 'operator' => '==', 'value' => 'prev_next' ],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'next_text',
+			[
+				'label'      => esc_html__( 'Texte « Suivant »', 'tools-adapter' ),
+				'type'       => Controls_Manager::TEXT,
+				'default'    => '›',
+				'conditions' => [
+					'relation' => 'or',
+					'terms'    => [
+						[
+							'relation' => 'and',
+							'terms'    => [
+								[ 'name' => 'pagination_type', 'operator' => '==', 'value' => 'numbers' ],
+								[ 'name' => 'show_prev_next', 'operator' => '==', 'value' => 'yes' ],
+							],
+						],
+						[ 'name' => 'pagination_type', 'operator' => '==', 'value' => 'prev_next' ],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_more_text',
+			[
+				'label'     => esc_html__( 'Texte du bouton', 'tools-adapter' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => esc_html__( 'Charger plus', 'tools-adapter' ),
+				'condition' => [ 'pagination_type' => 'load_more' ],
+			]
+		);
+
+		$this->add_control(
+			'loading_text',
+			[
+				'label'     => esc_html__( 'Texte « Chargement… »', 'tools-adapter' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => esc_html__( 'Chargement…', 'tools-adapter' ),
+				'condition' => [ 'pagination_type' => [ 'load_more', 'infinite' ] ],
+			]
+		);
+
+		$this->add_control(
+			'infinite_offset',
+			[
+				'label'       => esc_html__( 'Déclenchement anticipé (px)', 'tools-adapter' ),
+				'description' => esc_html__( 'Distance avant le bas de la grille à partir de laquelle la page suivante se charge automatiquement.', 'tools-adapter' ),
+				'type'        => Controls_Manager::NUMBER,
+				'min'         => 0,
+				'max'         => 2000,
+				'step'        => 50,
+				'default'     => 300,
+				'condition'   => [ 'pagination_type' => 'infinite' ],
+			]
+		);
+
+		$this->add_control(
+			'show_progress_text',
+			[
+				'label'        => esc_html__( 'Texte de progression', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [ 'pagination_type' => [ 'load_more', 'infinite' ] ],
+			]
+		);
+
+		$this->add_control(
+			'progress_text_format',
+			[
+				'label'       => esc_html__( 'Format du texte', 'tools-adapter' ),
+				'description' => esc_html__( 'Utilisez %1$d pour le nombre affiché et %2$d pour le total.', 'tools-adapter' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => esc_html__( '%1$d sur %2$d produits affichés', 'tools-adapter' ),
+				'condition'   => [
+					'pagination_type'     => [ 'load_more', 'infinite' ],
+					'show_progress_text'  => 'yes',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
 			'section_layout',
 			[
 				'label' => esc_html__( 'Disposition', 'tools-adapter' ),
@@ -327,7 +492,7 @@ class Product_Archive extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_toolbar',
 			[
-				'label' => esc_html__( 'Barre résultats / pagination', 'tools-adapter' ),
+				'label' => esc_html__( 'Barre de résultats', 'tools-adapter' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -343,14 +508,240 @@ class Product_Archive extends Widget_Base {
 			]
 		);
 
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style_pagination',
+			[
+				'label'     => esc_html__( 'Pagination', 'tools-adapter' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [ 'show_pagination' => 'yes' ],
+			]
+		);
+
+		$this->add_responsive_control(
+			'page_gap',
+			[
+				'label'      => esc_html__( 'Espacement', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 40 ] ],
+				'default'    => [ 'size' => 8, 'unit' => 'px' ],
+				'selectors'  => [
+					'{{WRAPPER}} .ta-archive__pagination, {{WRAPPER}} .ta-archive__pagination--prev-next' => 'gap: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_heading_numbers',
+			[
+				'label'     => esc_html__( 'Boutons de page', 'tools-adapter' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'page_color',
+			[
+				'label'     => esc_html__( 'Couleur texte', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__page' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_bg',
+			[
+				'label'     => esc_html__( 'Couleur fond', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__page' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
 		$this->add_control(
 			'page_active_bg',
 			[
-				'label'     => esc_html__( 'Pagination active', 'tools-adapter' ),
+				'label'     => esc_html__( 'Couleur page active', 'tools-adapter' ),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '#C9A84C',
 				'selectors' => [
 					'{{WRAPPER}} .ta-archive__page.is-active' => 'background-color: {{VALUE}}; border-color: {{VALUE}}; color: #fff;',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_border_radius',
+			[
+				'label'      => esc_html__( 'Arrondi', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%' ],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
+				'selectors'  => [
+					'{{WRAPPER}} .ta-archive__page' => 'border-radius: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_disabled_opacity',
+			[
+				'label'     => esc_html__( 'Opacité désactivé', 'tools-adapter' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [ 'px' => [ 'min' => 0, 'max' => 1, 'step' => 0.05 ] ],
+				'default'   => [ 'size' => 0.4 ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__page.is-disabled, {{WRAPPER}} .ta-archive__page:disabled' => 'opacity: {{SIZE}}; cursor: not-allowed;',
+				],
+			]
+		);
+
+		$this->add_control(
+			'dots_color',
+			[
+				'label'     => esc_html__( 'Couleur des points de suspension', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => 'numbers' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__page-dots' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_status_color',
+			[
+				'label'     => esc_html__( 'Couleur du texte « X / Y »', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => 'prev_next' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__page-status' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_heading_load_more',
+			[
+				'label'     => esc_html__( 'Bouton « Charger plus »', 'tools-adapter' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [ 'pagination_type' => 'load_more' ],
+			]
+		);
+
+		$this->add_control(
+			'load_more_color',
+			[
+				'label'     => esc_html__( 'Couleur texte', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => 'load_more' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__load-more-btn' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_more_bg',
+			[
+				'label'     => esc_html__( 'Couleur fond', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#C9A84C',
+				'condition' => [ 'pagination_type' => 'load_more' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__load-more-btn' => 'background-color: {{VALUE}}; border-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_more_color_hover',
+			[
+				'label'     => esc_html__( 'Couleur texte (survol)', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => 'load_more' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__load-more-btn:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_more_bg_hover',
+			[
+				'label'     => esc_html__( 'Couleur fond (survol)', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => 'load_more' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__load-more-btn:hover' => 'background-color: {{VALUE}}; border-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'load_more_padding',
+			[
+				'label'      => esc_html__( 'Espacement interne', 'tools-adapter' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em' ],
+				'condition'  => [ 'pagination_type' => 'load_more' ],
+				'selectors'  => [
+					'{{WRAPPER}} .ta-archive__load-more-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_more_radius',
+			[
+				'label'      => esc_html__( 'Arrondi', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%' ],
+				'range'      => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
+				'condition'  => [ 'pagination_type' => 'load_more' ],
+				'selectors'  => [
+					'{{WRAPPER}} .ta-archive__load-more-btn' => 'border-radius: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'page_heading_progress',
+			[
+				'label'     => esc_html__( 'Texte de progression / chargement', 'tools-adapter' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [ 'pagination_type' => [ 'load_more', 'infinite' ] ],
+			]
+		);
+
+		$this->add_control(
+			'progress_text_color',
+			[
+				'label'     => esc_html__( 'Couleur', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => [ 'load_more', 'infinite' ] ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__load-more-progress' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'infinite_loader_color',
+			[
+				'label'     => esc_html__( 'Couleur du texte de chargement', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [ 'pagination_type' => 'infinite' ],
+				'selectors' => [
+					'{{WRAPPER}} .ta-archive__infinite-loader' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -497,6 +888,31 @@ class Product_Archive extends Widget_Base {
 		];
 	}
 
+	/**
+	 * Pagination settings payload, shared between the initial render and the
+	 * AJAX response (posted back as JSON on every filter/sort/page change).
+	 *
+	 * @param array $settings Widget settings.
+	 * @return array
+	 */
+	private function pagination_settings_payload( array $settings ) {
+		return \ToolsAdapter\Pagination::parse_settings(
+			[
+				'type'            => $settings['pagination_type'] ?? 'numbers',
+				'show_prev_next'  => $settings['show_prev_next'] ?? 'yes',
+				'end_size'        => $settings['pagination_end_size'] ?? 1,
+				'mid_size'        => $settings['pagination_mid_size'] ?? 2,
+				'prev_text'       => \tools_adapter_translate( $settings['prev_text'] ?? '‹' ),
+				'next_text'       => \tools_adapter_translate( $settings['next_text'] ?? '›' ),
+				'load_more_text'  => \tools_adapter_translate( $settings['load_more_text'] ?? __( 'Charger plus', 'tools-adapter' ) ),
+				'loading_text'    => \tools_adapter_translate( $settings['loading_text'] ?? __( 'Chargement…', 'tools-adapter' ) ),
+				'show_progress'   => $settings['show_progress_text'] ?? 'yes',
+				'progress_format' => \tools_adapter_translate( $settings['progress_text_format'] ?? __( '%1$d sur %2$d produits affichés', 'tools-adapter' ) ),
+				'infinite_offset' => $settings['infinite_offset'] ?? 300,
+			]
+		);
+	}
+
 	protected function render() {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
@@ -523,16 +939,20 @@ class Product_Archive extends Widget_Base {
 
 		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : ( $settings['orderby'] ?? 'menu_order' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
+		$per_page            = max( 1, intval( $settings['posts_per_page'] ) );
+		$pagination_settings = $this->pagination_settings_payload( $settings );
+
 		$config = [
-			'perPage'       => max( 1, intval( $settings['posts_per_page'] ) ),
-			'orderby'       => $orderby,
-			'page'          => $current_page,
-			'minPrice'      => $min_price !== '' ? $min_price : null,
-			'maxPrice'      => $max_price !== '' ? $max_price : null,
-			'categoryIds'   => $cat_ids,
-			'updateUrl'     => ( 'yes' === ( $settings['update_url'] ?? '' ) ),
-			'cardSettings'  => $card,
-			'renderMode'    => 'archive',
+			'perPage'            => $per_page,
+			'orderby'            => $orderby,
+			'page'               => $current_page,
+			'minPrice'           => $min_price !== '' ? $min_price : null,
+			'maxPrice'           => $max_price !== '' ? $max_price : null,
+			'categoryIds'        => $cat_ids,
+			'updateUrl'          => ( 'yes' === ( $settings['update_url'] ?? '' ) ),
+			'cardSettings'       => $card,
+			'renderMode'         => 'archive',
+			'paginationSettings' => $pagination_settings,
 		];
 		?>
 		<div
@@ -589,17 +1009,17 @@ class Product_Archive extends Widget_Base {
 
 			<?php if ( 'yes' === ( $settings['show_pagination'] ?? '' ) ) : ?>
 				<div class="ta-archive__pagination-wrap" data-pagination>
-					<?php if ( (int) $query->max_num_pages > 1 ) : ?>
-						<nav class="ta-archive__pagination" aria-label="<?php echo esc_attr__( 'Pagination produits', 'tools-adapter' ); ?>">
-							<?php for ( $i = 1; $i <= (int) $query->max_num_pages; $i++ ) : ?>
-								<button
-									type="button"
-									class="ta-archive__page<?php echo $i === $current_page ? ' is-active' : ''; ?>"
-									data-page="<?php echo esc_attr( (string) $i ); ?>"
-								><?php echo esc_html( (string) $i ); ?></button>
-							<?php endfor; ?>
-						</nav>
-					<?php endif; ?>
+					<?php
+					echo \ToolsAdapter\Pagination::render(
+						[
+							'current'   => $current_page,
+							'max_pages' => (int) $query->max_num_pages,
+							'found'     => (int) $query->found_posts,
+							'per_page'  => $per_page,
+							'settings'  => $pagination_settings,
+						]
+					);
+					?>
 				</div>
 			<?php endif; ?>
 		</div>

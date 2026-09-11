@@ -52,8 +52,9 @@ final class Ajax_Archive {
 		$per_page     = isset( $_POST['per_page'] ) ? intval( wp_unslash( $_POST['per_page'] ) ) : 0;
 		$orderby      = isset( $_POST['orderby'] ) ? sanitize_text_field( wp_unslash( $_POST['orderby'] ) ) : 'menu_order';
 		$render_mode  = isset( $_POST['render_mode'] ) ? sanitize_key( wp_unslash( $_POST['render_mode'] ) ) : 'woocommerce';
-		$category_ids = $this->parse_category_ids();
-		$card_settings = $this->parse_card_settings();
+		$category_ids        = $this->parse_category_ids();
+		$card_settings       = $this->parse_card_settings();
+		$pagination_settings = $this->parse_pagination_settings();
 
 		// Single taxonomy context (legacy price filter / archive page).
 		$taxonomy = isset( $_POST['taxonomy'] ) ? sanitize_key( wp_unslash( $_POST['taxonomy'] ) ) : '';
@@ -136,8 +137,16 @@ final class Ajax_Archive {
 		$html = ob_get_clean();
 
 		$pagination = '';
-		if ( 'archive' === $render_mode && (int) $products->max_num_pages > 1 ) {
-			$pagination = $this->render_pagination_html( (int) $products->max_num_pages, $page );
+		if ( 'archive' === $render_mode ) {
+			$pagination = \ToolsAdapter\Pagination::render(
+				[
+					'current'   => $page,
+					'max_pages' => (int) $products->max_num_pages,
+					'found'     => (int) $products->found_posts,
+					'per_page'  => $per_page,
+					'settings'  => $pagination_settings,
+				]
+			);
 		}
 
 		$result_count = sprintf(
@@ -184,6 +193,21 @@ final class Ajax_Archive {
 		}
 
 		return array_values( array_filter( array_map( 'absint', $raw ) ) );
+	}
+
+	/**
+	 * @return array
+	 */
+	private function parse_pagination_settings() {
+		$raw = isset( $_POST['pagination_settings'] ) ? wp_unslash( $_POST['pagination_settings'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		$decoded = [];
+		if ( is_string( $raw ) && '' !== $raw ) {
+			$maybe_decoded = json_decode( $raw, true );
+			if ( is_array( $maybe_decoded ) ) {
+				$decoded = $maybe_decoded;
+			}
+		}
+		return \ToolsAdapter\Pagination::parse_settings( $decoded );
 	}
 
 	/**
@@ -246,25 +270,6 @@ final class Ajax_Archive {
 		} else {
 			echo '<p class="woocommerce-info ta-price-filter__empty">' . esc_html__( 'Aucun produit ne correspond à cette plage de prix.', 'tools-adapter' ) . '</p>';
 		}
-	}
-
-	/**
-	 * @param int $max_pages Max pages.
-	 * @param int $current   Current page.
-	 * @return string
-	 */
-	private function render_pagination_html( $max_pages, $current ) {
-		ob_start();
-		echo '<nav class="ta-archive__pagination" aria-label="' . esc_attr__( 'Pagination produits', 'tools-adapter' ) . '">';
-		for ( $i = 1; $i <= $max_pages; $i++ ) {
-			printf(
-				'<button type="button" class="ta-archive__page%1$s" data-page="%2$d">%2$d</button>',
-				$i === $current ? ' is-active' : '',
-				$i
-			);
-		}
-		echo '</nav>';
-		return ob_get_clean();
 	}
 
 	/**

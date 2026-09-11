@@ -1,0 +1,67 @@
+/* Logos partenaires */
+
+.ta-logos {
+	--ta-logos-gap: 40px;
+	width: 100%;
+	overflow: hidden;
+}
+
+.ta-logos--grid .ta-logos__grid {
+	--ta-logos-cols: 5;
+	display: grid;
+	grid-template-columns: repeat(var(--ta-logos-cols), minmax(0, 1fr));
+	align-items: center;
+	justify-items: center;
+	gap: var(--ta-logos-gap);
+}
+
+.ta-logos--marquee .ta-logos__track {
+	display: flex;
+	align-items: center;
+	gap: var(--ta-logos-gap);
+	width: max-content;
+	animation: ta-logos-scroll linear infinite;
+}
+
+.ta-logos--marquee .ta-logos__track[data-pause-hover="1"]:hover {
+	animation-play-state: paused;
+}
+
+@keyframes ta-logos-scroll {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+.ta-logos__item {
+	display: inline-flex;
+	flex: 0 0 auto;
+}
+
+.ta-logos__link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ta-logos__img {
+	height: 48px;
+	width: auto;
+	max-width: 100%;
+	object-fit: contain;
+	filter: grayscale(100%);
+	transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.ta-logos__link:hover .ta-logos__img {
+	filter: grayscale(0%);
+	opacity: 1 !important;
+}
+
+.ta-logos--no-grayscale .ta-logos__img {
+	filter: none;
+	opacity: 1 !important;
+}

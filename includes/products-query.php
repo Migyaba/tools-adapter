@@ -213,6 +213,59 @@ final class Products_Query {
 	}
 
 	/**
+	 * Resolve a category's display image: its own WooCommerce thumbnail,
+	 * or (optionally) a fallback picked from one of its products.
+	 *
+	 * @param int    $term_id  Category term ID.
+	 * @param bool   $fallback Whether to fall back to a product image.
+	 * @param string $order    'recent' or 'random' — fallback product order.
+	 * @return int Attachment ID, or 0 if none found.
+	 */
+	public static function get_category_image_id( $term_id, $fallback = true, $order = 'recent' ) {
+		$term_id = absint( $term_id );
+		if ( ! $term_id ) {
+			return 0;
+		}
+
+		$thumbnail_id = absint( get_term_meta( $term_id, 'thumbnail_id', true ) );
+		if ( $thumbnail_id || ! $fallback ) {
+			return $thumbnail_id;
+		}
+
+		$product_ids = get_posts(
+			[
+				'post_type'           => 'product',
+				'post_status'         => 'publish',
+				'posts_per_page'      => 1,
+				'fields'              => 'ids',
+				'ignore_sticky_posts'  => true,
+				'no_found_rows'       => true,
+				'orderby'             => ( 'random' === $order ) ? 'rand' : 'date',
+				'order'               => 'DESC',
+				'tax_query'           => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+					[
+						'taxonomy' => 'product_cat',
+						'field'    => 'term_id',
+						'terms'    => [ $term_id ],
+					],
+				],
+				'meta_query'          => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					[
+						'key'     => '_thumbnail_id',
+						'compare' => 'EXISTS',
+					],
+				],
+			]
+		);
+
+		if ( empty( $product_ids ) ) {
+			return 0;
+		}
+
+		return absint( get_post_thumbnail_id( $product_ids[0] ) );
+	}
+
+	/**
 	 * Product category options for SELECT2-like text help (ID list).
 	 *
 	 * @return array<int, string>

@@ -29,6 +29,7 @@ final class Plugin {
 	}
 
 	private function __construct() {
+		require_once TOOLS_ADAPTER_PATH . 'includes/pagination.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-archive.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/products-query.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/product-card.php';
@@ -68,12 +69,26 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-grid.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-carousel.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/product-archive.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/hero-banner.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/cta-band.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/stats-counters.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/logos-grid.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/faq-accordion.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/trust-badges.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/category-banner.php';
 
 		$widgets_manager->register( new Widgets\Product_Categories() );
 		$widgets_manager->register( new Widgets\Price_Filter() );
 		$widgets_manager->register( new Widgets\Product_Grid() );
 		$widgets_manager->register( new Widgets\Product_Carousel() );
 		$widgets_manager->register( new Widgets\Product_Archive() );
+		$widgets_manager->register( new Widgets\Hero_Banner() );
+		$widgets_manager->register( new Widgets\Cta_Band() );
+		$widgets_manager->register( new Widgets\Stats_Counters() );
+		$widgets_manager->register( new Widgets\Logos_Grid() );
+		$widgets_manager->register( new Widgets\Faq_Accordion() );
+		$widgets_manager->register( new Widgets\Trust_Badges() );
+		$widgets_manager->register( new Widgets\Category_Banner() );
 	}
 
 	/**
@@ -168,5 +183,17 @@ final class Plugin {
 			TOOLS_ADAPTER_VERSION,
 			true
 		);
+
+		// Phase 1 — widgets génériques (page building).
+		wp_register_style( 'tools-adapter-hero-banner', TOOLS_ADAPTER_URL . 'assets/css/hero-banner.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-cta-band', TOOLS_ADAPTER_URL . 'assets/css/cta-band.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-stats', TOOLS_ADAPTER_URL . 'assets/css/stats-counters.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-logos', TOOLS_ADAPTER_URL . 'assets/css/logos-grid.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/css/faq-accordion.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-trust-badges', TOOLS_ADAPTER_URL . 'assets/css/trust-badges.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-category-banner', TOOLS_ADAPTER_URL . 'assets/css/category-banner.css', [], TOOLS_ADAPTER_VERSION );
+
+		wp_register_script( 'tools-adapter-stats', TOOLS_ADAPTER_URL . 'assets/js/stats-counters.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/js/faq-accordion.js', [], TOOLS_ADAPTER_VERSION, true );
 	}
 }
