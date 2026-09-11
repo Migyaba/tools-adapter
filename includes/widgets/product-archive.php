@@ -38,11 +38,11 @@ class Product_Archive extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tools-adapter-products', 'tools-adapter-product-archive' ];
+		return [ 'tools-adapter-products', 'tools-adapter-product-archive', 'tools-adapter-modal', 'tools-adapter-quick-view' ];
 	}
 
 	public function get_script_depends() {
-		return [ 'tools-adapter-archive' ];
+		return [ 'tools-adapter-archive', 'tools-adapter-modal', 'tools-adapter-quick-view' ];
 	}
 
 	protected function register_controls() {

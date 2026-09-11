@@ -1,0 +1,44 @@
+/* Guide des tailles */
+
+.ta-size-guide__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: none;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1c1c1c;
+	text-decoration: underline;
+}
+
+.ta-size-guide__table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+	margin-bottom: 20px;
+}
+
+.ta-size-guide__table th,
+.ta-size-guide__table td {
+	padding: 10px 12px;
+	text-align: center;
+}
+
+.ta-size-guide__table th {
+	background: #1c1c1c;
+	color: #ffffff;
+	font-weight: 600;
+}
+
+.ta-size-guide__table tr:nth-child(even) {
+	background: #f7f7f7;
+}
+
+.ta-size-guide__notes {
+	font-size: 13px;
+	line-height: 1.6;
+	color: #666666;
+}

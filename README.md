@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 1.7.0  
+**Version :** 1.8.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -42,6 +42,10 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 | **Avant / Après** | Slider comparatif de deux images (glisser à la souris ou au doigt) |
 | **Table des matières** | Sommaire auto-généré à partir des titres de la page, avec surlignage de la section active |
 | **Barre de progression** | Barre fixe indiquant l'avancement de lecture de la page |
+| **Mini-panier** | Icône panier + dropdown AJAX (articles, sous-total, retrait, liens panier/commande) |
+| **Barre panier collante** | Barre fixe en bas de page produit (image, prix, quantité, ajout au panier) |
+| **Vue rapide produit** | Bouton « œil » sur chaque carte produit ouvrant une fiche AJAX en modale |
+| **Guide des tailles** | Bouton ouvrant un tableau de correspondance des tailles personnalisable |
 
 ## Fonctionnalités
 
@@ -52,10 +56,23 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 - Archive Produits : 4 types de pagination (numérotée classique, précédent/suivant, « charger plus », défilement infini), entièrement personnalisables et synchronisés entre le premier affichage et l'AJAX
 - 7 widgets de mise en page générale (Phase 1) : Hero, Bande CTA, Compteurs animés, Logos partenaires, FAQ Accordéon, Bloc réassurance, Bannière catégorie — tous avec contrôles de contenu et de style complets (couleurs, typographie, espacement, bordures, ombres, responsive)
 - 7 widgets de contenu & preuve sociale (Phase 2) : Témoignages, Équipe, Tableau de tarifs, Timeline, Avant/Après, Table des matières, Barre de progression — même niveau de personnalisation complète
+- 4 widgets de conversion boutique (Phase 3) : Mini-panier AJAX, Barre panier collante, Vue rapide produit, Guide des tailles
+- Bouton « Vue rapide » optionnel sur les cartes produit (Grille, Carrousel, Archive), ouvrant une fiche produit complète (galerie, prix, formulaire d'ajout au panier réel) sans quitter la page
+- Sélecteur de variations visuel : remplace automatiquement les listes déroulantes WooCommerce par des pastilles de couleur ou pilules de texte sur toutes les pages produit variable, en conservant la compatibilité totale avec le script de variations natif
 - Traductions front : français (source), anglais (`en_US`), polonais (`pl_PL`)
 - Styles et scripts chargés à la demande par widget
 
 ## Historique des versions
+
+### 1.8.0
+- 4 nouveaux widgets « conversion boutique » (Phase 3) :
+  - **Mini-panier** : icône + compteur, dropdown AJAX (miniatures, quantité, prix, retrait d'un article), sous-total et liens panier/commande, se rafraîchit automatiquement après tout ajout au panier sur la page
+  - **Barre panier collante** : apparaît en bas d'écran dès que le formulaire d'achat du produit sort du viewport ; quantité + ajout direct pour les produits simples, bouton de défilement vers les options pour les produits variables
+  - **Vue rapide produit** : bouton « œil » désormais disponible sur les cartes de la Grille, du Carrousel et de l'Archive Produits (nouveau réglage « Bouton vue rapide »), ouvre une fiche AJAX complète (galerie, prix, description courte, formulaire d'ajout au panier réel WooCommerce) dans une fenêtre modale
+  - **Guide des tailles** : bouton personnalisable ouvrant un tableau de correspondance des tailles entièrement paramétrable (lignes, unité cm/pouces, notes complémentaires en WYSIWYG)
+- Nouvelle infrastructure modale partagée (`modal.js` / `modal.css`), réutilisée par la Vue rapide et le Guide des tailles
+- Nouveau **Sélecteur de variations visuel** : remplace automatiquement les listes déroulantes d'attributs WooCommerce (couleur, taille…) par des pastilles/pilules cliquables sur toute page produit variable, tout en conservant le `<select>` natif masqué pour une compatibilité totale avec le script de variations WooCommerce (disponibilité des combinaisons, etc.)
+- Nouveaux endpoints AJAX dédiés : `Ajax_Cart` (lecture/retrait du panier) et `Ajax_Quick_View` (fiche produit AJAX), tous deux protégés par nonce
 
 ### 1.7.0
 - 7 nouveaux widgets « contenu & preuve sociale » (Phase 2) :
@@ -107,6 +124,9 @@ tools-adapter/
 │   ├── plugin.php             # Bootstrap Elementor
 │   ├── ajax-archive.php       # AJAX archive
 │   ├── ajax-price-filter.php  # AJAX filtre prix
+│   ├── ajax-cart.php          # AJAX mini-panier (lecture/retrait)
+│   ├── ajax-quick-view.php    # AJAX vue rapide produit
+│   ├── variation-swatches.php # Swatches visuels pour variations WooCommerce
 │   ├── products-query.php     # Requêtes WooCommerce
 │   ├── product-card.php       # Rendu carte produit
 │   ├── pagination.php         # Rendu pagination Archive (partagé PHP/AJAX)

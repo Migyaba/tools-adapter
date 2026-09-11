@@ -31,9 +31,15 @@ final class Plugin {
 	private function __construct() {
 		require_once TOOLS_ADAPTER_PATH . 'includes/pagination.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-archive.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-cart.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/ajax-quick-view.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/variation-swatches.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/products-query.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/product-card.php';
 		new Ajax_Archive();
+		new Ajax_Cart();
+		new Ajax_Quick_View();
+		new Variation_Swatches();
 
 		add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
@@ -83,6 +89,9 @@ final class Plugin {
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/before-after.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/table-of-contents.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/reading-progress-bar.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/mini-cart.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/sticky-add-to-cart.php';
+		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/size-guide.php';
 
 		$widgets_manager->register( new Widgets\Product_Categories() );
 		$widgets_manager->register( new Widgets\Price_Filter() );
@@ -103,6 +112,9 @@ final class Plugin {
 		$widgets_manager->register( new Widgets\Before_After() );
 		$widgets_manager->register( new Widgets\Table_Of_Contents() );
 		$widgets_manager->register( new Widgets\Reading_Progress_Bar() );
+		$widgets_manager->register( new Widgets\Mini_Cart() );
+		$widgets_manager->register( new Widgets\Sticky_Add_To_Cart() );
+		$widgets_manager->register( new Widgets\Size_Guide() );
 	}
 
 	/**
@@ -223,5 +235,48 @@ final class Plugin {
 		wp_register_script( 'tools-adapter-before-after', TOOLS_ADAPTER_URL . 'assets/js/before-after.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-toc', TOOLS_ADAPTER_URL . 'assets/js/table-of-contents.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-reading-progress', TOOLS_ADAPTER_URL . 'assets/js/reading-progress.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		// Phase 3 — conversion boutique.
+		wp_register_style( 'tools-adapter-modal', TOOLS_ADAPTER_URL . 'assets/css/modal.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-mini-cart', TOOLS_ADAPTER_URL . 'assets/css/mini-cart.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-sticky-atc', TOOLS_ADAPTER_URL . 'assets/css/sticky-add-to-cart.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-quick-view', TOOLS_ADAPTER_URL . 'assets/css/quick-view.css', [ 'tools-adapter-modal' ], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-size-guide', TOOLS_ADAPTER_URL . 'assets/css/size-guide.css', [ 'tools-adapter-modal' ], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-variation-swatches', TOOLS_ADAPTER_URL . 'assets/css/variation-swatches.css', [], TOOLS_ADAPTER_VERSION );
+
+		wp_register_script( 'tools-adapter-modal', TOOLS_ADAPTER_URL . 'assets/js/modal.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-mini-cart', TOOLS_ADAPTER_URL . 'assets/js/mini-cart.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-sticky-atc', TOOLS_ADAPTER_URL . 'assets/js/sticky-add-to-cart.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-quick-view', TOOLS_ADAPTER_URL . 'assets/js/quick-view.js', [ 'tools-adapter-modal' ], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-variation-swatches', TOOLS_ADAPTER_URL . 'assets/js/variation-swatches.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		wp_localize_script(
+			'tools-adapter-mini-cart',
+			'ToolsAdapterCart',
+			[
+				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+				'actionGet'   => Ajax_Cart::ACTION_GET,
+				'actionRemove' => Ajax_Cart::ACTION_REMOVE,
+			]
+		);
+
+		wp_localize_script(
+			'tools-adapter-quick-view',
+			'ToolsAdapterQuickView',
+			[
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'action'  => Ajax_Quick_View::ACTION,
+				'nonce'   => wp_create_nonce( Ajax_Quick_View::NONCE ),
+				'i18n'    => [
+					'loading' => __( 'Chargement…', 'tools-adapter' ),
+					'error'   => __( 'Impossible de charger ce produit.', 'tools-adapter' ),
+				],
+			]
+		);
+
+		if ( function_exists( 'is_product' ) && is_product() ) {
+			wp_enqueue_style( 'tools-adapter-variation-swatches' );
+			wp_enqueue_script( 'tools-adapter-variation-swatches' );
+		}
 	}
 }

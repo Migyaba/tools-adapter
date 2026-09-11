@@ -38,11 +38,11 @@ class Product_Carousel extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tools-adapter-products', 'tools-adapter-product-carousel' ];
+		return [ 'tools-adapter-products', 'tools-adapter-product-carousel', 'tools-adapter-modal', 'tools-adapter-quick-view' ];
 	}
 
 	public function get_script_depends() {
-		return [ 'tools-adapter-product-carousel' ];
+		return [ 'tools-adapter-product-carousel', 'tools-adapter-modal', 'tools-adapter-quick-view' ];
 	}
 
 	protected function register_controls() {

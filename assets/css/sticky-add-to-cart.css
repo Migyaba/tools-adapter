@@ -1,0 +1,118 @@
+/* Barre "Ajouter au panier" collante */
+
+.ta-sticky-atc {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #ffffff;
+	box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+	transform: translateY(100%);
+	transition: transform 0.25s ease;
+	z-index: 9998;
+}
+
+.ta-sticky-atc.is-visible {
+	transform: translateY(0);
+}
+
+.ta-sticky-atc__inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 12px 24px;
+}
+
+.ta-sticky-atc__thumb img {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 6px;
+	display: block;
+}
+
+.ta-sticky-atc__info {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.ta-sticky-atc__name {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 700;
+	color: #1c1c1c;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ta-sticky-atc__price {
+	font-size: 14px;
+	font-weight: 700;
+	color: #C9A84C;
+}
+
+.ta-sticky-atc__qty {
+	display: flex;
+	align-items: center;
+	border: 1px solid #dddddd;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.ta-sticky-atc__qty-btn {
+	width: 32px;
+	height: 36px;
+	border: 0;
+	background: #f7f7f7;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+.ta-sticky-atc__qty-input {
+	width: 44px;
+	height: 36px;
+	border: 0;
+	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
+	text-align: center;
+	font-size: 14px;
+}
+
+.ta-sticky-atc__btn {
+	flex: 0 0 auto;
+	padding: 12px 24px;
+	border: 0;
+	border-radius: 6px;
+	background: #1c1c1c;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.ta-sticky-atc__editor-notice {
+	padding: 16px;
+	background: #f7f7f7;
+	border-radius: 6px;
+	font-size: 13px;
+	color: #888888;
+	text-align: center;
+}
+
+@media (max-width: 600px) {
+	.ta-sticky-atc__inner {
+		gap: 10px;
+		padding: 10px 14px;
+	}
+
+	.ta-sticky-atc__thumb {
+		display: none;
+	}
+}

@@ -28,6 +28,7 @@ final class Product_Card {
 		$show_badge   = ( $settings['show_sale_badge'] ?? 'yes' ) === 'yes';
 		$show_button  = ( $settings['show_add_to_cart'] ?? 'yes' ) === 'yes';
 		$show_excerpt = ( $settings['show_excerpt'] ?? '' ) === 'yes';
+		$show_quick_view = ( $settings['show_quick_view'] ?? '' ) === 'yes';
 		$image_size   = $settings['image_size'] ?? 'woocommerce_thumbnail';
 		$title_tag    = self::sanitize_tag( $settings['title_html_tag'] ?? 'h3' );
 
@@ -57,6 +58,16 @@ final class Product_Card {
 						<?php endif; ?>
 						<?php echo $product->get_image( $image_size, [ 'class' => 'ta-product-card__image' ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
+					<?php if ( $show_quick_view ) : ?>
+						<button
+							type="button"
+							class="ta-product-card__quick-view"
+							data-quick-view="<?php echo esc_attr( (string) $product->get_id() ); ?>"
+							aria-label="<?php echo esc_attr__( 'Vue rapide', 'tools-adapter' ); ?>"
+						>
+							<i class="fas fa-eye" aria-hidden="true"></i>
+						</button>
+					<?php endif; ?>
 				<?php endif; ?>
 
 				<div class="ta-product-card__body">

@@ -1,0 +1,102 @@
+/* Infrastructure modale partagée */
+
+body.ta-modal-open {
+	overflow: hidden;
+}
+
+.ta-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+}
+
+.ta-modal.is-open {
+	display: flex;
+}
+
+.ta-modal__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+.ta-modal__dialog {
+	position: relative;
+	z-index: 1;
+	background: #ffffff;
+	border-radius: 12px;
+	max-width: 720px;
+	width: 100%;
+	max-height: 88vh;
+	overflow-y: auto;
+	padding: 32px;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+	animation: ta-modal-in 0.2s ease;
+}
+
+.ta-modal__dialog--wide {
+	max-width: 960px;
+}
+
+.ta-modal__dialog--narrow {
+	max-width: 480px;
+}
+
+.ta-modal__close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 34px;
+	height: 34px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 0;
+	background: #f2f2f2;
+	color: #1c1c1c;
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.ta-modal__close:hover {
+	background: #e5e5e5;
+}
+
+.ta-modal__title {
+	margin: 0 0 20px;
+	font-size: 20px;
+	font-weight: 700;
+	padding-right: 40px;
+}
+
+.ta-modal__body {
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+@keyframes ta-modal-in {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 600px) {
+	.ta-modal {
+		padding: 12px;
+	}
+
+	.ta-modal__dialog {
+		padding: 24px 20px;
+	}
+}

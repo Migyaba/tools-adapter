@@ -293,6 +293,17 @@ trait Products_Widget_Controls {
 			]
 		);
 
+		$this->add_control(
+			'show_quick_view',
+			[
+				'label'        => esc_html__( 'Bouton vue rapide', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => '',
+				'separator'    => 'before',
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
