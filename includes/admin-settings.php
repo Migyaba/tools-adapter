@@ -83,7 +83,6 @@ final class Admin_Settings {
 			[
 				'type'              => 'array',
 				'sanitize_callback' => [ __CLASS__, 'sanitize' ],
-				'default'           => self::get_defaults(),
 			]
 		);
 	}
@@ -110,13 +109,6 @@ final class Admin_Settings {
 		foreach ( $defaults['features'] as $key => $_default ) {
 			$clean['features'][ $key ] = ! empty( $posted_features[ $key ] ) ? 'yes' : 'no';
 		}
-
-		add_settings_error(
-			self::OPTION_KEY,
-			'tools_adapter_settings_updated',
-			esc_html__( 'Réglages enregistrés avec succès.', 'tools-adapter' ),
-			'updated'
-		);
 
 		return $clean;
 	}
@@ -336,6 +328,7 @@ final class Admin_Settings {
 			<?php settings_errors( self::OPTION_KEY ); ?>
 			<form method="post" action="options.php" class="ta-settings__form" data-ta-settings-form>
 				<?php settings_fields( self::GROUP ); ?>
+				<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[_submitted]" value="1" />
 
 				<div class="ta-settings__header">
 					<div class="ta-settings__header-main">
