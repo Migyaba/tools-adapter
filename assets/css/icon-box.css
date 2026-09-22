@@ -1,0 +1,210 @@
+/**
+ * Tools Adapter — Boîte d'icône (Icon Box / Feature Card)
+ */
+
+.ta-icon-box {
+	position: relative;
+	box-sizing: border-box;
+	display: block;
+	/* Laisse de l'espace pour le badge débordant et le fond décalé */
+	padding-top: var(--ta-ib-wrap-pt, 18px);
+	padding-left: var(--ta-ib-wrap-pl, 12px);
+	padding-right: var(--ta-ib-wrap-pr, 0px);
+	padding-bottom: var(--ta-ib-wrap-pb, 0px);
+}
+
+/* Couche de fond décoratif décalé (Offset Backdrop) */
+.ta-icon-box.ta-icon-box--has-backdrop::before {
+	content: "";
+	position: absolute;
+	top: var(--ta-ib-backdrop-top, 0px);
+	left: var(--ta-ib-backdrop-left, 0px);
+	width: calc(100% - var(--ta-ib-wrap-pl, 12px));
+	height: calc(100% - var(--ta-ib-wrap-pt, 18px) - var(--ta-ib-wrap-pb, 0px));
+	background-color: var(--ta-ib-backdrop-bg, #eaf5db);
+	border-radius: var(--ta-ib-backdrop-radius, 24px);
+	z-index: 0;
+	pointer-events: none;
+	transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+/* Carte principale au premier plan */
+.ta-icon-box__card {
+	position: relative;
+	z-index: 1;
+	box-sizing: border-box;
+	background-color: var(--ta-ib-card-bg, #ffffff);
+	border-radius: var(--ta-ib-card-radius, 20px);
+	padding: var(--ta-ib-card-padding, 32px 28px 28px 28px);
+	box-shadow: var(--ta-ib-card-shadow, 0 10px 30px -8px rgba(0, 0, 0, 0.07));
+	border: var(--ta-ib-card-border-width, 0px) solid var(--ta-ib-card-border-color, transparent);
+	transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+				box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+				border-color 0.3s ease;
+}
+
+/* Lien couvrant toute la carte si activé */
+.ta-icon-box__overlay-link {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	border-radius: inherit;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+
+/* Badge d'icône flottant */
+.ta-icon-box__badge {
+	position: absolute;
+	z-index: 2;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--ta-ib-badge-size, 64px);
+	height: var(--ta-ib-badge-size, 64px);
+	background: var(--ta-ib-badge-bg, #7bc81d);
+	color: var(--ta-ib-badge-color, #ffffff);
+	border-radius: var(--ta-ib-badge-radius, 16px);
+	box-shadow: var(--ta-ib-badge-shadow, 0 8px 20px -4px rgba(123, 200, 29, 0.35));
+	transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+				box-shadow 0.35s ease;
+}
+
+/* Positions du badge */
+.ta-icon-box--badge-top-right .ta-icon-box__badge {
+	top: -18px;
+	right: 24px;
+}
+
+.ta-icon-box--badge-top-left .ta-icon-box__badge {
+	top: -18px;
+	left: 24px;
+}
+
+.ta-icon-box--badge-top-center .ta-icon-box__badge {
+	top: -18px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.ta-icon-box--badge-bottom-right .ta-icon-box__badge {
+	bottom: -18px;
+	right: 24px;
+}
+
+.ta-icon-box--badge-bottom-left .ta-icon-box__badge {
+	bottom: -18px;
+	left: 24px;
+}
+
+.ta-icon-box--badge-bottom-right,
+.ta-icon-box--badge-bottom-left {
+	padding-bottom: var(--ta-ib-wrap-pb, 18px);
+}
+
+.ta-icon-box--badge-inline .ta-icon-box__badge {
+	position: static;
+	margin-bottom: 20px;
+}
+
+/* Rendu de l'icône (i ou SVG) */
+.ta-icon-box__badge i,
+.ta-icon-box__badge svg {
+	font-size: var(--ta-ib-icon-size, 28px);
+	width: var(--ta-ib-icon-size, 28px);
+	height: var(--ta-ib-icon-size, 28px);
+	fill: currentColor;
+	line-height: 1;
+	display: inline-block;
+}
+
+/* Contenu textuel */
+.ta-icon-box__content {
+	position: relative;
+	z-index: 1;
+}
+
+.ta-icon-box__subtitle {
+	display: block;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--ta-ib-subtitle-color, #7bc81d);
+	margin-bottom: 8px;
+}
+
+.ta-icon-box__title {
+	margin: 0 0 12px 0;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--ta-ib-title-color, #0b2545);
+	transition: color 0.25s ease;
+}
+
+.ta-icon-box__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.ta-icon-box__description {
+	margin: 0;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: var(--ta-ib-desc-color, #556987);
+}
+
+.ta-icon-box__description p:last-child {
+	margin-bottom: 0;
+}
+
+/* Action / Lien "En savoir plus" */
+.ta-icon-box__action {
+	margin-top: 18px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.9375rem;
+	font-weight: 600;
+	color: var(--ta-ib-action-color, #0b2545);
+	text-decoration: none;
+	transition: color 0.25s ease, gap 0.25s ease;
+}
+
+.ta-icon-box__action-icon {
+	font-size: 0.875rem;
+	display: inline-flex;
+	transition: transform 0.25s ease;
+}
+
+.ta-icon-box:hover .ta-icon-box__action-icon {
+	transform: translateX(4px);
+}
+
+/* Micro-interactions au survol */
+.ta-icon-box--hover-lift:hover .ta-icon-box__card {
+	transform: translateY(-6px);
+	box-shadow: var(--ta-ib-card-shadow-hover, 0 18px 36px -10px rgba(0, 0, 0, 0.12));
+}
+
+.ta-icon-box--hover-lift:hover.ta-icon-box--has-backdrop::before {
+	transform: translate(calc(var(--ta-ib-offset-x, -6px) * -0.25), calc(var(--ta-ib-offset-y, -6px) * -0.25));
+}
+
+.ta-icon-box--hover-zoom:hover .ta-icon-box__badge {
+	transform: scale(1.08);
+}
+
+.ta-icon-box--badge-top-center.ta-icon-box--hover-zoom:hover .ta-icon-box__badge {
+	transform: translateX(-50%) scale(1.08);
+}
+
+.ta-icon-box--hover-tilt:hover .ta-icon-box__badge {
+	transform: rotate(6deg) scale(1.06);
+}
+
+.ta-icon-box--badge-top-center.ta-icon-box--hover-tilt:hover .ta-icon-box__badge {
+	transform: translateX(-50%) rotate(6deg) scale(1.06);
+}

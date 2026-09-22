@@ -218,11 +218,14 @@ final class Admin_Settings {
 					'tools-adapter-faq'           => [ 'label' => esc_html__( 'FAQ Accordéon', 'tools-adapter' ), 'description' => esc_html__( 'Questions/réponses repliables avec données structurées SEO (FAQPage).', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-trust-badges'  => [ 'label' => esc_html__( 'Bloc réassurance', 'tools-adapter' ), 'description' => esc_html__( 'Icônes de réassurance : livraison, paiement sécurisé, retours…', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-category-banner' => [ 'label' => esc_html__( 'Bannière catégorie', 'tools-adapter' ), 'description' => esc_html__( 'Hero pour une page de catégorie WooCommerce (image, description, compteur, CTA).', 'tools-adapter' ), 'requires_woo' => true ],
+					'tools-adapter-icon-box'        => [ 'label' => esc_html__( 'Boîte d\'icône', 'tools-adapter' ), 'description' => esc_html__( 'Carte avec badge d\'icône flottant et fond décoratif décalé.', 'tools-adapter' ), 'requires_woo' => false ],
 				],
 			],
 			'content'   => [
 				'label' => esc_html__( 'Contenu & preuve sociale', 'tools-adapter' ),
 				'items' => [
+					'tools-adapter-project-gallery' => [ 'label' => esc_html__( 'Galerie Projets Mosaïque', 'tools-adapter' ), 'description' => esc_html__( 'Grille Bento 6 cadres avec diaporama en fondu (FADE) par projet.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-process-steps'   => [ 'label' => esc_html__( 'Étapes / Processus', 'tools-adapter' ), 'description' => esc_html__( 'Déroulement étape par étape avec ligne de connexion et badge Icône ou Numéro.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-testimonials'    => [ 'label' => esc_html__( 'Témoignages', 'tools-adapter' ), 'description' => esc_html__( 'Avis clients en grille ou carrousel (photo, note, citation).', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-team'            => [ 'label' => esc_html__( 'Équipe', 'tools-adapter' ), 'description' => esc_html__( 'Grille de membres avec photo, poste, bio et réseaux sociaux.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-pricing-table'   => [ 'label' => esc_html__( 'Tableau de tarifs', 'tools-adapter' ), 'description' => esc_html__( 'Carte de plan : prix, fonctionnalités, bouton, ruban « populaire ».', 'tools-adapter' ), 'requires_woo' => false ],

@@ -135,6 +135,9 @@ final class Plugin {
 			'tools-adapter-contact-form'         => [ 'contact-form.php', 'Contact_Form' ],
 			'tools-adapter-google-map'           => [ 'google-map.php', 'Google_Map' ],
 			'tools-adapter-blog-grid'            => [ 'blog-grid.php', 'Blog_Grid' ],
+			'tools-adapter-icon-box'             => [ 'icon-box.php', 'Icon_Box' ],
+			'tools-adapter-project-gallery'      => [ 'project-gallery.php', 'Project_Gallery' ],
+			'tools-adapter-process-steps'        => [ 'process-steps.php', 'Process_Steps' ],
 		];
 
 		foreach ( $widgets as $slug => $data ) {
@@ -251,9 +254,13 @@ final class Plugin {
 		wp_register_style( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/css/faq-accordion.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-trust-badges', TOOLS_ADAPTER_URL . 'assets/css/trust-badges.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-category-banner', TOOLS_ADAPTER_URL . 'assets/css/category-banner.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-icon-box', TOOLS_ADAPTER_URL . 'assets/css/icon-box.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-project-gallery', TOOLS_ADAPTER_URL . 'assets/css/project-gallery.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-process-steps', TOOLS_ADAPTER_URL . 'assets/css/process-steps.css', [], TOOLS_ADAPTER_VERSION );
 
 		wp_register_script( 'tools-adapter-stats', TOOLS_ADAPTER_URL . 'assets/js/stats-counters.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/js/faq-accordion.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-project-gallery', TOOLS_ADAPTER_URL . 'assets/js/project-gallery.js', [ 'jquery' ], TOOLS_ADAPTER_VERSION, true );
 
 		// Phase 2 — contenu & preuve sociale.
 		wp_register_style( 'tools-adapter-testimonials', TOOLS_ADAPTER_URL . 'assets/css/testimonials.css', [], TOOLS_ADAPTER_VERSION );

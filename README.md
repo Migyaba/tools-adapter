@@ -2,7 +2,7 @@
 
 Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
 
-**Version :** 2.1.0  
+**Version :** 2.2.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -22,7 +22,7 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 
 ## Page de réglages
 
-Le menu d'administration **Tools Adapter** (icône de prise, dans la barre latérale de wp-admin) donne accès à une page de réglages permettant d'activer ou de désactiver individuellement chacun des 33 widgets, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation), ainsi que 2 fonctionnalités globales (Vue rapide produit, Sélecteur de variations visuel).
+Le menu d'administration **Tools Adapter** (icône de prise, dans la barre latérale de wp-admin) donne accès à une page de réglages permettant d'activer ou de désactiver individuellement chacun des 36 widgets, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation), ainsi que 2 fonctionnalités globales (Vue rapide produit, Sélecteur de variations visuel).
 
 - Tous les widgets sont **activés par défaut** (aucune configuration requise, rétrocompatible avec les installations existantes)
 - Un widget désactivé disparaît immédiatement du panneau Elementor et n'enregistre plus aucun style ni script sur le site
@@ -45,6 +45,9 @@ Le menu d'administration **Tools Adapter** (icône de prise, dans la barre laté
 | **FAQ Accordéon** | Questions/réponses repliables avec balisage SEO schema.org FAQPage |
 | **Bloc réassurance** | Icônes + texte (livraison, paiement sécurisé, retours...) |
 | **Bannière catégorie** | Hero pour une catégorie WooCommerce (image avec repli produit, description, compteur, CTA) |
+| **Boîte d'icône** | Carte moderne avec badge d'icône flottant, fond décoratif décalé et micro-animations |
+| **Galerie Projets Mosaïque** | Grille Bento 6 cadres avec diaporama en fondu (FADE) indépendant par projet |
+| **Étapes / Processus** | Déroulement étape par étape avec ligne de connexion et badge Icône ou Numéro |
 | **Témoignages** | Avis clients en grille ou carrousel (photo, note, citation) |
 | **Équipe** | Grille de membres avec photo, poste, bio et réseaux sociaux |
 | **Tableau de tarifs** | Carte de plan (prix, fonctionnalités incluses/exclues, bouton, ruban « populaire ») |
@@ -87,11 +90,20 @@ Le menu d'administration **Tools Adapter** (icône de prise, dans la barre laté
 - Traductions front : français (source), anglais (`en_US`), polonais (`pl_PL`)
 - Styles et scripts chargés à la demande par widget
 
-## Historique des versions
+### 2.2.0
+- **Refonte majeure du widget Témoignages (Carrousel d'avis clients)** :
+  - Support du **carrousel multi-cartes** : 3 avis visibles par écran sur Ordinateur, 2 sur Tablette, 1 sur Mobile (entièrement configurable de 1 à 6).
+  - Nouvelle structure de carte moderne : 5 étoiles d'évaluation dorées en haut, texte du témoignage en italique avec guillemets français (« ») au centre, méta de l'auteur en bas (avatar, nom en gras et fonction/lieu).
+  - 3 styles d'indicateurs de pagination (Dots) : **Anneau actif moderne (Ring)** avec double cercle, **Pastille (Pill)** ou **Point classique (Bullet)**.
+  - Personnalisation poussée dans Elementor : typographie, couleurs, taille et écartement des étoiles, forme et bordure de l'avatar (cercle, coins arrondis, carré), fond, bordure et effet d'élévation au survol de chaque carte.
+  - Moteur `simple-carousel.js` étendu pour le défilement responsive multi-colonnes, pagination dynamique, glissement tactile (touch swipe) et arrêt au survol.
+- Nouveau widget **Étapes / Processus** : déroulement horizontal (ou vertical sur mobile) avec ligne de connexion continue et badges personnalisables (Icônes vectorielles ou Numérotation automatique / personnalisée).
+- Nouveau widget **Galerie Projets Mosaïque** : grille Bento 6 cadres (projets/réalisations) avec diaporama d'images en fondu (FADE) indépendant, désynchronisation automatique, pause au survol et dégradé protecteur.
+- Nouveau widget **Boîte d'icône** : carte de service/avantage avec badge d'icône flottant débordant, fond décoratif décalé (*offset backdrop*), sur-titre, titre, description, actions de lien et micro-animations au survol.
 
 ### 2.1.0
 - Nouvelle **page de réglages** dans l'administration WordPress (menu « Tools Adapter ») :
-  - Active/désactive individuellement chacun des 33 widgets Elementor, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation)
+  - Active/désactive individuellement chacun des 36 widgets Elementor, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation)
   - 2 fonctionnalités globales également commutables : Vue rapide produit, Sélecteur de variations visuel
   - Recherche instantanée, activation/désactivation en masse (globale ou par catégorie), compteurs en temps réel, avertissement de modifications non enregistrées
   - Un widget désactivé disparaît du panneau Elementor et n'enregistre plus aucun style/script — aucun impact sur les performances des sites qui n'utilisent pas certains widgets
