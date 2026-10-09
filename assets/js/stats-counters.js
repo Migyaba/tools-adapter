@@ -77,11 +77,10 @@
 			if (!window.elementorFrontend || !elementorFrontend.hooks) {
 				return;
 			}
-			elementorFrontend.hooks.addAction('frontend/element_ready/tools-adapter-stats.default', function ($scope) {
-				var group = $scope[0].querySelector('[data-ta-stats]');
-				if (group) {
-					initGroup(group);
-				}
+			// Global hook: also covers other widgets reusing the counter
+			// (e.g. the "Images superposées" badge).
+			elementorFrontend.hooks.addAction('frontend/element_ready/global', function ($scope) {
+				$scope[0].querySelectorAll('[data-ta-stats]').forEach(initGroup);
 			});
 		});
 	}

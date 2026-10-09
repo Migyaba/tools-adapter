@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Barre de stock/urgence — pour pages produit WooCommerce.
  */
-class Stock_Urgency extends Widget_Base {
+class Stock_Urgency extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-stock-urgency';

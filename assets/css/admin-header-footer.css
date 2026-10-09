@@ -1,0 +1,211 @@
+/**
+ * Tools Adapter — Header & Footer Builder Admin Styles
+ */
+
+/* Post Edit Screen: Metabox */
+.ta-hf-metabox {
+	padding: 12px 6px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.ta-hf-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 20px 24px;
+}
+
+.ta-hf-field {
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	padding: 16px 18px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ta-hf-field:focus-within {
+	border-color: #6366f1;
+	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.ta-hf-field-full {
+	grid-column: 1 / -1;
+	background: #f8fafc;
+	border: 1px dashed #cbd5e1;
+}
+
+.ta-hf-label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.ta-hf-label strong {
+	display: block;
+	font-size: 14px;
+	color: #1e293b;
+	margin-bottom: 4px;
+}
+
+.ta-hf-desc {
+	display: block;
+	font-size: 12px;
+	color: #64748b;
+	line-height: 1.4;
+}
+
+.ta-hf-control select,
+.ta-hf-control input[type="text"] {
+	border-radius: 8px;
+	border: 1px solid #cbd5e1;
+	padding: 8px 12px;
+	font-size: 13px;
+	color: #0f172a;
+	background-color: #fff;
+	transition: all 0.2s;
+}
+
+.ta-hf-control select:focus,
+.ta-hf-control input[type="text"]:focus {
+	border-color: #6366f1;
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.ta-hf-checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	color: #334155;
+	cursor: pointer;
+	margin-top: 4px;
+}
+
+.ta-hf-checkbox input[type="checkbox"] {
+	border-radius: 4px;
+	width: 18px;
+	height: 18px;
+	accent-color: #6366f1;
+}
+
+.ta-hf-conditional {
+	display: none;
+}
+
+.ta-hf-conditional.is-visible {
+	display: flex;
+}
+
+/* Shortcode wrapper */
+.ta-hf-shortcode-wrap {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.ta-hf-shortcode-input {
+	flex: 1;
+	font-family: monospace;
+	font-size: 13px;
+	background: #ffffff !important;
+	color: #475569 !important;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+}
+
+.ta-hf-copy-btn {
+	background: #0f172a !important;
+	color: #ffffff !important;
+	border: none !important;
+	border-radius: 6px !important;
+	padding: 6px 14px !important;
+	cursor: pointer;
+	font-weight: 500;
+	transition: background-color 0.2s, transform 0.1s !important;
+}
+
+.ta-hf-copy-btn:hover {
+	background: #334155 !important;
+}
+
+.ta-hf-copy-btn:active {
+	transform: scale(0.97);
+}
+
+/* Post list table: badges */
+.ta-hf-badge {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 600;
+	padding: 3px 10px;
+	border-radius: 9999px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.ta-badge-header {
+	background: #eff6ff;
+	color: #1d4ed8;
+	border: 1px solid #bfdbfe;
+}
+
+.ta-badge-footer {
+	background: #faf5ff;
+	color: #7e22ce;
+	border: 1px solid #e9d5ff;
+}
+
+.ta-badge-before-footer {
+	background: #fffbeb;
+	color: #b45309;
+	border: 1px solid #fde68a;
+}
+
+.ta-badge-custom {
+	background: #ecfdf5;
+	color: #047857;
+	border: 1px solid #a7f3d0;
+}
+
+.ta-badge-default {
+	background: #f1f5f9;
+	color: #475569;
+}
+
+/* Status pills */
+.ta-hf-status-pill {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 2px 8px;
+	border-radius: 6px;
+}
+
+.ta-status-active {
+	background: #dcfce7;
+	color: #15803d;
+}
+
+.ta-status-inactive {
+	background: #f1f5f9;
+	color: #64748b;
+}
+
+.ta-hf-shortcode-cell {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.ta-hf-shortcode-min {
+	max-width: 170px;
+	font-family: monospace;
+	font-size: 11px;
+	padding: 3px 6px;
+	border: 1px solid #cbd5e1;
+	border-radius: 4px;
+	background: #f8fafc;
+}

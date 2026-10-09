@@ -47,7 +47,7 @@
 	justify-content: center;
 }
 
-.ta-logos__img {
+.ta-logos__img, .elementor .ta-logos__img {
 	height: 48px;
 	width: auto;
 	max-width: 100%;

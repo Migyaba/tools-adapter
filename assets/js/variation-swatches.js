@@ -7,6 +7,9 @@
 	'use strict';
 
 	function findSelect(wrap, name) {
+		if (!name) {
+			return null;
+		}
 		var container = wrap.closest('.variations') || wrap.closest('form.cart') || document;
 		return container.querySelector('select[name="' + name + '"], select#' + CSS.escape(name));
 	}

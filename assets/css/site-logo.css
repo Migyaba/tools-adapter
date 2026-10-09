@@ -1,0 +1,56 @@
+/**
+ * Tools Adapter — Site Logo Widget Styles
+ */
+
+.ta-site-logo-wrap {
+	display: inline-flex;
+	flex-direction: column;
+	max-width: 100%;
+	vertical-align: middle;
+}
+
+.ta-site-logo-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	text-decoration: none;
+	color: inherit;
+	transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.ta-site-logo-link:hover {
+	opacity: 0.9;
+}
+
+.ta-site-logo-img, .elementor .ta-site-logo-img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	object-fit: contain;
+	transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.ta-site-logo-link:hover .ta-site-logo-img {
+	transform: scale(1.02);
+}
+
+.ta-site-logo-text-wrap {
+	display: flex;
+	flex-direction: column;
+}
+
+.ta-site-logo-title {
+	margin: 0;
+	font-size: 20px;
+	font-weight: 700;
+	color: #0f172a;
+	line-height: 1.2;
+	transition: color 0.2s ease;
+}
+
+.ta-site-logo-tagline {
+	margin: 4px 0 0 0;
+	font-size: 13px;
+	color: #64748b;
+	line-height: 1.3;
+}

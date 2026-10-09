@@ -1,0 +1,27 @@
+/**
+ * Tools Adapter — Site Copyright Widget Styles
+ */
+
+.ta-site-copyright-wrap {
+	display: block;
+	width: 100%;
+}
+
+.ta-site-copyright-text {
+	margin: 0;
+	font-size: 14px;
+	color: #64748b;
+	line-height: 1.5;
+}
+
+.ta-site-copyright-text a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.ta-site-copyright-text a:hover {
+	color: #0f172a;
+	opacity: 0.85;
+}

@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Bande CTA — bloc pleine largeur titre + description + bouton.
  */
-class Cta_Band extends Widget_Base {
+class Cta_Band extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-cta-band';

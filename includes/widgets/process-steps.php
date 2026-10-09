@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Icons_Manager;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Étapes / Processus — présentation étape par étape avec ligne de connexion et badge Icône ou Numéro.
  */
-class Process_Steps extends Widget_Base {
+class Process_Steps extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-process-steps';
@@ -110,6 +110,54 @@ class Process_Steps extends Widget_Base {
 				'placeholder' => '01 ou Étape 1',
 				'condition'   => [
 					'badge_override' => 'custom_text',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'custom_badge_colors_heading',
+			[
+				'label'     => esc_html__( 'Couleurs du badge (spécifique)', 'tools-adapter' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$repeater->add_control(
+			'badge_bg_color',
+			[
+				'label'       => esc_html__( 'Couleur fond du badge', 'tools-adapter' ),
+				'type'        => Controls_Manager::COLOR,
+				'description' => esc_html__( 'Laissez vide pour hériter de la couleur globale.', 'tools-adapter' ),
+				'selectors'   => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .ta-process-step__badge' => 'background-color: {{VALUE}} !important; --ta-ps-badge-bg: {{VALUE}};',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'badge_text_color',
+			[
+				'label'       => esc_html__( 'Couleur icône / texte', 'tools-adapter' ),
+				'type'        => Controls_Manager::COLOR,
+				'description' => esc_html__( 'Laissez vide pour hériter de la couleur globale.', 'tools-adapter' ),
+				'selectors'   => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .ta-process-step__badge' => 'color: {{VALUE}} !important; --ta-ps-badge-color: {{VALUE}};',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .ta-process-step__number' => 'color: {{VALUE}} !important;',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .ta-process-step__badge i' => 'color: {{VALUE}} !important; fill: {{VALUE}} !important;',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .ta-process-step__badge svg' => 'fill: {{VALUE}} !important;',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'badge_border_color',
+			[
+				'label'       => esc_html__( 'Couleur de bordure', 'tools-adapter' ),
+				'type'        => Controls_Manager::COLOR,
+				'description' => esc_html__( 'Optionnel : ajoute une bordure au badge.', 'tools-adapter' ),
+				'selectors'   => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .ta-process-step__badge' => 'border: 2px solid {{VALUE}};',
 				],
 			]
 		);
@@ -524,17 +572,37 @@ class Process_Steps extends Widget_Base {
 					$target   = ! empty( $step['link']['is_external'] ) ? ' target="_blank"' : '';
 					$nofollow = ! empty( $step['link']['nofollow'] ) ? ' rel="nofollow"' : '';
 
-					// Forme du badge (style inline radius si cercle ou carré)
-					$badge_style = '';
+					// Forme et styles personnalisés du badge
+					$badge_inline_styles = [];
 					if ( 'circle' === $badge_shape ) {
-						$badge_style = 'style="border-radius: 50%;"';
+						$badge_inline_styles[] = 'border-radius: 50%;';
 					} elseif ( 'square' === $badge_shape ) {
-						$badge_style = 'style="border-radius: 0;"';
+						$badge_inline_styles[] = 'border-radius: 0;';
+					}
+
+					if ( ! empty( $step['badge_bg_color'] ) ) {
+						$badge_inline_styles[] = 'background-color: ' . esc_attr( $step['badge_bg_color'] ) . ';';
+						$badge_inline_styles[] = '--ta-ps-badge-bg: ' . esc_attr( $step['badge_bg_color'] ) . ';';
+					}
+					if ( ! empty( $step['badge_text_color'] ) ) {
+						$badge_inline_styles[] = 'color: ' . esc_attr( $step['badge_text_color'] ) . ';';
+						$badge_inline_styles[] = '--ta-ps-badge-color: ' . esc_attr( $step['badge_text_color'] ) . ';';
+					}
+					if ( ! empty( $step['badge_border_color'] ) ) {
+						$badge_inline_styles[] = 'border: 2px solid ' . esc_attr( $step['badge_border_color'] ) . ';';
+					}
+
+					$badge_style_attr = ! empty( $badge_inline_styles ) ? ' style="' . implode( ' ', $badge_inline_styles ) . '"' : '';
+
+					// Classe d'élément repeater pour le ciblage CSS Elementor
+					$step_classes = [ 'ta-process-step' ];
+					if ( ! empty( $step['_id'] ) ) {
+						$step_classes[] = 'elementor-repeater-item-' . esc_attr( $step['_id'] );
 					}
 					?>
-					<div class="ta-process-step">
+					<div class="<?php echo esc_attr( implode( ' ', $step_classes ) ); ?>">
 						<div class="ta-process-step__header">
-							<div class="ta-process-step__badge" <?php echo $badge_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+							<div class="ta-process-step__badge"<?php echo $badge_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 								<?php if ( 'icon' === $resolved_type ) : ?>
 									<?php if ( ! empty( $step['icon']['value'] ) ) : ?>
 										<?php Icons_Manager::render_icon( $step['icon'], [ 'aria-hidden' => 'true' ] ); ?>
@@ -550,7 +618,7 @@ class Process_Steps extends Widget_Base {
 								<?php endif; ?>
 							</div>
 
-							<?php if ( $show_line ) : ?>
+							<?php if ( $show_line && $index < count( $steps ) - 1 ) : ?>
 								<div class="ta-process-step__line" aria-hidden="true"></div>
 							<?php endif; ?>
 						</div>

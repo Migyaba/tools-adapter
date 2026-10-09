@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Témoignages — grille ou carrousel d'avis clients multi-cartes ultra-personnalisable.
  */
-class Testimonials extends Widget_Base {
+class Testimonials extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-testimonials';

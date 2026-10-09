@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Widget: Bandeau cookies / RGPD — bannière de consentement avec catégories
  * personnalisables, mémorisée via cookie navigateur.
  */
-class Cookie_Banner extends Widget_Base {
+class Cookie_Banner extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-cookie-banner';

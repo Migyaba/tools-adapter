@@ -15,6 +15,7 @@
 	gap: var(--ta-ps-gap, 32px);
 	box-sizing: border-box;
 	align-items: start;
+	position: relative;
 }
 
 /* Étape individuelle */
@@ -56,7 +57,7 @@
 /* Micro-interaction sur le badge */
 .ta-process-steps--hover-zoom .ta-process-step:hover .ta-process-step__badge {
 	transform: scale(1.08);
-	box-shadow: 0 12px 24px -4px rgba(123, 200, 29, 0.45);
+	box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.2);
 }
 
 /* Rendu de l'icône */
@@ -79,15 +80,13 @@
 	letter-spacing: -0.02em;
 }
 
-/* Ligne de connexion horizontale */
+/* Ligne de connexion horizontale par défaut (alignement gauche) */
 .ta-process-step__line {
 	flex-grow: 1;
-	height: var(--ta-ps-line-thickness, 2px);
-	background: var(--ta-ps-line-color, #d1d5db);
-	border-style: var(--ta-ps-line-style, solid);
-	border-width: 0;
-	border-top-width: var(--ta-ps-line-thickness, 2px);
-	border-color: var(--ta-ps-line-color, #d1d5db);
+	height: 0;
+	border: none;
+	border-top: var(--ta-ps-line-thickness, 2px) var(--ta-ps-line-style, solid) var(--ta-ps-line-color, #d1d5db);
+	background: transparent;
 	margin-left: 14px;
 	/* Prolonge la ligne dans le gap pour s'arrêter 14px avant le badge suivant */
 	margin-right: calc(var(--ta-ps-gap, 32px) * -1 + 14px);
@@ -97,7 +96,7 @@
 
 /* Dernière étape : pas de ligne sortante */
 .ta-process-step:last-child .ta-process-step__line {
-	display: none;
+	display: none !important;
 }
 
 /* Contenu textuel */
@@ -135,7 +134,7 @@
 	margin-bottom: 0;
 }
 
-/* Alignement centré */
+/* Alignement centré sur Bureau & Tablette */
 .ta-process-steps--align-center .ta-process-step {
 	text-align: center;
 	align-items: center;
@@ -143,66 +142,92 @@
 
 .ta-process-steps--align-center .ta-process-step__header {
 	justify-content: center;
+	position: relative;
+	width: 100%;
 }
 
 .ta-process-steps--align-center .ta-process-step__line {
 	position: absolute;
 	top: 50%;
-	left: 50%;
-	right: calc(-100% + var(--ta-ps-gap, 32px) * -1);
+	/* Démarre à 10px du bord droit du badge centré */
+	left: calc(50% + var(--ta-ps-badge-size, 60px) / 2 + 10px);
+	/* S'étend pour s'arrêter à 10px avant le bord gauche du badge suivant */
+	width: calc(100% + var(--ta-ps-gap, 32px) - var(--ta-ps-badge-size, 60px) - 20px);
+	right: auto;
 	margin: 0;
+	transform: translateY(-50%);
+	z-index: 1;
 }
 
 .ta-process-steps--align-center .ta-process-step:last-child .ta-process-step__line {
-	display: none;
+	display: none !important;
 }
 
-/* Responsive Tablette (<= 1024px) */
-@media (max-width: 1024px) {
+/* Responsive Tablette (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
 	.ta-process-steps__items {
 		grid-template-columns: repeat(var(--ta-ps-cols-tablet, 2), 1fr);
-		gap: 28px;
+		gap: var(--ta-ps-gap, 28px);
 	}
 
-	/* Masque la ligne qui déborde en bout de ligne de grille si en 2 colonnes */
+	/* Masque la ligne qui déborde en fin de ligne si la grille est sur 2 colonnes */
 	.ta-process-steps__items[data-cols-tablet="2"] .ta-process-step:nth-child(2n) .ta-process-step__line {
-		display: none;
+		display: none !important;
 	}
 }
 
 /* Responsive Mobile (<= 767px) */
 @media (max-width: 767px) {
 	.ta-process-steps__items {
-		grid-template-columns: 1fr;
-		gap: 24px;
+		grid-template-columns: 1fr !important;
+		gap: var(--ta-ps-gap, 28px) !important;
 	}
 
 	.ta-process-step {
-		display: grid;
-		grid-template-columns: var(--ta-ps-badge-size, 52px) 1fr;
-		column-gap: 18px;
-		align-items: start;
+		display: flex !important;
+		flex-direction: row !important;
+		align-items: stretch !important;
+		gap: 18px !important;
 		text-align: left !important;
+		position: relative !important;
 	}
 
 	.ta-process-step__header {
-		margin-bottom: 0;
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: center !important;
 		justify-content: flex-start !important;
-		height: 100%;
-		position: relative;
+		flex-shrink: 0 !important;
+		width: var(--ta-ps-badge-size, 52px) !important;
+		margin-bottom: 0 !important;
+		position: relative !important;
+		align-self: stretch !important;
 	}
 
-	/* Ligne verticale reliant les badges de haut en bas */
+	.ta-process-step__badge {
+		position: relative !important;
+		z-index: 2 !important;
+		flex-shrink: 0 !important;
+		margin: 0 !important;
+	}
+
+	/* Ligne verticale reliant les badges de haut en bas de façon continue */
 	.ta-process-step__line {
+		display: block !important;
 		position: absolute !important;
-		top: calc(var(--ta-ps-badge-size, 52px) + 8px) !important;
-		bottom: -20px !important;
-		left: calc(var(--ta-ps-badge-size, 52px) / 2 - 1px) !important;
-		width: var(--ta-ps-line-thickness, 2px) !important;
+		top: calc(var(--ta-ps-badge-size, 52px) / 2) !important;
+		bottom: calc((var(--ta-ps-gap, 28px) + var(--ta-ps-badge-size, 52px) / 2) * -1) !important;
+		left: 50% !important;
+		right: auto !important;
+		transform: translateX(-50%) !important;
+		width: 0 !important;
 		height: auto !important;
 		margin: 0 !important;
-		border-width: 0 !important;
-		border-left-width: var(--ta-ps-line-thickness, 2px) !important;
+		background: transparent !important;
+		border: none !important;
+		border-left: var(--ta-ps-line-thickness, 2px) var(--ta-ps-line-style, solid) var(--ta-ps-line-color, #d1d5db) !important;
+		z-index: 1 !important;
+		pointer-events: none !important;
 	}
 
 	.ta-process-step:last-child .ta-process-step__line {
@@ -210,10 +235,19 @@
 	}
 
 	.ta-process-step__content {
+		flex: 1 1 auto !important;
+		min-width: 0 !important;
+		text-align: left !important;
+		align-items: flex-start !important;
 		padding-top: 4px;
 	}
 
 	.ta-process-step__title {
 		font-size: 1.05rem;
+		text-align: left !important;
+	}
+
+	.ta-process-step__description {
+		text-align: left !important;
 	}
 }

@@ -1,0 +1,192 @@
+/* Tools Adapter — Bannière CTA */
+.ta-ctab {
+	--ta-ctab-min-h: 480px;
+	--ta-ctab-bg: #f3eee8;
+	--ta-ctab-color: #1c1c1c;
+	--ta-ctab-btn-bg: #1c1c1c;
+	--ta-ctab-btn-color: #ffffff;
+	--ta-ctab-overlay: rgba(0, 0, 0, 0.45);
+	--ta-ctab-radius: 0px;
+	--ta-ctab-btn-radius: 0px;
+	position: relative;
+	display: grid;
+	overflow: hidden;
+	min-height: var(--ta-ctab-min-h);
+	border-radius: var(--ta-ctab-radius);
+	background: var(--ta-ctab-bg);
+	color: var(--ta-ctab-color);
+	isolation: isolate;
+}
+
+.ta-ctab__media {
+	position: relative;
+	overflow: hidden;
+	min-height: 260px;
+}
+
+.ta-ctab .ta-ctab__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	max-width: none;
+	height: 100%;
+	object-fit: cover;
+}
+
+.ta-ctab__content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 14px;
+	padding: clamp(32px, 6vw, 80px);
+}
+
+.ta-ctab--align-center .ta-ctab__content {
+	align-items: center;
+	text-align: center;
+}
+
+.ta-ctab__eyebrow {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	opacity: 0.75;
+}
+
+.ta-ctab__title {
+	margin: 0;
+	max-width: 18ch;
+	color: inherit;
+	font-size: clamp(1.9rem, 4vw, 3.4rem);
+	font-weight: 500;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.ta-ctab__text {
+	max-width: 46ch;
+	margin: 0;
+	font-size: 1.05rem;
+	opacity: 0.8;
+}
+
+.ta-ctab__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 10px;
+}
+
+.ta-ctab__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 50px;
+	padding: 0 30px;
+	border: 1px solid var(--ta-ctab-btn-bg);
+	border-radius: var(--ta-ctab-btn-radius);
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.ta-ctab__btn--primary {
+	background: var(--ta-ctab-btn-bg);
+	color: var(--ta-ctab-btn-color);
+}
+
+.ta-ctab__btn--primary:hover {
+	background: transparent;
+	color: var(--ta-ctab-color);
+	border-color: var(--ta-ctab-color);
+}
+
+.ta-ctab__btn--secondary {
+	border-color: currentColor;
+	background: transparent;
+	color: var(--ta-ctab-color);
+}
+
+.ta-ctab__btn--secondary:hover {
+	background: var(--ta-ctab-color);
+	color: var(--ta-ctab-bg);
+}
+
+/* Split */
+.ta-ctab--split {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ta-ctab--split.ta-ctab--reverse .ta-ctab__media {
+	order: 2;
+}
+
+/* Overlay */
+.ta-ctab--overlay .ta-ctab__media {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+}
+
+.ta-ctab--overlay .ta-ctab__media::after {
+	position: absolute;
+	inset: 0;
+	background: var(--ta-ctab-overlay);
+	content: "";
+}
+
+.ta-ctab--overlay {
+	--ta-ctab-color: #ffffff;
+}
+
+/* Centered */
+.ta-ctab--centered {
+	place-items: center;
+}
+
+.ta-ctab--centered .ta-ctab__title {
+	max-width: 20ch;
+}
+
+/* Accent card */
+.ta-ctab--accent {
+	grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+	align-items: stretch;
+}
+
+.ta-ctab--accent .ta-ctab__media {
+	order: 2;
+	margin: 20px 20px 20px 0;
+	border-radius: calc(var(--ta-ctab-radius) * 0.6);
+}
+
+@media (max-width: 767px) {
+	.ta-ctab--split,
+	.ta-ctab--accent {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ta-ctab--split.ta-ctab--reverse .ta-ctab__media {
+		order: 0;
+	}
+
+	.ta-ctab--accent .ta-ctab__media {
+		order: 0;
+		margin: 16px 16px 0;
+	}
+
+	.ta-ctab {
+		min-height: 0;
+	}
+
+	.ta-ctab--overlay {
+		min-height: calc(var(--ta-ctab-min-h) * 0.8);
+	}
+}

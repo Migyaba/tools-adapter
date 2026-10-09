@@ -51,7 +51,24 @@ final class Plugin {
 			new Variation_Swatches();
 		}
 
+		// "Liste de souhaits" — global feature (heart buttons, counter, list page).
+		if ( Admin_Settings::is_feature_enabled( 'wishlist' ) ) {
+			require_once TOOLS_ADAPTER_PATH . 'includes/wishlist.php';
+			new Wishlist();
+		}
+
+		// "Header & Footer Builder" is a global theme-building feature.
+		if ( Admin_Settings::is_feature_enabled( 'header_footer_builder' ) ) {
+			require_once TOOLS_ADAPTER_PATH . 'includes/header-footer/class-manager.php';
+			HeaderFooter\Manager::instance();
+		}
+
 		add_action( 'wp_footer', [ $this, 'print_current_product_id' ] );
+
+		// Balises dynamiques propres au plugin (fonctionnent sans Elementor Pro).
+		if ( Admin_Settings::is_feature_enabled( 'dynamic_tags' ) ) {
+			add_action( 'elementor/dynamic_tags/register', [ $this, 'register_dynamic_tags' ] );
+		}
 
 		add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
@@ -90,11 +107,23 @@ final class Plugin {
 	}
 
 	/**
+	 * Register the Tools Adapter dynamic tags group and tags.
+	 *
+	 * @param \Elementor\Core\DynamicTags\Manager $manager Dynamic tags manager.
+	 */
+	public function register_dynamic_tags( $manager ) {
+		require_once TOOLS_ADAPTER_PATH . 'includes/dynamic-tags.php';
+		\ToolsAdapter\DynamicTags\register( $manager );
+	}
+
+	/**
 	 * Register Elementor widgets.
 	 *
 	 * @param \Elementor\Widgets_Manager $widgets_manager Widgets manager.
 	 */
 	public function register_widgets( $widgets_manager ) {
+		// Classes de base (balises dynamiques sur les champs lien / texte / image).
+		require_once TOOLS_ADAPTER_PATH . 'includes/dynamic-support.php';
 		require_once TOOLS_ADAPTER_PATH . 'includes/widgets/products-widget-controls.php';
 
 		// slug (as returned by the widget's get_name()) => [ file, class name ].
@@ -108,7 +137,10 @@ final class Plugin {
 			'tools-adapter-product-carousel'    => [ 'product-carousel.php', 'Product_Carousel' ],
 			'tools-adapter-product-archive'     => [ 'product-archive.php', 'Product_Archive' ],
 			'tools-adapter-hero-banner'          => [ 'hero-banner.php', 'Hero_Banner' ],
+			'tools-adapter-hero-carousel'        => [ 'hero-carousel.php', 'Hero_Carousel' ],
 			'tools-adapter-cta-band'             => [ 'cta-band.php', 'Cta_Band' ],
+			'tools-adapter-marquee'              => [ 'marquee.php', 'Marquee' ],
+			'tools-adapter-cost-calculator'      => [ 'cost-calculator.php', 'Cost_Calculator' ],
 			'tools-adapter-stats'                => [ 'stats-counters.php', 'Stats_Counters' ],
 			'tools-adapter-logos'                => [ 'logos-grid.php', 'Logos_Grid' ],
 			'tools-adapter-faq'                  => [ 'faq-accordion.php', 'Faq_Accordion' ],
@@ -136,8 +168,24 @@ final class Plugin {
 			'tools-adapter-google-map'           => [ 'google-map.php', 'Google_Map' ],
 			'tools-adapter-blog-grid'            => [ 'blog-grid.php', 'Blog_Grid' ],
 			'tools-adapter-icon-box'             => [ 'icon-box.php', 'Icon_Box' ],
+			'tools-adapter-image-box'            => [ 'image-box.php', 'Image_Box' ],
+			'tools-adapter-service-cards'        => [ 'service-cards.php', 'Service_Cards' ],
+			'tools-adapter-quick-choice'         => [ 'quick-choice-card.php', 'Quick_Choice_Card' ],
+			'tools-adapter-image-stack'          => [ 'image-stack.php', 'Image_Stack' ],
+			'tools-adapter-price-card'           => [ 'price-card.php', 'Price_Card' ],
 			'tools-adapter-project-gallery'      => [ 'project-gallery.php', 'Project_Gallery' ],
+			'tools-adapter-project-showcase'     => [ 'project-showcase.php', 'Project_Showcase' ],
 			'tools-adapter-process-steps'        => [ 'process-steps.php', 'Process_Steps' ],
+			'tools-adapter-site-logo'            => [ 'site-logo.php', 'Site_Logo' ],
+			'tools-adapter-nav-menu'            => [ 'nav-menu.php', 'Nav_Menu' ],
+			'tools-adapter-site-search'          => [ 'site-search.php', 'Site_Search' ],
+			'tools-adapter-site-copyright'       => [ 'site-copyright.php', 'Site_Copyright' ],
+			'tools-adapter-interactive-map'      => [ 'interactive-map.php', 'Interactive_Map' ],
+			'tools-adapter-wishlist'             => [ 'wishlist.php', 'Wishlist_List' ],
+			'tools-adapter-promo-grid'           => [ 'promo-grid.php', 'Promo_Grid' ],
+			'tools-adapter-lookbook'             => [ 'lookbook.php', 'Lookbook' ],
+			'tools-adapter-category-showcase'    => [ 'category-showcase.php', 'Category_Showcase' ],
+			'tools-adapter-cta-banner'           => [ 'cta-banner.php', 'Cta_Banner' ],
 		];
 
 		foreach ( $widgets as $slug => $data ) {
@@ -248,17 +296,26 @@ final class Plugin {
 
 		// Phase 1 — widgets génériques (page building).
 		wp_register_style( 'tools-adapter-hero-banner', TOOLS_ADAPTER_URL . 'assets/css/hero-banner.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-hero-carousel', TOOLS_ADAPTER_URL . 'assets/css/hero-carousel.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-cta-band', TOOLS_ADAPTER_URL . 'assets/css/cta-band.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-marquee', TOOLS_ADAPTER_URL . 'assets/css/marquee.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-cost-calculator', TOOLS_ADAPTER_URL . 'assets/css/cost-calculator.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-stats', TOOLS_ADAPTER_URL . 'assets/css/stats-counters.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-logos', TOOLS_ADAPTER_URL . 'assets/css/logos-grid.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/css/faq-accordion.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-trust-badges', TOOLS_ADAPTER_URL . 'assets/css/trust-badges.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-category-banner', TOOLS_ADAPTER_URL . 'assets/css/category-banner.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-icon-box', TOOLS_ADAPTER_URL . 'assets/css/icon-box.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-image-box', TOOLS_ADAPTER_URL . 'assets/css/image-box.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-service-cards', TOOLS_ADAPTER_URL . 'assets/css/service-cards.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-price-card', TOOLS_ADAPTER_URL . 'assets/css/price-card.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-image-stack', TOOLS_ADAPTER_URL . 'assets/css/image-stack.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-quick-choice', TOOLS_ADAPTER_URL . 'assets/css/quick-choice-card.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-project-gallery', TOOLS_ADAPTER_URL . 'assets/css/project-gallery.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-process-steps', TOOLS_ADAPTER_URL . 'assets/css/process-steps.css', [], TOOLS_ADAPTER_VERSION );
 
 		wp_register_script( 'tools-adapter-stats', TOOLS_ADAPTER_URL . 'assets/js/stats-counters.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-cost-calculator', TOOLS_ADAPTER_URL . 'assets/js/cost-calculator.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-faq', TOOLS_ADAPTER_URL . 'assets/js/faq-accordion.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-project-gallery', TOOLS_ADAPTER_URL . 'assets/js/project-gallery.js', [ 'jquery' ], TOOLS_ADAPTER_VERSION, true );
 
@@ -289,6 +346,16 @@ final class Plugin {
 		wp_register_script( 'tools-adapter-sticky-atc', TOOLS_ADAPTER_URL . 'assets/js/sticky-add-to-cart.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-quick-view', TOOLS_ADAPTER_URL . 'assets/js/quick-view.js', [ 'tools-adapter-modal' ], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-variation-swatches', TOOLS_ADAPTER_URL . 'assets/js/variation-swatches.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		// Liste de souhaits, mosaïque promo, lookbook.
+		wp_register_style( 'tools-adapter-wishlist', TOOLS_ADAPTER_URL . 'assets/css/wishlist.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_script( 'tools-adapter-wishlist', TOOLS_ADAPTER_URL . 'assets/js/wishlist.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_style( 'tools-adapter-promo-grid', TOOLS_ADAPTER_URL . 'assets/css/promo-grid.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-lookbook', TOOLS_ADAPTER_URL . 'assets/css/lookbook.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_script( 'tools-adapter-lookbook', TOOLS_ADAPTER_URL . 'assets/js/lookbook.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_style( 'tools-adapter-category-showcase', TOOLS_ADAPTER_URL . 'assets/css/category-showcase.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_script( 'tools-adapter-category-showcase', TOOLS_ADAPTER_URL . 'assets/js/category-showcase.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_style( 'tools-adapter-cta-banner', TOOLS_ADAPTER_URL . 'assets/css/cta-banner.css', [], TOOLS_ADAPTER_VERSION );
 
 		wp_localize_script(
 			'tools-adapter-mini-cart',
@@ -355,10 +422,30 @@ final class Plugin {
 		wp_register_style( 'tools-adapter-google-map', TOOLS_ADAPTER_URL . 'assets/css/google-map.css', [], TOOLS_ADAPTER_VERSION );
 		wp_register_style( 'tools-adapter-blog-grid', TOOLS_ADAPTER_URL . 'assets/css/blog-grid.css', [], TOOLS_ADAPTER_VERSION );
 
+		// Carte Interactive (Leaflet & CartoDB).
+		wp_register_style( 'leaflet-css', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css', [], '1.9.4' );
+		wp_register_script( 'leaflet-js', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js', [], '1.9.4', true );
+		wp_register_style( 'tools-adapter-interactive-map', TOOLS_ADAPTER_URL . 'assets/css/interactive-map.css', [ 'leaflet-css' ], TOOLS_ADAPTER_VERSION );
+		wp_register_script( 'tools-adapter-interactive-map', TOOLS_ADAPTER_URL . 'assets/js/interactive-map.js', [ 'jquery', 'leaflet-js', 'elementor-frontend' ], TOOLS_ADAPTER_VERSION, true );
+
 		wp_register_script( 'tools-adapter-mega-menu', TOOLS_ADAPTER_URL . 'assets/js/mega-menu.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-cookie-banner', TOOLS_ADAPTER_URL . 'assets/js/cookie-banner.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-social-proof', TOOLS_ADAPTER_URL . 'assets/js/social-proof.js', [], TOOLS_ADAPTER_VERSION, true );
 		wp_register_script( 'tools-adapter-contact-form', TOOLS_ADAPTER_URL . 'assets/js/contact-form.js', [], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-blog-grid', TOOLS_ADAPTER_URL . 'assets/js/blog-grid.js', [], TOOLS_ADAPTER_VERSION, true );
+
+		// Header & Footer builder widgets assets.
+		wp_register_style( 'tools-adapter-site-logo', TOOLS_ADAPTER_URL . 'assets/css/site-logo.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-nav-menu', TOOLS_ADAPTER_URL . 'assets/css/nav-menu.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-site-search', TOOLS_ADAPTER_URL . 'assets/css/site-search.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_style( 'tools-adapter-site-copyright', TOOLS_ADAPTER_URL . 'assets/css/site-copyright.css', [], TOOLS_ADAPTER_VERSION );
+
+		wp_register_script( 'tools-adapter-nav-menu', TOOLS_ADAPTER_URL . 'assets/js/nav-menu.js', [ 'jquery' ], TOOLS_ADAPTER_VERSION, true );
+		wp_register_script( 'tools-adapter-site-search', TOOLS_ADAPTER_URL . 'assets/js/site-search.js', [ 'jquery' ], TOOLS_ADAPTER_VERSION, true );
+
+		// Project showcase gallery assets.
+		wp_register_style( 'tools-adapter-project-showcase', TOOLS_ADAPTER_URL . 'assets/css/project-showcase.css', [], TOOLS_ADAPTER_VERSION );
+		wp_register_script( 'tools-adapter-project-showcase', TOOLS_ADAPTER_URL . 'assets/js/project-showcase.js', [ 'jquery', 'elementor-frontend' ], TOOLS_ADAPTER_VERSION, true );
 
 		wp_localize_script(
 			'tools-adapter-contact-form',

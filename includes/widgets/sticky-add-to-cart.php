@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Barre "Ajouter au panier" collante — pour pages produit simple WooCommerce.
  */
-class Sticky_Add_To_Cart extends Widget_Base {
+class Sticky_Add_To_Cart extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-sticky-atc';

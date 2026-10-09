@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Produits récemment consultés — historique client-side (localStorage) + rendu AJAX.
  */
-class Recently_Viewed extends Widget_Base {
+class Recently_Viewed extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-recently-viewed';

@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
 
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Compte à rebours promo — date fixe ou fin de promo du produit courant.
  */
-class Sale_Countdown extends Widget_Base {
+class Sale_Countdown extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-sale-countdown';

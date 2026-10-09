@@ -33,6 +33,7 @@ final class Ajax_Recently_Viewed {
 
 		$exclude = isset( $_POST['exclude'] ) ? absint( wp_unslash( $_POST['exclude'] ) ) : 0;
 		$limit   = isset( $_POST['limit'] ) ? absint( wp_unslash( $_POST['limit'] ) ) : 8;
+		$limit   = min( max( 1, $limit ), 12 ); // Matches the widget's "Nombre de produits" max.
 
 		if ( $exclude ) {
 			$ids = array_values( array_diff( $ids, [ $exclude ] ) );

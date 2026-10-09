@@ -1,0 +1,415 @@
+/**
+ * Tools Adapter — Hero Carrousel (Glassmorphism & Staggered Animations)
+ * Styles pour le widget Hero Carrousel plein écran avec carte en verre dépoli.
+ */
+
+.ta-hero-carousel {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	border-radius: var(--ta-hero-border-radius, 24px);
+	min-height: var(--ta-hero-min-height, 560px);
+	background-color: #0b1329;
+}
+
+.ta-hero-carousel__track {
+	display: flex;
+	height: 100%;
+	min-height: inherit;
+	will-change: transform;
+	box-sizing: border-box;
+}
+
+/* Slide item */
+.ta-hero-slide {
+	position: relative;
+	display: flex;
+	align-items: var(--ta-hero-card-v-align, center);
+	justify-content: var(--ta-hero-card-h-align, center);
+	flex: 0 0 100%;
+	width: 100%;
+	min-height: inherit;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 48px 32px;
+}
+
+/* Background image overlay */
+.ta-hero-slide__overlay {
+	position: absolute;
+	inset: 0;
+	background: var(--ta-hero-overlay, rgba(0, 0, 0, 0.15));
+	pointer-events: none;
+	z-index: 1;
+	transition: background-color 0.3s ease;
+}
+
+/* Content Container */
+.ta-hero-slide__container {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: var(--ta-hero-content-max-width, 1200px);
+	margin: 0 auto;
+	display: flex;
+	justify-content: var(--ta-hero-card-h-align, center);
+	align-items: var(--ta-hero-card-v-align, center);
+}
+
+/* Glassmorphism Card */
+.ta-hero-glass-card {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: var(--ta-card-max-width, 640px);
+	background: var(--ta-card-bg, rgba(255, 255, 255, 0.58));
+	backdrop-filter: blur(var(--ta-card-blur, 16px));
+	-webkit-backdrop-filter: blur(var(--ta-card-blur, 16px));
+	border: var(--ta-card-border-width, 1px) solid var(--ta-card-border-color, rgba(255, 255, 255, 0.55));
+	border-radius: var(--ta-card-radius, 32px);
+	padding: var(--ta-card-padding, 48px 44px);
+	box-shadow: var(--ta-card-shadow, 0 20px 45px -10px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.3) inset);
+	text-align: var(--ta-card-align, center);
+	box-sizing: border-box;
+}
+
+/* Inactive slide elements */
+.ta-hero-slide:not(.is-active) .ta-hero-glass-card {
+	opacity: 0;
+	transform: translateY(28px);
+	pointer-events: none;
+}
+
+.ta-hero-slide:not(.is-active) .ta-hero-subtitle,
+.ta-hero-slide:not(.is-active) .ta-hero-title,
+.ta-hero-slide:not(.is-active) .ta-hero-desc,
+.ta-hero-slide:not(.is-active) .ta-hero-actions {
+	opacity: 0;
+	transform: translateY(20px);
+}
+
+/* Staggered entrance animations on active slide */
+.ta-hero-slide.is-active .ta-hero-glass-card {
+	animation: taHeroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.ta-hero-carousel--anim-fade_in .ta-hero-slide.is-active .ta-hero-glass-card {
+	animation: taHeroFadeIn 0.6s ease forwards;
+}
+.ta-hero-carousel--anim-scale_up .ta-hero-slide.is-active .ta-hero-glass-card {
+	animation: taHeroScaleUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ta-hero-slide.is-active .ta-hero-subtitle {
+	animation: taHeroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+.ta-hero-carousel--anim-fade_in .ta-hero-slide.is-active .ta-hero-subtitle {
+	animation: taHeroFadeIn 0.6s ease 0.12s both;
+}
+.ta-hero-carousel--anim-scale_up .ta-hero-slide.is-active .ta-hero-subtitle {
+	animation: taHeroScaleUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.ta-hero-slide.is-active .ta-hero-title {
+	animation: taHeroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+.ta-hero-carousel--anim-fade_in .ta-hero-slide.is-active .ta-hero-title {
+	animation: taHeroFadeIn 0.6s ease 0.22s both;
+}
+.ta-hero-carousel--anim-scale_up .ta-hero-slide.is-active .ta-hero-title {
+	animation: taHeroScaleUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+
+.ta-hero-slide.is-active .ta-hero-desc {
+	animation: taHeroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+}
+.ta-hero-carousel--anim-fade_in .ta-hero-slide.is-active .ta-hero-desc {
+	animation: taHeroFadeIn 0.6s ease 0.32s both;
+}
+.ta-hero-carousel--anim-scale_up .ta-hero-slide.is-active .ta-hero-desc {
+	animation: taHeroScaleUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+}
+
+.ta-hero-slide.is-active .ta-hero-actions {
+	animation: taHeroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+}
+.ta-hero-carousel--anim-fade_in .ta-hero-slide.is-active .ta-hero-actions {
+	animation: taHeroFadeIn 0.6s ease 0.42s both;
+}
+.ta-hero-carousel--anim-scale_up .ta-hero-slide.is-active .ta-hero-actions {
+	animation: taHeroScaleUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
+}
+
+/* Content Elements */
+.ta-hero-subtitle {
+	display: inline-block;
+	font-size: 0.95rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--ta-hero-sub-color, #334155);
+	margin-bottom: var(--ta-hero-sub-spacing, 12px);
+}
+
+.ta-hero-subtitle--badge {
+	padding: 6px 14px;
+	border-radius: 999px;
+	background: var(--ta-hero-badge-bg, rgba(255, 255, 255, 0.6));
+	border: 1px solid var(--ta-hero-badge-border, rgba(255, 255, 255, 0.7));
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.ta-hero-title {
+	margin: 0 0 var(--ta-hero-title-spacing, 16px) 0;
+	font-size: clamp(1.85rem, 3.6vw, 2.85rem);
+	font-weight: 700;
+	line-height: 1.18;
+	color: var(--ta-hero-title-color, #0f172a);
+	word-break: break-word;
+}
+
+.ta-hero-desc {
+	margin: 0 auto var(--ta-hero-desc-spacing, 28px) auto;
+	font-size: 1.05rem;
+	line-height: 1.62;
+	color: var(--ta-hero-desc-color, #475569);
+	max-width: var(--ta-hero-desc-max-w, 540px);
+}
+
+/* Actions & Buttons */
+.ta-hero-actions {
+	display: inline-flex;
+	align-items: center;
+	justify-content: var(--ta-hero-actions-align, center);
+	gap: 14px;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.ta-hero-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: var(--ta-hero-btn-padding, 14px 34px);
+	font-size: var(--ta-hero-btn-font-size, 0.95rem);
+	font-weight: 600;
+	text-decoration: none;
+	border-radius: var(--ta-hero-btn-radius, 999px);
+	transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+/* Primary Button */
+.ta-hero-btn--primary {
+	background: var(--ta-hero-btn-bg, #f59e0b);
+	color: var(--ta-hero-btn-color, #ffffff);
+	border: var(--ta-hero-btn-border-width, 0px) solid var(--ta-hero-btn-border-color, transparent);
+	box-shadow: var(--ta-hero-btn-shadow, 0 8px 22px -4px rgba(245, 158, 11, 0.45));
+}
+
+.ta-hero-btn--primary:hover,
+.ta-hero-btn--primary:focus {
+	background: var(--ta-hero-btn-bg-hover, #d97706);
+	color: var(--ta-hero-btn-color-hover, #ffffff);
+	transform: translateY(-2px);
+	box-shadow: 0 12px 28px -4px rgba(245, 158, 11, 0.55);
+}
+
+/* Secondary Button */
+.ta-hero-btn--secondary {
+	background: var(--ta-hero-sec-btn-bg, rgba(255, 255, 255, 0.8));
+	color: var(--ta-hero-sec-btn-color, #1e293b);
+	border: var(--ta-hero-sec-btn-border-width, 1px) solid var(--ta-hero-sec-btn-border-color, rgba(0, 0, 0, 0.1));
+	box-shadow: var(--ta-hero-sec-btn-shadow, 0 4px 14px rgba(0, 0, 0, 0.05));
+}
+
+.ta-hero-btn--secondary:hover,
+.ta-hero-btn--secondary:focus {
+	background: var(--ta-hero-sec-btn-bg-hover, #ffffff);
+	color: var(--ta-hero-sec-btn-color-hover, #0f172a);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09);
+}
+
+/* Navigation Arrows */
+.ta-hero-carousel .ta-carousel__arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 10;
+	width: var(--ta-hero-arrow-size, 50px);
+	height: var(--ta-hero-arrow-size, 50px);
+	border-radius: 50%;
+	background: var(--ta-hero-arrow-bg, #ffffff);
+	color: var(--ta-hero-arrow-color, #0f172a);
+	border: var(--ta-hero-arrow-border-width, 0px) solid var(--ta-hero-arrow-border-color, transparent);
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--ta-hero-arrow-font-size, 26px);
+	font-family: inherit;
+	line-height: 1;
+	box-shadow: var(--ta-hero-arrow-shadow, 0 8px 20px rgba(0, 0, 0, 0.16));
+	transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+	padding: 0;
+}
+
+.ta-hero-carousel .ta-carousel__arrow:hover {
+	background: var(--ta-hero-arrow-bg-hover, #ffffff);
+	color: var(--ta-hero-arrow-color-hover, #f59e0b);
+	transform: translateY(-50%) scale(1.08);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+.ta-hero-carousel .ta-carousel__arrow--prev {
+	left: var(--ta-hero-arrow-offset, 28px);
+}
+
+.ta-hero-carousel .ta-carousel__arrow--next {
+	right: var(--ta-hero-arrow-offset, 28px);
+}
+
+/* Pagination Dots */
+.ta-hero-carousel .ta-carousel__dots {
+	position: absolute;
+	bottom: var(--ta-hero-dots-bottom, 22px);
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.ta-hero-carousel .ta-carousel__dot {
+	width: var(--ta-hero-dot-size, 10px);
+	height: var(--ta-hero-dot-size, 10px);
+	border-radius: 50%;
+	background: var(--ta-hero-dot-color, rgba(255, 255, 255, 0.5));
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ta-hero-carousel .ta-carousel__dot.is-active {
+	width: var(--ta-hero-dot-active-width, 28px);
+	border-radius: 999px;
+	background: var(--ta-hero-dot-active-color, #ffffff);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Keyframe Animations */
+@keyframes taHeroFadeUp {
+	0% {
+		opacity: 0;
+		transform: translateY(28px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes taHeroFadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes taHeroScaleUp {
+	0% {
+		opacity: 0;
+		transform: scale(0.92) translateY(18px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+	.ta-hero-carousel {
+		border-radius: var(--ta-hero-border-radius-tablet, 20px);
+	}
+
+	.ta-hero-glass-card {
+		padding: var(--ta-card-padding-tablet, 36px 30px);
+		border-radius: var(--ta-card-radius-tablet, 26px);
+	}
+
+	.ta-hero-carousel .ta-carousel__arrow {
+		width: 44px;
+		height: 44px;
+		font-size: 22px;
+	}
+
+	.ta-hero-carousel .ta-carousel__arrow--prev {
+		left: var(--ta-hero-arrow-offset-tablet, 16px);
+	}
+
+	.ta-hero-carousel .ta-carousel__arrow--next {
+		right: var(--ta-hero-arrow-offset-tablet, 16px);
+	}
+}
+
+@media (max-width: 767px) {
+	.ta-hero-carousel {
+		border-radius: var(--ta-hero-border-radius-mobile, 16px);
+	}
+
+	.ta-hero-slide {
+		padding: 36px 16px 56px 16px;
+	}
+
+	.ta-hero-glass-card {
+		padding: var(--ta-card-padding-mobile, 28px 18px);
+		border-radius: var(--ta-card-radius-mobile, 22px);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+	}
+
+	.ta-hero-title {
+		font-size: 1.6rem;
+		margin-bottom: 12px;
+	}
+
+	.ta-hero-desc {
+		font-size: 0.95rem;
+		margin-bottom: 22px;
+	}
+
+	.ta-hero-btn {
+		width: 100%;
+		padding: 12px 24px;
+	}
+
+	.ta-hero-carousel .ta-carousel__arrow {
+		width: 38px;
+		height: 38px;
+		font-size: 20px;
+	}
+
+	.ta-hero-carousel .ta-carousel__arrow--prev {
+		left: 10px;
+	}
+
+	.ta-hero-carousel .ta-carousel__arrow--next {
+		right: 10px;
+	}
+
+	.ta-hero-carousel .ta-carousel__dots {
+		bottom: 14px;
+	}
+}

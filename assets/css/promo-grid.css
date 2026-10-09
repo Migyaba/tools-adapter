@@ -1,0 +1,187 @@
+/* Tools Adapter — Mosaïque promo (Bento) */
+.ta-promo-grid {
+	--ta-pg-gap: 16px;
+	--ta-pg-height: 620px;
+	--ta-pg-tile-h: 460px;
+	--ta-pg-radius: 0px;
+	--ta-pg-overlay: rgba(0, 0, 0, 0.55);
+	display: grid;
+	gap: var(--ta-pg-gap);
+}
+
+.ta-promo-grid--bento,
+.ta-promo-grid--bento-right {
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+	grid-template-rows: repeat(2, calc((var(--ta-pg-height) - var(--ta-pg-gap)) / 2));
+}
+
+.ta-promo-grid--bento .ta-promo-tile:first-child {
+	grid-row: 1 / span 2;
+}
+
+.ta-promo-grid--bento-right {
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+}
+
+.ta-promo-grid--bento-right .ta-promo-tile:first-child {
+	grid-column: 2;
+	grid-row: 1 / span 2;
+}
+
+.ta-promo-grid--bento-right .ta-promo-tile:not(:first-child) {
+	grid-column: 1;
+}
+
+.ta-promo-grid--cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ta-promo-grid--cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ta-promo-grid--cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.ta-promo-grid[class*="--cols-"] .ta-promo-tile {
+	height: var(--ta-pg-tile-h);
+}
+
+.ta-promo-tile {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	border-radius: var(--ta-pg-radius);
+	background: #d9d6d1;
+	color: #ffffff;
+	text-decoration: none;
+	isolation: isolate;
+}
+
+.ta-promo-tile:hover,
+.ta-promo-tile:focus {
+	color: #ffffff;
+}
+
+.ta-promo-tile .ta-promo-tile__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	max-width: none;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.ta-promo-grid--zoom .ta-promo-tile:hover .ta-promo-tile__img {
+	transform: scale(1.05);
+}
+
+.ta-promo-tile__overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, var(--ta-pg-overlay) 100%);
+}
+
+.ta-promo-tile--center .ta-promo-tile__overlay {
+	background: var(--ta-pg-overlay);
+	opacity: 0.6;
+}
+
+.ta-promo-tile--top-left .ta-promo-tile__overlay {
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0) 40%, var(--ta-pg-overlay) 100%);
+}
+
+.ta-promo-tile__content {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-end;
+	gap: 8px;
+	padding: clamp(20px, 3vw, 40px);
+}
+
+.ta-promo-tile--bottom-center .ta-promo-tile__content {
+	align-items: center;
+	text-align: center;
+}
+
+.ta-promo-tile--center .ta-promo-tile__content {
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.ta-promo-tile--top-left .ta-promo-tile__content {
+	justify-content: flex-start;
+}
+
+.ta-promo-tile__eyebrow {
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	opacity: 0.85;
+}
+
+.ta-promo-tile__title {
+	margin: 0;
+	color: inherit;
+	font-size: clamp(1.35rem, 2.2vw, 2rem);
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	line-height: 1.15;
+}
+
+.ta-promo-grid--bento .ta-promo-tile:first-child .ta-promo-tile__title,
+.ta-promo-grid--bento-right .ta-promo-tile:first-child .ta-promo-tile__title {
+	font-size: clamp(1.8rem, 3.4vw, 3rem);
+}
+
+.ta-promo-tile__text {
+	max-width: 38ch;
+	font-size: 0.95rem;
+	opacity: 0.85;
+}
+
+.ta-promo-tile__cta {
+	margin-top: 8px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid currentColor;
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	transition: gap 0.3s ease, opacity 0.3s ease;
+}
+
+.ta-promo-tile:hover .ta-promo-tile__cta {
+	opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+	.ta-promo-grid--cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+	.ta-promo-grid--bento,
+	.ta-promo-grid--bento-right,
+	.ta-promo-grid--cols-2,
+	.ta-promo-grid--cols-3 {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: none;
+	}
+
+	.ta-promo-grid--bento .ta-promo-tile,
+	.ta-promo-grid--bento-right .ta-promo-tile {
+		grid-column: auto !important;
+		grid-row: auto !important;
+		height: var(--ta-pg-tile-h);
+	}
+
+	.ta-promo-grid--cols-4 .ta-promo-tile {
+		height: calc(var(--ta-pg-tile-h) * 0.7);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ta-promo-tile__img {
+		transition: none;
+	}
+}

@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Bloc réassurance — icônes + textes (livraison, paiement sécurisé, retours...).
  */
-class Trust_Badges extends Widget_Base {
+class Trust_Badges extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-trust-badges';
@@ -56,7 +56,7 @@ class Trust_Badges extends Widget_Base {
 				'default'     => [
 					[ 'icon' => [ 'value' => 'fas fa-truck', 'library' => 'fa-solid' ], 'title' => esc_html__( 'Livraison rapide', 'tools-adapter' ), 'description' => esc_html__( 'Sous 48h partout en France', 'tools-adapter' ) ],
 					[ 'icon' => [ 'value' => 'fas fa-lock', 'library' => 'fa-solid' ], 'title' => esc_html__( 'Paiement sécurisé', 'tools-adapter' ), 'description' => esc_html__( 'Transactions cryptées SSL', 'tools-adapter' ) ],
-					[ 'icon' => [ 'value' => 'fas fa-rotate-left', 'library' => 'fa-solid' ], 'title' => esc_html__( 'Retours gratuits', 'tools-adapter' ), 'description' => esc_html__( '30 jours pour changer d\'avis', 'tools-adapter' ) ],
+					[ 'icon' => [ 'value' => 'fas fa-undo', 'library' => 'fa-solid' ], 'title' => esc_html__( 'Retours gratuits', 'tools-adapter' ), 'description' => esc_html__( '30 jours pour changer d\'avis', 'tools-adapter' ) ],
 					[ 'icon' => [ 'value' => 'fas fa-headset', 'library' => 'fa-solid' ], 'title' => esc_html__( 'Support client', 'tools-adapter' ), 'description' => esc_html__( 'Une équipe à votre écoute', 'tools-adapter' ) ],
 				],
 				'title_field' => '{{{ title }}}',

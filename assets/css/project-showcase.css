@@ -1,0 +1,483 @@
+/**
+ * Tools Adapter — Project Showcase Gallery Widget Styles
+ * Toutes les couleurs passent par des custom properties CSS
+ * injectées depuis les contrôles Elementor (100% personnalisable).
+ */
+
+.ta-project-showcase {
+	position: relative;
+	width: 100%;
+	margin: 0 auto;
+	box-sizing: border-box;
+	font-family: inherit;
+}
+
+/* ==========================================================================
+   1. Main Stage / Viewer
+   ========================================================================== */
+
+.ta-ps-main-viewer {
+	position: relative;
+	width: 100%;
+	background-color: var(--ta-ps-viewer-bg, #0d1a10);
+	border-radius: 20px;
+	overflow: hidden;
+	cursor: zoom-in;
+	user-select: none;
+	display: block;
+}
+
+/* Hauteur fixe par défaut (quand ni auto ni ratio) */
+.ta-ps-main-viewer:not(.ta-ps-mode-auto):not(.ta-ps-mode-ratio) {
+	height: 520px;
+}
+
+@media (max-width: 1024px) {
+	.ta-ps-main-viewer:not(.ta-ps-mode-auto):not(.ta-ps-mode-ratio) {
+		height: 440px;
+	}
+}
+
+@media (max-width: 767px) {
+	.ta-ps-main-viewer:not(.ta-ps-mode-auto):not(.ta-ps-mode-ratio) {
+		height: 320px;
+		border-radius: 16px;
+	}
+}
+
+.ta-ps-main-viewer.ta-ps-mode-auto {
+	height: auto;
+}
+
+.ta-ps-main-image-wrap {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ta-ps-main-viewer.ta-ps-mode-auto .ta-ps-main-image-wrap {
+	height: auto;
+}
+
+/* Image principale */
+.ta-ps-main-viewer .ta-ps-main-img {
+	width: 100%;
+	max-width: 100%;
+	display: block;
+	object-fit: cover;
+	object-position: center center;
+	transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
+}
+
+.ta-ps-main-viewer:not(.ta-ps-mode-auto) .ta-ps-main-img {
+	height: 100% !important;
+}
+
+.ta-ps-main-viewer.ta-ps-mode-auto .ta-ps-main-img {
+	height: auto !important;
+}
+
+.ta-ps-zoom-enabled:hover .ta-ps-main-img {
+	transform: scale(1.03);
+}
+
+/* Overlay */
+.ta-ps-viewer-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, transparent 40%, rgba(0, 0, 0, 0.65) 100%);
+	pointer-events: none;
+	border-radius: inherit;
+}
+
+/* Contrôles incrustés (badge + boutons) */
+.ta-ps-viewer-controls {
+	position: absolute;
+	bottom: 18px;
+	left: 18px;
+	right: 18px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	pointer-events: none;
+	z-index: 5;
+}
+
+@media (max-width: 767px) {
+	.ta-ps-viewer-controls {
+		bottom: 12px;
+		left: 12px;
+		right: 12px;
+	}
+}
+
+/* Badge compteur */
+.ta-ps-counter-badge {
+	background: var(--ta-ps-counter-bg, rgba(13, 26, 16, 0.85));
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	color: var(--ta-ps-counter-color, #ffffff);
+	font-size: 13px;
+	font-weight: 600;
+	padding: 7px 16px;
+	border-radius: 9999px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	pointer-events: auto;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+/* Boutons flèches + plein écran */
+.ta-ps-action-buttons {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	pointer-events: auto;
+}
+
+.ta-ps-btn-action {
+	background: var(--ta-ps-btn-bg, rgba(13, 26, 16, 0.85));
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	color: var(--ta-ps-btn-color, #ffffff);
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+	padding: 0;
+}
+
+@media (max-width: 767px) {
+	.ta-ps-btn-action {
+		width: 36px;
+		height: 36px;
+	}
+}
+
+.ta-ps-btn-action:hover {
+	background: var(--ta-ps-accent, #7bc81d);
+	color: var(--ta-ps-accent-text, #0d1a10);
+	border-color: var(--ta-ps-accent, #7bc81d);
+	transform: scale(1.06);
+}
+
+.ta-ps-btn-action svg {
+	width: 16px;
+	height: 16px;
+	stroke-width: 2.2;
+}
+
+/* ==========================================================================
+   2. Thumbnails Strip
+   ========================================================================== */
+
+.ta-ps-thumbs-wrapper {
+	position: relative;
+	margin-top: 14px;
+	background: var(--ta-ps-thumbs-bg, #ffffff);
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.ta-ps-thumbs-strip {
+	display: flex;
+	gap: 10px;
+	padding: 10px 4px;
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: thin;
+	scrollbar-color: var(--ta-ps-scrollbar-thumb, #7bc81d) var(--ta-ps-scrollbar-track, #f1f5f0);
+}
+
+.ta-ps-thumbs-strip::-webkit-scrollbar {
+	height: 5px;
+}
+
+.ta-ps-thumbs-strip::-webkit-scrollbar-track {
+	background: var(--ta-ps-scrollbar-track, #f1f5f0);
+	border-radius: 4px;
+}
+
+.ta-ps-thumbs-strip::-webkit-scrollbar-thumb {
+	background: var(--ta-ps-scrollbar-thumb, #7bc81d);
+	border-radius: 4px;
+}
+
+.ta-ps-thumb-item {
+	flex: 0 0 92px;
+	height: 68px;
+	border-radius: 8px;
+	overflow: hidden;
+	cursor: pointer;
+	border: 2px solid transparent;
+	opacity: 0.6;
+	transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+	position: relative;
+	user-select: none;
+	background: var(--ta-ps-thumb-inactive-bg, #e2e8f0);
+}
+
+@media (max-width: 767px) {
+	.ta-ps-thumb-item {
+		flex: 0 0 76px;
+		height: 56px;
+	}
+}
+
+.ta-ps-thumb-item:hover {
+	opacity: 0.95;
+	transform: translateY(-2px);
+}
+
+.ta-ps-thumb-item.is-active {
+	opacity: 1;
+	border-color: var(--ta-ps-accent, #7bc81d);
+	box-shadow: 0 2px 10px color-mix(in srgb, var(--ta-ps-accent, #7bc81d) 45%, transparent);
+	transform: translateY(-1px);
+}
+
+/* Fallback sans color-mix */
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+	.ta-ps-thumb-item.is-active {
+		box-shadow: 0 2px 10px rgba(123, 200, 29, 0.45);
+	}
+}
+
+.ta-ps-thumb-img, .elementor .ta-ps-thumb-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	pointer-events: none;
+}
+
+/* Barre de progression sous les miniatures */
+.ta-ps-progress-bar-wrap {
+	width: 100%;
+	height: var(--ta-ps-progress-height, 4px);
+	background: var(--ta-ps-progress-bg, #e2e8f0);
+	border-radius: 4px;
+	overflow: hidden;
+	margin-top: 4px;
+}
+
+.ta-ps-progress-bar-fill {
+	height: 100%;
+	width: 0%;
+	background: var(--ta-ps-progress-fill, #7bc81d);
+	border-radius: 4px;
+	transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   3. Bottom Toolbar / Hint Bar
+   ========================================================================== */
+
+.ta-ps-footer-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 4px 6px 4px;
+	font-size: 13px;
+	color: var(--ta-ps-footer-text, #64748b);
+	box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+	.ta-ps-footer-toolbar {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+}
+
+.ta-ps-footer-left {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 500;
+	color: var(--ta-ps-footer-text, #64748b);
+}
+
+.ta-ps-footer-left svg {
+	width: 16px;
+	height: 16px;
+	color: var(--ta-ps-accent, #7bc81d);
+}
+
+.ta-ps-footer-right {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 700;
+	color: var(--ta-ps-diaporama-btn-color, #0d1a10);
+	cursor: pointer;
+	transition: color 0.2s ease, transform 0.15s ease;
+	user-select: none;
+}
+
+.ta-ps-footer-right:hover {
+	color: var(--ta-ps-accent, #7bc81d);
+	transform: translateX(2px);
+}
+
+.ta-ps-footer-right svg {
+	width: 16px;
+	height: 16px;
+}
+
+/* ==========================================================================
+   4. Lightbox Fullscreen Modal
+   ========================================================================== */
+
+.ta-ps-lightbox-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: var(--ta-ps-lb-bg, rgba(13, 26, 16, 0.96));
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	z-index: 999999;
+	display: flex;
+	flex-direction: column;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+	user-select: none;
+}
+
+.ta-ps-lightbox-modal.is-open {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* En-tête lightbox */
+.ta-ps-lb-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 28px;
+	color: var(--ta-ps-lb-header-color, #ffffff);
+}
+
+/* Badge compteur lightbox */
+.ta-ps-lb-counter {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--ta-ps-lb-counter-color, rgba(255, 255, 255, 0.85));
+	background: var(--ta-ps-lb-counter-bg, rgba(255, 255, 255, 0.1));
+	padding: 6px 14px;
+	border-radius: 9999px;
+}
+
+/* Bouton fermer */
+.ta-ps-lb-close-btn {
+	background: var(--ta-ps-lb-close-bg, rgba(255, 255, 255, 0.1));
+	border: none;
+	color: var(--ta-ps-lb-close-color, #ffffff);
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 20px;
+	transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+	line-height: 1;
+}
+
+.ta-ps-lb-close-btn:hover {
+	background: var(--ta-ps-lb-close-bg-hover, #7bc81d);
+	color: var(--ta-ps-lb-close-color-hover, #0d1a10);
+	transform: scale(1.08);
+}
+
+/* Corps lightbox */
+.ta-ps-lb-body {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 24px;
+	position: relative;
+	min-height: 0;
+}
+
+/* Boutons prev / next lightbox */
+.ta-ps-lb-nav-btn {
+	background: var(--ta-ps-lb-nav-bg, rgba(255, 255, 255, 0.12));
+	border: none;
+	color: var(--ta-ps-lb-nav-color, #ffffff);
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+	z-index: 10;
+	flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+	.ta-ps-lb-nav-btn {
+		width: 40px;
+		height: 40px;
+	}
+}
+
+.ta-ps-lb-nav-btn:hover {
+	background: var(--ta-ps-lb-nav-bg-hover, #7bc81d);
+	color: var(--ta-ps-lb-nav-color-hover, #0d1a10);
+	transform: scale(1.08);
+}
+
+.ta-ps-lb-nav-btn svg {
+	width: 22px;
+	height: 22px;
+	stroke-width: 2.5;
+}
+
+/* Zone image lightbox */
+.ta-ps-lb-image-container {
+	flex: 1;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 16px;
+	overflow: hidden;
+}
+
+.ta-ps-lb-img, .elementor .ta-ps-lb-img {
+	max-width: 100%;
+	max-height: 82vh;
+	object-fit: contain;
+	border-radius: 8px;
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+	transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Pied de page lightbox */
+.ta-ps-lb-footer {
+	text-align: center;
+	padding: 16px 20px 24px;
+	color: var(--ta-ps-lb-footer-color, rgba(255, 255, 255, 0.7));
+	font-size: 13px;
+}

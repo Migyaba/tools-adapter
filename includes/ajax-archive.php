@@ -13,6 +13,11 @@ final class Ajax_Archive {
 	const ACTION = 'tools_adapter_filter_archive';
 	const NONCE  = 'tools_adapter_archive';
 
+	/**
+	 * Upper bound for products per AJAX page (endpoint is public).
+	 */
+	const MAX_PER_PAGE = 100;
+
 	public function __construct() {
 		add_action( 'wp_ajax_' . self::ACTION, [ $this, 'handle' ] );
 		add_action( 'wp_ajax_nopriv_' . self::ACTION, [ $this, 'handle' ] );
@@ -69,6 +74,7 @@ final class Ajax_Archive {
 					: 12
 			);
 		}
+		$per_page = min( max( 1, $per_page ), self::MAX_PER_PAGE );
 
 		$query_args = [
 			'post_type'           => 'product',

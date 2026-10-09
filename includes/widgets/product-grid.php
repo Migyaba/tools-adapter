@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use ToolsAdapter\Product_Card;
 use ToolsAdapter\Products_Query;
 
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Product Grid
  */
-class Product_Grid extends Widget_Base {
+class Product_Grid extends Base_Widget {
 
 	use Products_Widget_Controls;
 

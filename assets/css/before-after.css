@@ -1,12 +1,25 @@
 /* Avant / Après */
 
 .ta-ba {
+	--ta-ba-pos: 50%;
+	--ta-ba-line: 3px;
+	--ta-ba-label-offset: 18px;
 	position: relative;
 	width: 100%;
 	height: 420px;
 	overflow: hidden;
+	background: #000;
 	user-select: none;
-	touch-action: none;
+	-webkit-user-select: none;
+	cursor: ew-resize;
+	/* Horizontal : la page peut toujours défiler verticalement au doigt. */
+	touch-action: pan-y;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.ta-ba--vertical {
+	cursor: ns-resize;
+	touch-action: pan-x;
 }
 
 .ta-ba__image {
@@ -14,76 +27,197 @@
 	inset: 0;
 }
 
-.ta-ba__image img {
+.ta-ba .ta-ba__img {
+	display: block;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
-	display: block;
+	max-width: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	object-fit: var(--ta-ba-fit, cover);
+	object-position: var(--ta-ba-pos, 50% 50%);
+	pointer-events: none;
+	-webkit-user-drag: none;
 }
 
-.ta-ba__image--after {
-	clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+/* « Avant » au-dessus, découpé à gauche (ou en haut) de la position. */
+.ta-ba__image--before {
+	z-index: 1;
+	clip-path: inset(0 calc(100% - var(--ta-ba-pos)) 0 0);
 }
 
+.ta-ba--vertical .ta-ba__image--before {
+	clip-path: inset(0 0 calc(100% - var(--ta-ba-pos)) 0);
+}
+
+/* Libellés */
 .ta-ba__label {
 	position: absolute;
-	top: 16px;
-	padding: 6px 14px;
-	border-radius: 20px;
-	background: rgba(0, 0, 0, 0.55);
-	color: #ffffff;
+	z-index: 3;
+	padding: 7px 17px;
+	border-radius: 999px;
 	font-size: 12px;
-	font-weight: 700;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	line-height: 1.3;
 	text-transform: uppercase;
-	letter-spacing: 0.04em;
+	pointer-events: none;
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	transition: opacity 0.25s ease;
 }
 
 .ta-ba__label--before {
-	left: 16px;
+	top: var(--ta-ba-label-offset);
+	left: var(--ta-ba-label-offset);
+	background-color: rgba(6, 24, 44, 0.75);
+	color: #fff;
 }
 
 .ta-ba__label--after {
-	right: 16px;
+	top: var(--ta-ba-label-offset);
+	right: var(--ta-ba-label-offset);
+	background-color: #ffc107;
+	color: #111827;
 }
 
+.ta-ba--labels-middle .ta-ba--horizontal .ta-ba__label {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.ta-ba--labels-bottom .ta-ba--horizontal .ta-ba__label {
+	top: auto;
+	bottom: var(--ta-ba-label-offset);
+}
+
+/* Vertical : « Avant » en haut à gauche, « Après » en bas à gauche. */
+.ta-ba--vertical .ta-ba__label--after {
+	top: auto;
+	right: auto;
+	bottom: var(--ta-ba-label-offset);
+	left: var(--ta-ba-label-offset);
+}
+
+.ta-ba--labels-on-hover .ta-ba__label {
+	opacity: 0;
+}
+
+.ta-ba--labels-on-hover:hover .ta-ba__label,
+.ta-ba--labels-on-hover:focus-within .ta-ba__label {
+	opacity: 1;
+}
+
+/* Curseur : ligne + bouton, positionnés sur --ta-ba-pos. */
 .ta-ba__handle {
 	position: absolute;
+	z-index: 4;
 	top: 0;
-	left: 50%;
-	width: 3px;
-	height: 100%;
-	background: #ffffff;
-	transform: translateX(-50%);
-	cursor: ew-resize;
+	bottom: 0;
+	left: var(--ta-ba-pos);
+	width: 0;
+	pointer-events: none;
 }
 
 .ta-ba--vertical .ta-ba__handle {
-	top: 50%;
+	top: var(--ta-ba-pos);
+	right: 0;
+	bottom: auto;
 	left: 0;
-	width: 100%;
-	height: 3px;
-	transform: translateY(-50%);
-	cursor: ns-resize;
+	width: auto;
+	height: 0;
+}
+
+.ta-ba__line {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: calc(var(--ta-ba-line) / -2);
+	width: var(--ta-ba-line);
+	background-color: #fff;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.ta-ba--vertical .ta-ba__line {
+	top: calc(var(--ta-ba-line) / -2);
+	right: 0;
+	bottom: auto;
+	left: 0;
+	width: auto;
+	height: var(--ta-ba-line);
 }
 
 .ta-ba__handle-btn {
 	position: absolute;
 	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	display: inline-flex;
+	left: 0;
+	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 2px;
-	width: 40px;
-	height: 40px;
+	box-sizing: border-box;
+	width: 56px;
+	height: 56px;
 	border-radius: 50%;
-	background: #ffffff;
-	color: #1c1c1c;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+	background-color: #fff;
+	box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+	color: #111827;
+	font-size: 18px;
+	line-height: 1;
+	transform: translate(-50%, -50%);
+	pointer-events: auto;
+	transition: transform 0.2s ease;
 }
 
-.ta-ba__handle-arrow {
-	font-size: 14px;
-	line-height: 1;
+.ta-ba--vertical .ta-ba__handle-btn {
+	top: 0;
+	left: 50%;
+}
+
+.ta-ba--vertical .ta-ba__arrows {
+	transform: rotate(90deg);
+}
+
+.ta-ba__handle-btn svg {
+	width: 20px;
+	height: 20px;
+	fill: currentColor; /* Icônes SVG Elementor ; les flèches par défaut gardent fill="none". */
+}
+
+.ta-ba.is-dragging .ta-ba__handle-btn,
+.ta-ba__handle-btn:hover {
+	transform: translate(-50%, -50%) scale(1.08);
+}
+
+.ta-ba__handle-btn:focus {
+	outline: none;
+}
+
+.ta-ba__handle-btn:focus-visible {
+	outline: 3px solid #ffc107;
+	outline-offset: 3px;
+}
+
+/* Légende */
+.ta-ba__hint {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	margin: 18px 0 0;
+	color: #64748b;
+	font-size: 15px;
+}
+
+.ta-ba__hint svg {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ta-ba__label,
+	.ta-ba__handle-btn {
+		transition: none;
+	}
 }

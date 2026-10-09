@@ -1,0 +1,573 @@
+/**
+ * Tools Adapter - Widget Carte Interactive des Zones d'Intervention
+ * Feuilles de styles pour Elementor
+ *
+ * Philosophie : les couleurs "métier" (pin, pulse, bouton, accent) sont
+ * définies via des CSS Custom Properties (--ta-map-*) générées par le
+ * widget PHP en ligne dans le wrapper ou en sélecteur Elementor.
+ * Aucune couleur codée en dur sur les éléments fonctionnels.
+ */
+
+/* =========================================================================
+   Variables par défaut — surchargées par les contrôles Elementor
+   ========================================================================= */
+.tools-adapter-map-wrapper {
+  --ta-map-accent:        #0077b6;    /* Couleur principale accentuation */
+  --ta-map-accent-dark:   #005a8b;    /* Variant sombre accentuation */
+  --ta-map-accent-light:  rgba(0, 119, 182, 0.12);
+  --ta-map-accent-pulse:  rgba(0, 119, 182, 0.40);
+  --ta-map-text-primary:  #0b2545;
+  --ta-map-text-muted:    #64748b;
+  --ta-map-bg:            #ffffff;
+  --ta-map-border:        #e2e8f0;
+  --ta-map-radius:        16px;
+
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tools-adapter-map-wrapper * {
+  box-sizing: border-box;
+}
+
+/* =========================================================================
+   Vérificateur d'Éligibilité Express
+   ========================================================================= */
+.ta-map-checker-card {
+  background: var(--ta-map-bg);
+  border: 1px solid var(--ta-map-border);
+  border-radius: var(--ta-map-radius);
+  padding: 22px 26px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.ta-map-checker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ta-map-checker-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ta-map-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ta-map-checker-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ta-map-checker-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ta-map-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.ta-map-input-wrapper > i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ta-map-text-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.ta-map-checker-input {
+  width: 100%;
+  padding: 12px 18px 12px 44px;
+  border: 1.5px solid var(--ta-map-border);
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #f8fafc;
+  color: #1e293b;
+  transition: all 0.25s ease;
+}
+
+.ta-map-checker-input:focus {
+  outline: none;
+  border-color: var(--ta-map-accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px var(--ta-map-accent-light);
+}
+
+.ta-map-checker-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--ta-map-accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ta-map-checker-btn:hover {
+  background: var(--ta-map-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px var(--ta-map-accent-pulse);
+}
+
+/* Résultats */
+.ta-map-checker-result {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  animation: taMapFadeIn 0.3s ease;
+  align-items: flex-start;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.ta-map-checker-result.success {
+  display: flex;
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.ta-map-checker-result.extended {
+  display: flex;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.ta-map-checker-result.error {
+  display: flex;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.ta-map-checker-result i {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ta-map-checker-result strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* =========================================================================
+   Pilules / Raccourcis de Communes
+   ========================================================================= */
+.ta-map-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.ta-map-pills.align-center { justify-content: center; }
+.ta-map-pills.align-left   { justify-content: flex-start; }
+.ta-map-pills.align-right  { justify-content: flex-end; }
+
+.ta-map-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--ta-map-bg);
+  border: 1.5px solid var(--ta-map-border);
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--ta-map-text-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.22s ease;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Bouton "Tout" — fond sombre par défaut, controllable via Elementor */
+.ta-map-pill.pill-all {
+  background: var(--ta-map-text-primary);
+  border-color: var(--ta-map-text-primary);
+  color: #ffffff;
+}
+
+/* Hover & Actif — toutes les pilules (hors pill-all géré séparément) */
+.ta-map-pill:not(.pill-all):hover,
+.ta-map-pill:not(.pill-all).active {
+  background: var(--ta-map-accent);
+  color: #ffffff;
+  border-color: var(--ta-map-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--ta-map-accent-pulse);
+}
+
+/* Hover sur le bouton "Tout" — reprend la couleur accent */
+.ta-map-pill.pill-all:hover,
+.ta-map-pill.pill-all.active {
+  background: var(--ta-map-accent);
+  border-color: var(--ta-map-accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--ta-map-accent-pulse);
+}
+
+.ta-map-pill i {
+  transition: color 0.2s ease;
+}
+
+.ta-map-pill:hover i,
+.ta-map-pill.active i {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* =========================================================================
+   Conteneur de la Carte Leaflet
+   ========================================================================= */
+.ta-map-canvas-container {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(11, 37, 69, 0.14);
+  border: 1px solid var(--ta-map-border);
+  background: #e2e8f0;
+}
+
+.ta-map-canvas {
+  width: 100%;
+  height: 480px;
+  z-index: 1;
+}
+
+/* =========================================================================
+   Légende Flottante sur la Carte
+   ========================================================================= */
+.ta-map-legend {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 37, 69, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-width: 290px;
+}
+
+.ta-map-legend.pos-bottom-left  { bottom: 20px; left: 20px; }
+.ta-map-legend.pos-bottom-right { bottom: 20px; right: 20px; }
+.ta-map-legend.pos-top-left     { top: 20px;    left: 20px; }
+.ta-map-legend.pos-top-right    { top: 20px;    right: 20px; }
+
+.ta-map-legend-title {
+  font-weight: 800;
+  color: var(--ta-map-text-primary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.74rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ta-map-legend-title i {
+  color: var(--ta-map-accent);
+}
+
+.ta-map-legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ta-map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.ta-legend-bullet {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* La couleur est injectée inline via le widget PHP */
+}
+
+/* =========================================================================
+   Marqueurs Personnalisés Leaflet
+   Les couleurs de fond sont appliquées en INLINE via JS/PHP
+   pour respecter les réglages Elementor de chaque item.
+   ========================================================================= */
+.ta-custom-map-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  background: transparent !important; /* Leaflet ajoute un bg par défaut */
+  border: none !important;
+}
+
+.ta-custom-map-marker .marker-pin {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  border: 2.5px solid rgba(255, 255, 255, 0.9);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  /* background-color : appliqué en inline via le JS */
+  background-color: var(--ta-map-accent); /* fallback CSS var */
+}
+
+.ta-custom-map-marker:hover .marker-pin {
+  transform: scale(1.2) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+}
+
+/* Tailles alternatives selon type */
+.ta-custom-map-marker.type-city .marker-pin {
+  width: 32px;
+  height: 32px;
+  font-size: 0.8rem;
+}
+
+.ta-custom-map-marker.type-depot .marker-pin {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+
+/* Halo de pulsation — couleur injectée inline également */
+.ta-custom-map-marker.has-pulse .marker-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* background-color : appliqué inline via JS */
+  background-color: var(--ta-map-accent-pulse);
+  animation: taMarkerPulse 2s ease-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes taMarkerPulse {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  80%  { transform: scale(2.2); opacity: 0.1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* =========================================================================
+   Popups Leaflet Stylisés
+   ========================================================================= */
+.leaflet-popup-content-wrapper {
+  border-radius: 14px !important;
+  padding: 2px !important;
+  box-shadow: 0 12px 32px rgba(11, 37, 69, 0.2) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+.leaflet-popup-content {
+  margin: 14px 18px !important;
+  line-height: 1.5 !important;
+}
+
+.ta-map-popup-card {
+  min-width: 200px;
+  max-width: 260px;
+}
+
+.ta-map-popup-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin-bottom: 7px;
+  /* Couleur injectée inline */
+  background: var(--ta-map-accent-light);
+  color: var(--ta-map-accent);
+}
+
+.ta-map-popup-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ta-map-text-primary);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.ta-map-popup-address {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: var(--ta-map-text-muted);
+  margin-bottom: 10px;
+}
+
+.ta-map-popup-address i {
+  color: var(--ta-map-accent);
+  font-size: 0.75rem;
+}
+
+.ta-map-popup-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ta-map-accent);
+  background: #f8fafc;
+  padding: 6px 10px;
+  border-radius: 7px;
+  margin-bottom: 12px;
+}
+
+.ta-map-popup-btn {
+  display: block;
+  text-align: center;
+  background: var(--ta-map-accent);
+  color: #ffffff !important;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.83rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.ta-map-popup-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* =========================================================================
+   Pied d'information sous la carte
+   ========================================================================= */
+.ta-map-footer-help {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.ta-map-footer-text {
+  color: var(--ta-map-text-muted);
+  font-size: 0.92rem;
+}
+
+.ta-map-footer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: transparent;
+  color: var(--ta-map-text-primary);
+  border: 1.5px solid var(--ta-map-border);
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  font-family: inherit;
+}
+
+.ta-map-footer-btn:hover {
+  background: var(--ta-map-text-primary);
+  color: #ffffff;
+  border-color: var(--ta-map-text-primary);
+}
+
+/* =========================================================================
+   Animations & Utilitaires
+   ========================================================================= */
+@keyframes taMapFadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================================
+   Responsive Mobile
+   ========================================================================= */
+@media (max-width: 768px) {
+  .ta-map-canvas {
+    height: 360px;
+  }
+
+  .ta-map-checker-form {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ta-map-checker-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ta-map-legend {
+    position: static;
+    margin: 12px;
+    max-width: none;
+    border-radius: 10px;
+  }
+
+  .ta-map-pills {
+    gap: 6px;
+  }
+
+  .ta-map-pill {
+    font-size: 0.82rem;
+    padding: 7px 13px;
+  }
+}

@@ -1,130 +1,312 @@
-/* Tableau de tarifs */
+/* ==========================================================================
+   Tools Adapter - Grille de Tarification (Tableau de Tarifs 3 Offres)
+   ========================================================================== */
 
-.ta-pricing {
+.ta-pricing-wrapper {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* Grille principale */
+.ta-pricing-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 30px;
+	align-items: stretch;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+/* Adaptations automatiques selon le nombre d'offres visibles */
+.ta-pricing-grid--count-2 {
+	grid-template-columns: repeat(2, minmax(0, 460px));
+	justify-content: center;
+	max-width: 960px;
+}
+
+.ta-pricing-grid--count-1 {
+	grid-template-columns: minmax(0, 440px);
+	justify-content: center;
+	max-width: 440px;
+}
+
+/* Carte de tarif */
+.ta-pricing-card {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	text-align: center;
 	background: #ffffff;
-	padding: 40px 32px;
-	border-radius: 16px;
-	width: 100%;
+	border: 1px solid #e5e7eb;
+	border-radius: 24px;
+	padding: 40px 30px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+	transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+	box-sizing: border-box;
 }
 
-.ta-pricing.is-featured {
-	background: #1c1c1c;
+.ta-pricing-card:hover {
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-.ta-pricing.is-featured .ta-pricing__title,
-.ta-pricing.is-featured .ta-pricing__subtitle,
-.ta-pricing.is-featured .ta-pricing__period,
-.ta-pricing.is-featured .ta-pricing__feature {
-	color: #ffffff;
+/* Carte mise en avant (Recommandée) */
+.ta-pricing-card.is-featured {
+	border: 2px solid #7bc81d;
+	box-shadow: 0 12px 36px rgba(123, 200, 29, 0.14), 0 4px 20px rgba(0, 0, 0, 0.06);
+	z-index: 2;
 }
 
-.ta-pricing__ribbon {
+.ta-pricing-card.is-featured.has-scale {
+	transform: scale(1.03);
+}
+
+.ta-pricing-card.is-featured.has-scale:hover {
+	transform: scale(1.045);
+	box-shadow: 0 16px 42px rgba(123, 200, 29, 0.2), 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Badge flottant centré à cheval sur la bordure haute */
+.ta-pricing-badge {
 	position: absolute;
-	top: 16px;
-	right: 16px;
-	padding: 4px 12px;
-	background: #C9A84C;
+	top: -14px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #7bc81d;
 	color: #ffffff;
 	font-size: 11px;
 	font-weight: 700;
 	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	border-radius: 20px;
+	padding: 4px 16px;
+	border-radius: 9999px;
+	letter-spacing: 0.8px;
+	white-space: nowrap;
+	box-shadow: 0 4px 12px rgba(123, 200, 29, 0.35);
+	z-index: 3;
 }
 
-.ta-pricing__title {
-	margin: 0;
+/* En-tête de la carte */
+.ta-pricing-header {
+	text-align: center;
+	border-bottom: 1px solid #f1f5f9;
+	padding-bottom: 24px;
+	margin-bottom: 24px;
+}
+
+.ta-pricing-title {
+	margin: 0 0 6px 0;
 	font-size: 20px;
 	font-weight: 700;
+	color: #152718;
+	line-height: 1.3;
 }
 
-.ta-pricing__subtitle {
-	margin: 6px 0 0;
+.ta-pricing-subtitle {
+	margin: 0 0 16px 0;
 	font-size: 13px;
+	color: #64748b;
+	line-height: 1.4;
 }
 
-.ta-pricing__price-row {
-	display: flex;
-	align-items: flex-end;
-	justify-content: center;
-	gap: 4px;
-	margin: 24px 0;
-}
-
-.ta-pricing__currency {
-	font-size: 24px;
-	font-weight: 700;
-	color: #C9A84C;
-}
-
-.ta-pricing__price {
-	font-size: 52px;
-	font-weight: 800;
-	line-height: 1;
-	color: #C9A84C;
-}
-
-.ta-pricing__period {
-	font-size: 15px;
-	margin-bottom: 8px;
-}
-
-.ta-pricing__features {
-	list-style: none;
-	margin: 0 0 28px;
-	padding: 0;
-	width: 100%;
-	text-align: left;
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-}
-
-.ta-pricing__feature {
+/* Montant / Tarif */
+.ta-pricing-amount-box {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	font-size: 14px;
+	justify-content: center;
 }
 
-.ta-pricing__feature--excluded {
-	opacity: 0.5;
-	text-decoration: line-through;
+.ta-pricing-amount {
+	display: flex;
+	align-items: baseline;
+	justify-content: center;
+	gap: 4px;
+	color: #152718;
 }
 
-.ta-pricing__feature-icon {
-	flex: 0 0 auto;
+.ta-pricing-amount .ta-pricing-val {
+	font-size: 42px;
+	font-weight: 800;
+	line-height: 1;
+	color: #152718;
+}
+
+.ta-pricing-amount .ta-pricing-cur {
+	font-size: 26px;
 	font-weight: 700;
+	color: #152718;
 }
 
-.ta-pricing__feature-icon--yes {
-	color: #3aa76d;
+.ta-pricing-amount .ta-pricing-period {
+	font-size: 15px;
+	font-weight: 500;
+	color: #64748b;
+	margin-left: 4px;
 }
 
-.ta-pricing__feature-icon--no {
-	color: #cccccc;
+/* Tarif en texte libre (ex: Sur Mesure) */
+.ta-pricing-amount--custom .ta-pricing-val {
+	font-size: 34px;
+	font-weight: 800;
+	letter-spacing: -0.5px;
 }
 
-.ta-pricing__btn {
-	display: inline-flex;
+/* Liste des fonctionnalités */
+.ta-pricing-features {
+	list-style: none;
+	margin: 0 0 32px 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	flex-grow: 1;
+	text-align: left;
+}
+
+.ta-pricing-feature-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	font-size: 14px;
+	line-height: 1.45;
+	color: #334155;
+}
+
+.ta-pricing-feature-icon {
+	flex-shrink: 0;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.45;
+	color: #7bc81d;
+}
+
+/* Ligne désactivée / exclue */
+.ta-pricing-feature-item.is-disabled {
+	color: #94a3b8;
+}
+
+.ta-pricing-feature-item.is-disabled .ta-pricing-feature-icon {
+	color: #cbd5e1;
+}
+
+/* Texte mis en gras */
+.ta-pricing-feature-text.is-bold,
+.ta-pricing-feature-text strong {
+	font-weight: 700;
+	color: #152718;
+}
+
+/* Bouton d'action CTA */
+.ta-pricing-footer {
+	margin-top: auto;
+	width: 100%;
+}
+
+.ta-pricing-btn {
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
 	padding: 14px 24px;
-	background: #1c1c1c;
-	color: #ffffff;
+	border-radius: 50px;
 	font-size: 15px;
 	font-weight: 600;
 	text-decoration: none;
-	border-radius: 6px;
-	transition: opacity 0.2s ease;
+	text-align: center;
+	transition: all 0.25s ease;
+	cursor: pointer;
+	box-sizing: border-box;
 }
 
-.ta-pricing__btn:hover {
-	opacity: 0.85;
+/* Style de bouton sombre par défaut */
+.ta-pricing-btn--default {
+	background-color: #152718;
+	color: #ffffff;
+}
+
+.ta-pricing-btn--default:hover {
+	background-color: #244129;
+	color: #ffffff;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px rgba(21, 39, 24, 0.25);
+}
+
+/* Style de bouton vert primaire */
+.ta-pricing-btn--primary {
+	background-color: #7bc81d;
+	color: #ffffff;
+}
+
+.ta-pricing-btn--primary:hover {
+	background-color: #6db319;
+	color: #ffffff;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(123, 200, 29, 0.4);
+}
+
+/* Encart d'engagement / réassurance */
+.ta-pricing-guarantee {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	background: rgba(123, 200, 29, 0.08);
+	border: 1px dashed rgba(123, 200, 29, 0.4);
+	border-radius: 12px;
+	padding: 18px 24px;
+	margin: 40px auto 0;
+	max-width: 820px;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #152718;
+	box-sizing: border-box;
+}
+
+.ta-pricing-guarantee__icon {
+	flex-shrink: 0;
+	color: #7bc81d;
+	display: flex;
+	align-items: center;
+}
+
+.ta-pricing-guarantee__content {
+	flex: 1;
+}
+
+.ta-pricing-guarantee strong {
+	font-weight: 700;
+	color: #152718;
+	margin-right: 4px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+	.ta-pricing-grid {
+		gap: 20px;
+	}
+	.ta-pricing-card {
+		padding: 32px 20px;
+	}
+	.ta-pricing-amount .ta-pricing-val {
+		font-size: 36px;
+	}
+	.ta-pricing-amount--custom .ta-pricing-val {
+		font-size: 28px;
+	}
+}
+
+@media (max-width: 900px) {
+	.ta-pricing-grid {
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	}
+	.ta-pricing-card.is-featured.has-scale {
+		transform: none !important;
+	}
+}
+
+@media (max-width: 640px) {
+	.ta-pricing-grid {
+		grid-template-columns: 1fr;
+	}
+	.ta-pricing-guarantee {
+		flex-direction: column;
+		text-align: center;
+	}
 }

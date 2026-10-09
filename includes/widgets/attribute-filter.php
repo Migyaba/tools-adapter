@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Typography;
 use ToolsAdapter\Products_Query;
 
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * (couleur, taille…) en pastilles/pilules cliquables, synchronisées avec
  * l'Archive/Grille Produits via l'AJAX partagé (Ajax_Archive).
  */
-class Attribute_Filter extends Widget_Base {
+class Attribute_Filter extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-attribute-filter';

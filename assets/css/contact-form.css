@@ -13,6 +13,7 @@
 }
 
 .ta-contact-form__input,
+.ta-contact-form__select,
 .ta-contact-form__textarea {
 	display: block;
 	width: 100%;
@@ -22,14 +23,17 @@
 	padding: 14px 16px;
 	transition: border-color 0.2s ease;
 	font-family: inherit;
+	border-radius: inherit;
+	box-sizing: border-box;
 }
 
-.ta-contact-form__textarea {
-	resize: vertical;
-	min-height: 120px;
+.ta-contact-form__select {
+	cursor: pointer;
+	color: inherit;
 }
 
 .ta-contact-form__input:focus,
+.ta-contact-form__select:focus,
 .ta-contact-form__textarea:focus {
 	outline: none;
 	border-color: #C9A84C;

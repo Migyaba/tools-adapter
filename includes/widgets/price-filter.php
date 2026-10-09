@@ -6,7 +6,7 @@ use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Filtre WooCommerce par plage de tarifs (AJAX sans rechargement).
  */
-class Price_Filter extends Widget_Base {
+class Price_Filter extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-price-filter';

@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Widget: Popup preuve sociale — notifications flottantes affichant des
  * messages personnalisés ou les commandes WooCommerce récentes.
  */
-class Social_Proof extends Widget_Base {
+class Social_Proof extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-social-proof';

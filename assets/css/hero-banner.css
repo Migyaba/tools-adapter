@@ -1,4 +1,4 @@
-/* Hero / Bannière */
+/* Hero / Bannière — Tools Adapter */
 
 .ta-hero {
 	position: relative;
@@ -9,21 +9,60 @@
 	background-size: cover;
 	background-position: center;
 	overflow: hidden;
+	box-sizing: border-box;
+}
+
+/* Ken Burns background zoom effect */
+.ta-hero--kenburns .ta-hero__bg-layer {
+	position: absolute;
+	inset: -5%;
+	width: 110%;
+	height: 110%;
+	background-size: cover;
+	background-position: center;
+	animation: ta-kenburns 22s ease-in-out infinite alternate;
+	pointer-events: none;
+	z-index: 0;
+}
+
+@keyframes ta-kenburns {
+	0% {
+		transform: scale(1) translate(0, 0);
+	}
+	100% {
+		transform: scale(1.08) translate(-1%, -1%);
+	}
 }
 
 .ta-hero__overlay {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
+	z-index: 1;
+}
+
+/* Container */
+.ta-hero__container {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: 1240px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+/* Split layout (2 columns) */
+.ta-hero--split .ta-hero__container {
+	display: grid;
+	grid-template-columns: 1.2fr 0.95fr;
+	gap: 40px;
+	align-items: center;
 }
 
 .ta-hero__content {
-	position: relative;
-	z-index: 1;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	margin: 0 auto;
 	gap: 16px;
 }
 
@@ -55,9 +94,9 @@
 
 .ta-hero__title {
 	margin: 0;
-	font-size: clamp(28px, 5vw, 52px);
+	font-size: clamp(28px, 4.5vw, 48px);
 	line-height: 1.15;
-	font-weight: 700;
+	font-weight: 800;
 }
 
 .ta-hero__description {
@@ -67,11 +106,49 @@
 	max-width: 640px;
 }
 
+/* Reassurance Badges inline */
+.ta-hero__badges {
+	list-style: none;
+	margin: 6px 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.ta-hero__badge-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 99px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #f1f5f9;
+	backdrop-filter: blur(8px);
+}
+
+.ta-hero__badge-icon {
+	display: inline-flex;
+	align-items: center;
+	color: #dda853;
+	font-size: 0.9em;
+}
+
+.ta-hero__badge-icon svg {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+/* Hero Actions */
 .ta-hero__actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 14px;
-	margin-top: 8px;
+	margin-top: 10px;
 }
 
 .ta-hero__btn {
@@ -83,9 +160,219 @@
 	text-decoration: none;
 	border: 1px solid transparent;
 	cursor: pointer;
-	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.ta-hero__btn:hover {
+	transform: translateY(-2px);
 }
 
 .ta-hero__btn--secondary {
 	background: transparent;
+}
+
+/* Split Hero Glass Card */
+.ta-hero__card {
+	background: rgba(11, 25, 44, 0.75);
+	border: 1px solid rgba(221, 168, 83, 0.35);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	border-radius: 16px;
+	padding: 30px;
+	color: #ffffff;
+	box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+	box-sizing: border-box;
+}
+
+.ta-hero__card-title {
+	font-size: 1.35rem;
+	font-weight: 700;
+	margin: 0 0 8px;
+	color: #ffffff;
+}
+
+.ta-hero__card-desc {
+	font-size: 0.92rem;
+	color: #cbd5e1;
+	margin: 0 0 20px;
+	line-height: 1.5;
+}
+
+.ta-hero__card-btns {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 22px;
+}
+
+.ta-hero__card-btn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 13px 18px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	color: #f8fafc;
+	text-decoration: none;
+	font-size: 0.95rem;
+	font-weight: 600;
+	transition: all 0.2s ease;
+}
+
+.ta-hero__card-btn:hover {
+	background: rgba(30, 62, 98, 0.7);
+	border-color: #dda853;
+	color: #ffffff;
+	transform: translateX(4px);
+}
+
+.ta-hero__card-btn-badge {
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 3px 9px;
+	border-radius: 99px;
+	background: rgba(221, 168, 83, 0.2);
+	color: #dda853;
+	border: 1px solid rgba(221, 168, 83, 0.35);
+}
+
+/* Choix enrichis : icône, sous-titre, flèche (options du Split Hero). */
+.ta-hero__card-btn--rich {
+	justify-content: flex-start;
+	gap: 14px;
+}
+
+.ta-hero__card-btn-icon {
+	display: inline-flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	background-image: linear-gradient(160deg, #f1c40f 0%, #dda853 100%);
+	color: #1a1a1a;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.ta-hero__card-btn-icon svg {
+	width: 18px;
+	height: 18px;
+	fill: #1a1a1a;
+}
+
+.ta-hero__card-btn-main {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+.ta-hero__card-btn-sub {
+	color: #94a3b8;
+	font-size: 0.84rem;
+	font-weight: 400;
+	line-height: 1.4;
+}
+
+.ta-hero__card-btn--rich .ta-hero__card-btn-badge {
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+.ta-hero__card-btn-arrow {
+	flex: 0 0 auto;
+	color: #dda853;
+	transition: transform 0.2s ease;
+}
+
+.ta-hero__card-btn:hover .ta-hero__card-btn-arrow {
+	transform: translateX(3px);
+}
+
+.ta-hero__card-footer {
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	padding-top: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.ta-hero__card-phone-label {
+	font-size: 0.85rem;
+	color: #94a3b8;
+}
+
+.ta-hero__card-phone-val {
+	font-size: 1.15rem;
+	font-weight: 800;
+	color: #dda853;
+	text-decoration: none;
+	letter-spacing: 0.03em;
+	transition: color 0.15s ease;
+}
+
+.ta-hero__card-phone-val:hover {
+	color: #f1c40f;
+}
+
+/* Footer avec icône : icône à gauche, libellé au-dessus du numéro. */
+.ta-hero__card-footer--icon {
+	justify-content: flex-start;
+	flex-wrap: nowrap;
+	gap: 14px;
+}
+
+.ta-hero__card-phone-icon {
+	display: inline-flex;
+	flex: 0 0 auto;
+	color: #dda853;
+	font-size: 22px;
+	line-height: 1;
+}
+
+.ta-hero__card-phone-icon svg {
+	width: 22px;
+	height: 22px;
+	fill: #dda853;
+}
+
+.ta-hero__card-phone-text {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.ta-hero__card-footer--icon .ta-hero__card-phone-label {
+	font-size: 0.78rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+/* Responsiveness */
+@media (max-width: 991px) {
+	.ta-hero--split .ta-hero__container {
+		grid-template-columns: 1fr;
+		gap: 32px;
+	}
+	.ta-hero__card {
+		max-width: 580px;
+		margin: 0 auto;
+		width: 100%;
+	}
+}
+
+@media (max-width: 600px) {
+	.ta-hero__card {
+		padding: 20px 16px;
+	}
+	.ta-hero__card-btn {
+		font-size: 0.88rem;
+		padding: 11px 14px;
+	}
 }

@@ -72,7 +72,8 @@ final class Variation_Swatches {
 		$attribute = $args['attribute'];
 		$is_color  = (bool) preg_match( '/(color|colour|couleur)/i', $attribute );
 		$selected  = $args['selected'] ?? '';
-		$select_id = $args['id'] ?? sanitize_title( $attribute );
+		// WooCommerce passes an empty `id` by default and then falls back to the sanitized attribute.
+		$select_id = ! empty( $args['id'] ) ? $args['id'] : sanitize_title( $attribute );
 
 		$product   = $args['product'] ?? null;
 		$is_taxonomy = 0 === strpos( $attribute, 'attribute_pa_' ) || ( $product && taxonomy_exists( wc_attribute_taxonomy_name( str_replace( 'attribute_', '', $attribute ) ) ) );

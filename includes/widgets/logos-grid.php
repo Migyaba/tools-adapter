@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Logos partenaires — grille statique ou défilement (marquee).
  */
-class Logos_Grid extends Widget_Base {
+class Logos_Grid extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-logos';

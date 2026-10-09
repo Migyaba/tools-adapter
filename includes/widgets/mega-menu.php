@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Widget: Mega menu — menu de navigation horizontal avec panneaux mega-menu
  * pour les éléments ayant des sous-menus, option "collant" au défilement.
  */
-class Mega_Menu extends Widget_Base {
+class Mega_Menu extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-mega-menu';

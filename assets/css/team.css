@@ -19,7 +19,7 @@
 	text-align: center;
 }
 
-.ta-team__photo {
+.ta-team__photo, .elementor .ta-team__photo {
 	width: 120px;
 	height: 120px;
 	object-fit: cover;

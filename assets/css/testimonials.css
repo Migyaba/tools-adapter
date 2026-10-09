@@ -106,7 +106,7 @@
 	gap: 8px;
 }
 
-.ta-testimonial__avatar {
+.ta-testimonial__avatar, .elementor .ta-testimonial__avatar {
 	width: var(--ta-avatar-size, 50px);
 	height: var(--ta-avatar-size, 50px);
 	border-radius: 50%;
@@ -114,11 +114,11 @@
 	flex-shrink: 0;
 }
 
-.ta-testimonial__avatar--rounded {
+.ta-testimonial__avatar--rounded, .elementor .ta-testimonial__avatar--rounded {
 	border-radius: 12px;
 }
 
-.ta-testimonial__avatar--square {
+.ta-testimonial__avatar--square, .elementor .ta-testimonial__avatar--square {
 	border-radius: 0;
 }
 

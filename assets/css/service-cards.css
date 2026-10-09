@@ -1,0 +1,236 @@
+/* Cartes services Bento */
+
+.ta-sc {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 22px;
+}
+
+.ta-sc__card {
+	position: relative;
+	display: flex;
+	min-height: 440px;
+	border-radius: 24px;
+	overflow: hidden;
+	isolation: isolate;
+	background-color: #0c1c34;
+	color: #fff;
+	transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.ta-sc__card--span-3  { grid-column: span 3; }
+.ta-sc__card--span-4  { grid-column: span 4; }
+.ta-sc__card--span-5  { grid-column: span 5; }
+.ta-sc__card--span-6  { grid-column: span 6; }
+.ta-sc__card--span-7  { grid-column: span 7; }
+.ta-sc__card--span-8  { grid-column: span 8; }
+.ta-sc__card--span-9  { grid-column: span 9; }
+.ta-sc__card--span-12 { grid-column: span 12; }
+
+/* Image + voile */
+.ta-sc__media,
+.ta-sc__overlay {
+	position: absolute;
+	inset: 0;
+}
+
+.ta-sc__media {
+	z-index: -2;
+	overflow: hidden;
+	background: #0c1c34 no-repeat 50% 50% / cover;
+}
+
+.ta-sc__media .ta-sc__img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	object-fit: var(--ta-sc-fit, cover);
+	object-position: var(--ta-sc-pos, 50% 50%);
+	transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ta-sc__card:hover .ta-sc__img {
+	transform: scale(1.06);
+}
+
+.ta-sc__overlay {
+	z-index: -1;
+	background-image: linear-gradient(180deg, rgba(12, 28, 52, 0.25) 0%, rgba(12, 28, 52, 0.88) 100%);
+	transition: opacity 0.35s ease;
+}
+
+/* Badge */
+.ta-sc__badge {
+	position: absolute;
+	top: 24px;
+	left: 24px;
+	z-index: 1;
+	padding: 6px 15px;
+	border-radius: 999px;
+	background-color: #ffc107;
+	color: #1a1a1a;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+/* Contenu */
+.ta-sc__body {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: var(--ta-sc-align, flex-start);
+	width: 100%;
+	padding: 84px 32px 40px;
+}
+
+.ta-sc__body > * {
+	max-width: 580px;
+}
+
+.ta-sc__title {
+	margin: 0 0 14px;
+	color: #fff;
+	font-size: clamp(26px, 2.6vw, 38px);
+	font-weight: 800;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+}
+
+.ta-sc__description {
+	margin: 0 0 20px;
+	color: rgba(255, 255, 255, 0.82);
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+.ta-sc__tags {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: var(--ta-sc-align, flex-start);
+	gap: 10px;
+	margin: 0 0 28px;
+	padding: 0;
+	list-style: none;
+}
+
+.ta-sc__tag {
+	margin: 0;
+	padding: 6px 13px;
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.12);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	color: #fff;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.ta-sc__tags:last-child,
+.ta-sc__description:last-child {
+	margin-bottom: 0;
+}
+
+/* Lien */
+.ta-sc__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	color: #ffc107;
+	font-size: 17px;
+	font-weight: 700;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.ta-sc__arrow {
+	display: inline-flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	line-height: 1;
+	transition: transform 0.25s ease;
+}
+
+.ta-sc__arrow svg {
+	width: 18px;
+	height: 18px;
+	fill: currentColor; /* Icônes SVG Elementor ; la flèche par défaut garde fill="none". */
+}
+
+.ta-sc__link:hover .ta-sc__arrow,
+.ta-sc__card--linked:hover .ta-sc__arrow {
+	transform: translateX(4px);
+}
+
+.ta-sc__link:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 4px;
+	border-radius: 4px;
+}
+
+/* Carte entière cliquable : le lien s'étend sur toute la carte. */
+.ta-sc__card--linked .ta-sc__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+}
+
+.ta-sc__card--linked {
+	cursor: pointer;
+}
+
+/* Tablette : deux cartes par ligne (pleine largeur si 12), sauf largeur
+   tablette choisie sur la carte. */
+@media (max-width: 1024px) {
+	.ta-sc .ta-sc__card { grid-column: span 6; }
+	.ta-sc .ta-sc__card--span-12 { grid-column: 1 / -1; }
+	.ta-sc .ta-sc__card--t-3 { grid-column: span 3; }
+	.ta-sc .ta-sc__card--t-4 { grid-column: span 4; }
+	.ta-sc .ta-sc__card--t-5 { grid-column: span 5; }
+	.ta-sc .ta-sc__card--t-6 { grid-column: span 6; }
+	.ta-sc .ta-sc__card--t-7 { grid-column: span 7; }
+	.ta-sc .ta-sc__card--t-8 { grid-column: span 8; }
+	.ta-sc .ta-sc__card--t-9 { grid-column: span 9; }
+	.ta-sc .ta-sc__card--t-12 { grid-column: span 12; }
+}
+
+/* Mobile : une carte par ligne, sauf largeur mobile choisie sur la carte. */
+@media (max-width: 767px) {
+	.ta-sc .ta-sc__card { grid-column: 1 / -1; }
+	.ta-sc .ta-sc__card--m-3 { grid-column: span 3; }
+	.ta-sc .ta-sc__card--m-4 { grid-column: span 4; }
+	.ta-sc .ta-sc__card--m-5 { grid-column: span 5; }
+	.ta-sc .ta-sc__card--m-6 { grid-column: span 6; }
+	.ta-sc .ta-sc__card--m-7 { grid-column: span 7; }
+	.ta-sc .ta-sc__card--m-8 { grid-column: span 8; }
+	.ta-sc .ta-sc__card--m-9 { grid-column: span 9; }
+	.ta-sc .ta-sc__card--m-12 { grid-column: span 12; }
+
+	.ta-sc__body {
+		padding: 76px 22px 28px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ta-sc__card,
+	.ta-sc__img,
+	.ta-sc__overlay,
+	.ta-sc__arrow {
+		transition: none;
+	}
+
+	.ta-sc__card:hover,
+	.ta-sc__card:hover .ta-sc__img {
+		transform: none;
+	}
+}

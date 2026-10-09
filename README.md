@@ -1,8 +1,8 @@
 # Tools Adapter
 
-Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalogue, filtres AJAX et archive produits.
+Extension WordPress / Elementor pour boutiques **WooCommerce** & sites professionnels : widgets catalogue, filtres AJAX, galeries dynamiques et cartographie interactive.
 
-**Version :** 2.2.0  
+**Version :** 2.11.0  
 **Auteur :** [Miguel Missetcho](https://miguelmissetcho.com/)
 
 ## Prérequis
@@ -22,7 +22,7 @@ Extension WordPress / Elementor pour boutiques **WooCommerce** : widgets catalog
 
 ## Page de réglages
 
-Le menu d'administration **Tools Adapter** (icône de prise, dans la barre latérale de wp-admin) donne accès à une page de réglages permettant d'activer ou de désactiver individuellement chacun des 36 widgets, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation), ainsi que 2 fonctionnalités globales (Vue rapide produit, Sélecteur de variations visuel).
+Le menu d'administration **Tools Adapter** (icône de prise, dans la barre latérale de wp-admin) donne accès à une page de réglages permettant d'activer ou de désactiver individuellement chacun des 37 widgets, regroupés par catégorie (Mise en page générale, Contenu & preuve sociale, Catalogue & boutique, Découverte & filtrage, Site & navigation), ainsi que les fonctionnalités globales (Constructeur En-tête & Pied de page, Vue rapide produit, Sélecteur de variations visuel, Balises dynamiques).
 
 - Tous les widgets sont **activés par défaut** (aucune configuration requise, rétrocompatible avec les installations existantes)
 - Un widget désactivé disparaît immédiatement du panneau Elementor et n'enregistre plus aucun style ni script sur le site
@@ -38,7 +38,7 @@ Le menu d'administration **Tools Adapter** (icône de prise, dans la barre laté
 | **Catégories Produits** | Navigation par catégories WooCommerce |
 | **Grille Produits** | Grille responsive (colonnes, espacement, requête produits) |
 | **Carrousel Produits** | Carrousel de produits avec contrôles Elementor |
-| **Hero / Bannière** | Section d'accroche pleine largeur (titre, description, 2 boutons, fond image/couleur/dégradé) |
+| **Hero / Bannière** | Section d'accroche pleine largeur (titre, description, 2 boutons, fond image/couleur/dégradé) ; option carte vitrée « Split Hero » avec choix rapides (icône, sous-titre, badge, flèche) et pied téléphone |
 | **Bande CTA** | Bloc pleine largeur titre + description + bouton d'appel à l'action |
 | **Compteurs / Statistiques** | Chiffres animés au scroll (repeater, icônes, préfixe/suffixe) |
 | **Logos partenaires** | Grille statique ou défilement continu (marquee) des logos clients/partenaires |
@@ -46,13 +46,19 @@ Le menu d'administration **Tools Adapter** (icône de prise, dans la barre laté
 | **Bloc réassurance** | Icônes + texte (livraison, paiement sécurisé, retours...) |
 | **Bannière catégorie** | Hero pour une catégorie WooCommerce (image avec repli produit, description, compteur, CTA) |
 | **Boîte d'icône** | Carte moderne avec badge d'icône flottant, fond décoratif décalé et micro-animations |
+| **Boîtes d'image (Grille & Carrousel)** | Cartes de services avec image, badge personnalisé, liste à puces (coche) et lien d'action, en grille responsive ou carrousel défilant |
+| **Cartes services Bento** | Cartes image plein fond avec voile dégradé, badge, titre, description, pastilles et lien fléché ; largeur de chaque carte sur 12 colonnes (ex. 7 + 5 puis 12), option carte entière cliquable |
+| **Carte d'orientation** | Carte vitrée « De quoi avez-vous besoin ? » : choix cliquables avec pastille d'icône, titre, sous-titre, badge optionnel et flèche, pied de carte téléphone avec icône |
+| **Images superposées** | Grande image + médaillon secondaire qui la chevauche (coin, débordement, bordure) et pastille ronde chiffrée avec compteur animé (« 27 ans d'excellence »), animations flottement / halo / anneau |
+| **Carte de tarifs** | Titre, description, badge (coin / au-dessus / à côté) et lignes « libellé … prix / unité » avec séparateurs, ancien prix barré, ligne mise en avant, mention et bouton ; style clair ou sombre |
+| **Simulateur de Devis / Bois** | Calcul en direct essence × longueur × quantité : grille fixe ou liste libre de tarifs (longueurs indisponibles grisées), boutons ou listes déroulantes, quantité décimale, total côte à côte ou grand total centré avec détail, thème sombre / clair, pré-remplissage du formulaire de contact |
 | **Galerie Projets Mosaïque** | Grille Bento 6 cadres avec diaporama en fondu (FADE) indépendant par projet |
 | **Étapes / Processus** | Déroulement étape par étape avec ligne de connexion et badge Icône ou Numéro |
 | **Témoignages** | Avis clients en grille ou carrousel (photo, note, citation) |
 | **Équipe** | Grille de membres avec photo, poste, bio et réseaux sociaux |
 | **Tableau de tarifs** | Carte de plan (prix, fonctionnalités incluses/exclues, bouton, ruban « populaire ») |
 | **Timeline** | Frise chronologique verticale, alternée ou en colonne unique |
-| **Avant / Après** | Slider comparatif de deux images (glisser à la souris ou au doigt) |
+| **Avant / Après** | Slider comparatif de deux images : glisser souris/doigt (sans bloquer le défilement mobile), clavier et lecteurs d'écran, mode « suit la souris », horizontal/vertical, format (16:9…), libellés stylés séparément, icône du curseur, légende « Glissez pour comparer » |
 | **Table des matières** | Sommaire auto-généré à partir des titres de la page, avec surlignage de la section active |
 | **Barre de progression** | Barre fixe indiquant l'avancement de lecture de la page |
 | **Mini-panier** | Icône panier + dropdown AJAX (articles, sous-total, retrait, liens panier/commande) |
@@ -69,7 +75,25 @@ Le menu d'administration **Tools Adapter** (icône de prise, dans la barre laté
 | **Popup preuve sociale** | Notifications flottantes rotatives — messages personnalisés ou commandes WooCommerce récentes |
 | **Formulaire de contact** | Formulaire stylisé avec envoi AJAX par e-mail, anti-spam (honeypot + limite de fréquence) |
 | **Carte Google Maps** | Intégration par adresse (sans clé API) ou code d'intégration personnalisé, carte d'infos flottante |
+| **Carte Interactive des Zones** | Carte dynamique Leaflet (sans clé payante) avec rayons d'intervention concentriques, marqueurs pulsants animés, filtres de communes et testeur d'éligibilité postal |
 | **Grille de blog** | Grille personnalisable d'articles WordPress (catégories, colonnes, extrait, pagination) |
+
+## Balises dynamiques
+
+Tous les champs **lien**, **image** et **texte** des widgets acceptent les balises dynamiques d'Elementor : cliquez sur l'icône base de données (🗄) à droite d'un champ, puis choisissez une balise du groupe **Tools Adapter**. Elles fonctionnent **avec ou sans Elementor Pro** (avec Pro, ses propres balises restent disponibles dans les mêmes champs).
+
+| Type | Balises |
+|---|---|
+| **Liens** | Lien de la page courante, d'une page au choix, accueil du site, téléphone (`tel:`), e-mail (`mailto:` + objet), WhatsApp (numéro + message), Google Maps (lieu ou itinéraire), partage (Facebook, X, LinkedIn, WhatsApp, e-mail), page WooCommerce (boutique, panier, commande, compte) |
+| **Textes** | Titre, extrait, date de publication (format au choix), auteur, catégorie/terme, nom et slogan du site, année en cours, champ personnalisé, paramètre d'URL (`?prestation=…`), prix produit WooCommerce |
+| **Images** | Image mise en avant (avec image de secours), logo du site, champ personnalisé (ID ou URL) |
+
+À savoir :
+- Chaque balise propose ses propres réglages (numéro, adresse, format…) et les options communes « Avant », « Après » et « Valeur de secours » d'Elementor.
+- L'e-mail destinataire du formulaire de contact n'est volontairement **pas** dynamique (sécurité anti-relais de spam). Les champs techniques (ancres, clés, devise…) ne le sont pas non plus.
+- Avec un cache de pages, excluez du cache les pages qui utilisent la balise « Paramètre d'URL ».
+- Désactivable dans **Tools Adapter → Réglages → Balises dynamiques**.
+- Technique : les widgets héritent de `ToolsAdapter\Base_Widget` / `ToolsAdapter\Repeater` (`includes/dynamic-support.php`), qui activent `dynamic.active` sur les contrôles URL / MEDIA / TEXT / TEXTAREA ; les balises sont dans `includes/dynamic-tags.php`.
 
 ## Fonctionnalités
 
@@ -190,8 +214,9 @@ tools-adapter/
 ├── tools-adapter.php          # Point d'entrée du plugin
 ├── includes/
 │   ├── plugin.php             # Bootstrap Elementor
+│   ├── dynamic-support.php    # Classes de base (balises dynamiques sur les champs)
+│   ├── dynamic-tags.php       # Balises dynamiques Tools Adapter (liens, textes, images)
 │   ├── ajax-archive.php       # AJAX archive
-│   ├── ajax-price-filter.php  # AJAX filtre prix
 │   ├── ajax-cart.php          # AJAX mini-panier (lecture/retrait)
 │   ├── ajax-quick-view.php    # AJAX vue rapide produit
 │   ├── ajax-recently-viewed.php # AJAX produits récemment consultés

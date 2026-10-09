@@ -157,6 +157,45 @@ trait Products_Widget_Controls {
 		);
 
 		$this->add_control(
+			'card_style',
+			[
+				'label'       => esc_html__( 'Style de carte', 'tools-adapter' ),
+				'type'        => Controls_Manager::SELECT,
+				'default'     => 'classic',
+				'options'     => [
+					'classic'  => esc_html__( 'Classique (bouton visible)', 'tools-adapter' ),
+					'modern'   => esc_html__( 'Moderne (panier révélé au survol)', 'tools-adapter' ),
+					'minimal'  => esc_html__( 'Minimal (nom et prix sur une ligne, icône panier)', 'tools-adapter' ),
+					'overlay'  => esc_html__( 'Superposé (infos sur l\'image)', 'tools-adapter' ),
+					'elevated' => esc_html__( 'Élevé (carte encadrée, bouton visible)', 'tools-adapter' ),
+				],
+				'description' => esc_html__( 'Moderne : 2e image au survol, cœur et vue rapide sur l\'image, bouton panier révélé au survol, catégorie et badge en pourcentage.', 'tools-adapter' ),
+			]
+		);
+
+		$this->add_control(
+			'hover_image',
+			[
+				'label'        => esc_html__( '2e image au survol', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [ 'card_style!' => 'classic' ],
+			]
+		);
+
+		$this->add_control(
+			'show_category',
+			[
+				'label'        => esc_html__( 'Afficher la catégorie', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [ 'card_style!' => 'classic' ],
+			]
+		);
+
+		$this->add_control(
 			'show_image',
 			[
 				'label'        => esc_html__( 'Image', 'tools-adapter' ),
@@ -301,6 +340,17 @@ trait Products_Widget_Controls {
 				'return_value' => 'yes',
 				'default'      => '',
 				'separator'    => 'before',
+			]
+		);
+
+		$this->add_control(
+			'show_wishlist',
+			[
+				'label'        => esc_html__( 'Bouton liste de souhaits', 'tools-adapter' ),
+				'description'  => esc_html__( 'Nécessite la fonctionnalité « Liste de souhaits » dans les réglages Tools Adapter.', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
 			]
 		);
 

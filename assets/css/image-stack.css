@@ -1,0 +1,231 @@
+/* Images superposées */
+
+.ta-is {
+	--ta-is-overflow: 48px;
+	--ta-is-sec-x: 0px;
+	--ta-is-badge-size: 138px;
+	--ta-is-badge-x: 0px;
+	--ta-is-badge-y: 4%;
+	position: relative;
+	display: flex;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+/* Une image (principale ou secondaire) : cadre arrondi qui rogne l'image. */
+.ta-is__item {
+	position: relative;
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
+.ta-is__frame {
+	display: block;
+	overflow: hidden;
+	border-radius: 28px;
+	transform: translateZ(0); /* Rogne correctement l'image zoomée (Safari). */
+}
+
+.ta-is__img, .elementor .ta-is__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: none;
+	object-fit: cover;
+	transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Image principale */
+.ta-is__main {
+	width: 77%;
+}
+
+.ta-is__main .ta-is__img {
+	aspect-ratio: 4 / 5;
+}
+
+/* Image secondaire : ancrée dans un coin, déborde de --ta-is-overflow. */
+.ta-is__secondary {
+	position: absolute;
+	z-index: 2;
+	width: 50%;
+}
+
+.ta-is__secondary .ta-is__frame {
+	border: 8px solid #fff;
+	border-radius: 24px;
+}
+
+.ta-is__secondary .ta-is__img {
+	aspect-ratio: 4 / 3;
+}
+
+.ta-is--sec-bottom-right,
+.ta-is--sec-bottom-left {
+	padding-bottom: max(0px, var(--ta-is-overflow));
+}
+
+.ta-is--sec-top-right,
+.ta-is--sec-top-left {
+	padding-top: max(0px, var(--ta-is-overflow));
+}
+
+.ta-is--sec-bottom-right .ta-is__secondary,
+.ta-is--sec-bottom-left .ta-is__secondary {
+	bottom: max(0px, calc(var(--ta-is-overflow) * -1));
+}
+
+.ta-is--sec-top-right .ta-is__secondary,
+.ta-is--sec-top-left .ta-is__secondary {
+	top: max(0px, calc(var(--ta-is-overflow) * -1));
+}
+
+.ta-is--sec-bottom-right .ta-is__secondary,
+.ta-is--sec-top-right .ta-is__secondary {
+	right: calc(var(--ta-is-sec-x) * -1);
+}
+
+.ta-is--sec-bottom-left .ta-is__secondary,
+.ta-is--sec-top-left .ta-is__secondary {
+	left: calc(var(--ta-is-sec-x) * -1);
+}
+
+/* Secondaire à gauche : l'image principale passe à droite. */
+.ta-is--sec-bottom-left .ta-is__main,
+.ta-is--sec-top-left .ta-is__main {
+	margin-left: auto;
+}
+
+/* Pastille : centrée sur le bord de l'image principale par défaut. */
+.ta-is__badge {
+	position: absolute;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: var(--ta-is-badge-size);
+	height: var(--ta-is-badge-size);
+	padding: 12px;
+	border-radius: 50%;
+	background-image: linear-gradient(145deg, #ffc107 0%, #ff9800 100%);
+	box-shadow: 0 10px 40px rgba(255, 152, 0, 0.55);
+	color: #111827;
+	text-align: center;
+}
+
+.ta-is__badge--top-right,
+.ta-is__badge--top-left {
+	top: var(--ta-is-badge-y);
+}
+
+.ta-is__badge--bottom-right,
+.ta-is__badge--bottom-left {
+	bottom: var(--ta-is-badge-y);
+}
+
+.ta-is__badge--top-right,
+.ta-is__badge--bottom-right {
+	right: calc(var(--ta-is-badge-size) / -2 - var(--ta-is-badge-x));
+}
+
+.ta-is__badge--top-left,
+.ta-is__badge--bottom-left {
+	left: calc(var(--ta-is-badge-size) / -2 - var(--ta-is-badge-x));
+}
+
+.ta-is__badge-inner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.ta-is__badge-number {
+	color: #111827;
+	font-size: 46px;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+}
+
+.ta-is__badge-text {
+	margin-top: 4px;
+	color: #111827;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.25;
+}
+
+/* Animations continues de la pastille */
+.ta-is--badge-anim-float .ta-is__badge {
+	animation: ta-is-float 4s ease-in-out infinite;
+}
+
+.ta-is--badge-anim-pulse .ta-is__badge::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border-radius: 50%;
+	background: inherit;
+	animation: ta-is-pulse 2.4s ease-out infinite;
+}
+
+.ta-is--badge-anim-spin .ta-is__badge::after {
+	content: "";
+	position: absolute;
+	inset: -9px;
+	border: 2px solid;
+	border-color: rgba(255, 255, 255, 0.65) transparent;
+	border-radius: 50%;
+	animation: ta-is-spin 9s linear infinite;
+}
+
+@keyframes ta-is-float {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-10px); }
+}
+
+@keyframes ta-is-pulse {
+	0% { transform: scale(1); opacity: 0.55; }
+	100% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes ta-is-spin {
+	to { transform: rotate(360deg); }
+}
+
+@media (max-width: 767px) {
+	.ta-is__badge-number {
+		font-size: 34px;
+	}
+
+	.ta-is__badge-text {
+		font-size: 11px;
+	}
+
+	.ta-is--hide-sec-mobile-yes .ta-is__secondary {
+		display: none;
+	}
+
+	.ta-is--hide-sec-mobile-yes .ta-is {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ta-is__img {
+		transition: none;
+	}
+
+	.ta-is__badge,
+	.ta-is__badge::before,
+	.ta-is__badge::after {
+		animation: none !important;
+	}
+}

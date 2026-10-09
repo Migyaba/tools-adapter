@@ -6,7 +6,7 @@ use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Affiche dynamiquement les catégories WooCommerce sous forme de boutons.
  */
-class Product_Categories extends Widget_Base {
+class Product_Categories extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-product-categories';
@@ -121,10 +121,26 @@ class Product_Categories extends Widget_Base {
 				'options'   => [
 					'card'   => esc_html__( 'Carte (image pleine largeur)', 'tools-adapter' ),
 					'circle' => esc_html__( 'Cercle (avatar centré)', 'tools-adapter' ),
+					'modern' => esc_html__( 'Moderne avec flèche ↗ (Style Maquette)', 'tools-adapter' ),
 				],
 				'condition' => [
 					'display_style'       => 'image_cards',
 					'show_category_image' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'show_action_button',
+			[
+				'label'        => esc_html__( 'Afficher le bouton flèche ↗', 'tools-adapter' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [
+					'display_style'       => 'image_cards',
+					'show_category_image' => 'yes',
+					'image_layout'        => 'modern',
 				],
 			]
 		);
@@ -856,6 +872,472 @@ class Product_Categories extends Widget_Base {
 
 		$this->end_controls_section();
 
+		/* ═══════════════ STYLE: MODERN CARD LAYOUT ═══════════════ */
+		$this->start_controls_section(
+			'section_style_modern',
+			[
+				'label'     => esc_html__( 'Cartes Modernes (avec bouton ↗)', 'tools-adapter' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'display_style' => 'image_cards',
+					'image_layout'  => 'modern',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_card_min_height',
+			[
+				'label'      => esc_html__( 'Hauteur minimale de la carte', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'vh' ],
+				'range'      => [
+					'px' => [ 'min' => 140, 'max' => 500, 'step' => 5 ],
+				],
+				'default'    => [
+					'size' => 260,
+					'unit' => 'px',
+				],
+				'tablet_default' => [
+					'size' => 230,
+					'unit' => 'px',
+				],
+				'mobile_default' => [
+					'size' => 200,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_card_radius',
+			[
+				'label'      => esc_html__( 'Arrondi des coins (Border Radius)', 'tools-adapter' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'top'      => 24,
+					'right'    => 24,
+					'bottom'   => 24,
+					'left'     => 24,
+					'unit'     => 'px',
+					'isLinked' => true,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_card_padding',
+			[
+				'label'      => esc_html__( 'Marge interne (Padding)', 'tools-adapter' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em' ],
+				'default'    => [
+					'top'      => 24,
+					'right'    => 24,
+					'bottom'   => 24,
+					'left'     => 24,
+					'unit'     => 'px',
+					'isLinked' => true,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-pad: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_img_fit',
+			[
+				'label'     => esc_html__( 'Cadrage de l\'image', 'tools-adapter' ),
+				'type'      => Controls_Manager::SELECT,
+				'options'   => [
+					'cover'   => esc_html__( 'Couvrir (Plein cadre)', 'tools-adapter' ),
+					'contain' => esc_html__( 'Contenir (Proportions entières)', 'tools-adapter' ),
+				],
+				'default'   => 'cover',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-img-fit: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_card_bg',
+			[
+				'label'     => esc_html__( 'Couleur de fond de la carte', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#f8fafc',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-bg: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_card_overlay',
+			[
+				'label'       => esc_html__( 'Voile / Dégradé de lisibilité (Overlay)', 'tools-adapter' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => 'linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0) 100%)',
+				'description' => esc_html__( 'Couleur unie (rgba) ou dégradé CSS.', 'tools-adapter' ),
+				'selectors'   => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-overlay: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'     => 'modern_card_border',
+				'selector' => '{{WRAPPER}} .vv-product-category--modern-layout',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'modern_card_shadow',
+				'selector' => '{{WRAPPER}} .vv-product-category--modern-layout',
+			]
+		);
+
+		$this->add_control(
+			'modern_card_hover_lift',
+			[
+				'label'     => esc_html__( 'Soulèvement au survol (px)', 'tools-adapter' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [ 'min' => 0, 'max' => 20 ],
+				],
+				'default'   => [
+					'size' => 5,
+					'unit' => 'px',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-lift: {{SIZE}}px;',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_card_hover_zoom',
+			[
+				'label'     => esc_html__( 'Zoom image au survol', 'tools-adapter' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [ 'min' => 1.0, 'max' => 1.3, 'step' => 0.01 ],
+				],
+				'default'   => [
+					'size' => 1.06,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-zoom: {{SIZE}};',
+				],
+			]
+		);
+
+		// --- BOUTON ACTION ↗ ---
+		$this->add_control(
+			'heading_modern_btn',
+			[
+				'label'     => esc_html__( 'Bouton Flèche ↗', 'tools-adapter' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => [
+					'show_action_button' => 'yes',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_btn_size',
+			[
+				'label'      => esc_html__( 'Diamètre du bouton', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'range'      => [
+					'px' => [ 'min' => 28, 'max' => 70 ],
+				],
+				'default'    => [
+					'size' => 44,
+					'unit' => 'px',
+				],
+				'condition'  => [
+					'show_action_button' => 'yes',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_btn_icon_size',
+			[
+				'label'      => esc_html__( 'Taille de l\'icône', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'range'      => [
+					'px' => [ 'min' => 10, 'max' => 36 ],
+				],
+				'default'    => [
+					'size' => 18,
+					'unit' => 'px',
+				],
+				'condition'  => [
+					'show_action_button' => 'yes',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-icon-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_btn_offset_bottom',
+			[
+				'label'      => esc_html__( 'Distance du bas', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'range'      => [
+					'px' => [ 'min' => 0, 'max' => 60 ],
+				],
+				'default'    => [
+					'size' => 20,
+					'unit' => 'px',
+				],
+				'condition'  => [
+					'show_action_button' => 'yes',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-bottom: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_btn_offset_right',
+			[
+				'label'      => esc_html__( 'Distance de la droite', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'range'      => [
+					'px' => [ 'min' => 0, 'max' => 60 ],
+				],
+				'default'    => [
+					'size' => 20,
+					'unit' => 'px',
+				],
+				'condition'  => [
+					'show_action_button' => 'yes',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-right: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->start_controls_tabs(
+			'tabs_modern_btn',
+			[
+				'condition' => [
+					'show_action_button' => 'yes',
+				],
+			]
+		);
+
+		$this->start_controls_tab(
+			'tab_modern_btn_normal',
+			[
+				'label' => esc_html__( 'Normal', 'tools-adapter' ),
+			]
+		);
+
+		$this->add_control(
+			'modern_btn_bg',
+			[
+				'label'     => esc_html__( 'Fond du bouton', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#f59e0b',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-bg: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_btn_color',
+			[
+				'label'     => esc_html__( 'Couleur de l\'icône', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'modern_btn_shadow',
+				'selector' => '{{WRAPPER}} .vv-product-category__action',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_modern_btn_hover',
+			[
+				'label' => esc_html__( 'Survol', 'tools-adapter' ),
+			]
+		);
+
+		$this->add_control(
+			'modern_btn_hover_bg',
+			[
+				'label'     => esc_html__( 'Fond au survol', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#d97706',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-bg-hover: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_btn_hover_color',
+			[
+				'label'     => esc_html__( 'Couleur icône au survol', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-btn-color-hover: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'modern_btn_hover_shadow',
+				'selector' => '{{WRAPPER}} .vv-product-category--modern-layout:hover .vv-product-category__action',
+			]
+		);
+
+		$this->end_controls_tab();
+		$this->end_controls_tabs();
+
+		// --- TEXTES DANS LA CARTE MODERNE ---
+		$this->add_control(
+			'heading_modern_text',
+			[
+				'label'     => esc_html__( 'Textes (Nom & Compteur)', 'tools-adapter' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_text_align',
+			[
+				'label'     => esc_html__( 'Alignement du texte', 'tools-adapter' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'flex-start' => [
+						'title' => esc_html__( 'Gauche', 'tools-adapter' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center'     => [
+						'title' => esc_html__( 'Centre', 'tools-adapter' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'flex-end'   => [
+						'title' => esc_html__( 'Droite', 'tools-adapter' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'flex-start',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-category--modern-layout .vv-product-category__content' => 'align-items: {{VALUE}}; text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_name_color',
+			[
+				'label'     => esc_html__( 'Couleur du nom', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#0f172a',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-category--modern-layout .vv-category-name' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_name_hover_color',
+			[
+				'label'     => esc_html__( 'Couleur du nom au survol', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#0f172a',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-category--modern-layout:hover .vv-category-name' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_count_color',
+			[
+				'label'     => esc_html__( 'Couleur du compteur', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#64748b',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-category--modern-layout .vv-category-count' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_count_hover_color',
+			[
+				'label'     => esc_html__( 'Couleur du compteur au survol', 'tools-adapter' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#64748b',
+				'selectors' => [
+					'{{WRAPPER}} .vv-product-category--modern-layout:hover .vv-category-count' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'modern_count_spacing',
+			[
+				'label'      => esc_html__( 'Espacement sous le titre', 'tools-adapter' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [ 'min' => 0, 'max' => 30 ],
+				],
+				'default'    => [
+					'size' => 4,
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .vv-product-categories' => '--vv-modern-count-spacing: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
 		/* ═══════════════ STYLE: TYPOGRAPHY ═══════════════ */
 		$this->start_controls_section(
 			'section_style_typography',
@@ -996,6 +1478,9 @@ class Product_Categories extends Widget_Base {
 				echo '<span class="vv-product-category__placeholder"></span>';
 			}
 			?>
+			<?php if ( 'modern' === ( $settings['image_layout'] ?? '' ) ) : ?>
+				<span class="vv-product-category__overlay"></span>
+			<?php endif; ?>
 		</span>
 		<?php
 	}
@@ -1050,6 +1535,12 @@ class Product_Categories extends Widget_Base {
 		$prefix = isset( $settings['count_prefix'] ) ? $settings['count_prefix'] : '(';
 		$suffix = isset( $settings['count_suffix'] ) ? $settings['count_suffix'] : ')';
 
+		// Formater par défaut le compteur en "X items" pour la carte moderne
+		if ( 'image_cards' === $display && 'modern' === $image_layout && '(' === $prefix && ')' === $suffix ) {
+			$prefix = '';
+			$suffix = ' ' . esc_html__( 'items', 'tools-adapter' );
+		}
+
 		$active_ids = [];
 		if ( ! empty( $_GET['product_cat'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$active_ids = array_values( array_filter( array_map( 'absint', (array) wp_unslash( $_GET['product_cat'] ) ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -1063,8 +1554,12 @@ class Product_Categories extends Widget_Base {
 			$wrapper_class .= ' vv-product-categories--image-cards';
 			if ( 'circle' === $image_layout ) {
 				$wrapper_class .= ' vv-product-categories--circle-layout';
+			} elseif ( 'modern' === $image_layout ) {
+				$wrapper_class .= ' vv-product-categories--modern-layout';
 			}
 		}
+
+		$show_btn = 'image_cards' === $display && 'modern' === $image_layout && 'yes' === ( $settings['show_action_button'] ?? 'yes' );
 		?>
 		<div
 			class="<?php echo esc_attr( $wrapper_class ); ?>"
@@ -1076,7 +1571,7 @@ class Product_Categories extends Widget_Base {
 			<?php if ( 'filter' === $mode && 'yes' === ( $settings['show_all_button'] ?? '' ) ) : ?>
 				<button
 					type="button"
-					class="vv-product-category vv-product-category--all<?php echo 'image_cards' === $display ? ' vv-product-category--image-card' : ''; ?><?php echo ( 'image_cards' === $display && 'circle' === $image_layout ) ? ' vv-product-category--circle-layout' : ''; ?><?php echo empty( $active_ids ) ? ' is-active' : ''; ?>"
+					class="vv-product-category vv-product-category--all<?php echo 'image_cards' === $display ? ' vv-product-category--image-card' : ''; ?><?php echo ( 'image_cards' === $display && 'circle' === $image_layout ) ? ' vv-product-category--circle-layout' : ''; ?><?php echo ( 'image_cards' === $display && 'modern' === $image_layout ) ? ' vv-product-category--modern-card' : ''; ?><?php echo empty( $active_ids ) ? ' is-active' : ''; ?>"
 					data-category-id="0"
 					data-category-filter
 				>
@@ -1086,6 +1581,14 @@ class Product_Categories extends Widget_Base {
 							<span class="vv-category-name"><?php echo esc_html( \tools_adapter_translate( $settings['all_button_text'] ?: __( 'Tous', 'tools-adapter' ) ) ); ?></span>
 						<?php endif; ?>
 					</span>
+					<?php if ( $show_btn ) : ?>
+						<span class="vv-product-category__action" aria-hidden="true">
+							<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="7" y1="17" x2="17" y2="7"></line>
+								<polyline points="7 7 17 7 17 17"></polyline>
+							</svg>
+						</span>
+					<?php endif; ?>
 				</button>
 			<?php endif; ?>
 
@@ -1097,6 +1600,8 @@ class Product_Categories extends Widget_Base {
 					$item_class .= ' vv-product-category--image-card';
 					if ( 'circle' === $image_layout ) {
 						$item_class .= ' vv-product-category--circle-layout';
+					} elseif ( 'modern' === $image_layout ) {
+						$item_class .= ' vv-product-category--modern-card';
 					}
 				}
 				if ( $is_active ) {
@@ -1119,6 +1624,14 @@ class Product_Categories extends Widget_Base {
 								<span class="vv-category-count"><?php echo esc_html( $prefix . $category->count . $suffix ); ?></span>
 							<?php endif; ?>
 						</span>
+						<?php if ( $show_btn ) : ?>
+							<span class="vv-product-category__action" aria-hidden="true">
+								<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+									<line x1="7" y1="17" x2="17" y2="7"></line>
+									<polyline points="7 7 17 7 17 17"></polyline>
+								</svg>
+							</span>
+						<?php endif; ?>
 					</button>
 				<?php else :
 					$category_link = get_term_link( $category );
@@ -1143,6 +1656,14 @@ class Product_Categories extends Widget_Base {
 								<span class="vv-category-count"><?php echo esc_html( $prefix . $category->count . $suffix ); ?></span>
 							<?php endif; ?>
 						</span>
+						<?php if ( $show_btn ) : ?>
+							<span class="vv-product-category__action" aria-hidden="true">
+								<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+									<line x1="7" y1="17" x2="17" y2="7"></line>
+									<polyline points="7 7 17 7 17 17"></polyline>
+								</svg>
+							</span>
+						<?php endif; ?>
 					</a>
 				<?php endif; ?>
 			<?php endforeach; ?>

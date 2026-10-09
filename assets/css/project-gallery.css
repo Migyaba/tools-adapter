@@ -78,7 +78,7 @@
 }
 
 /* Image individuelle en fondu */
-.ta-project-card__slide {
+.ta-project-card__slide, .elementor .ta-project-card__slide {
 	position: absolute;
 	inset: 0;
 	width: 100%;

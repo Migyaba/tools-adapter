@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use ToolsAdapter\Products_Query;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Widget: Marques — grille de logos de marques (taxonomie native "product_brand"
  * si disponible, sinon n'importe quel attribut WooCommerce utilisé comme marque).
  */
-class Brands_Grid extends Widget_Base {
+class Brands_Grid extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-brands';

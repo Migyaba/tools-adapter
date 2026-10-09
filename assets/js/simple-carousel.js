@@ -85,7 +85,8 @@
 
 		function update(animated) {
 			if (animated !== false) {
-				track.style.transition = 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)';
+				var transitionSpeed = parseInt(root.getAttribute('data-transition-speed'), 10) || 450;
+				track.style.transition = 'transform ' + (transitionSpeed / 1000) + 's cubic-bezier(0.22, 1, 0.36, 1)';
 			} else {
 				track.style.transition = 'none';
 			}
@@ -97,6 +98,10 @@
 			} else {
 				track.style.transform = 'translateX(-' + (index * 100) + '%)';
 			}
+
+			slides.forEach(function (slide, i) {
+				slide.classList.toggle('is-active', i === index);
+			});
 
 			dots.forEach(function (dot, i) {
 				dot.classList.toggle('is-active', i === index);
@@ -248,7 +253,7 @@
 			if (!window.elementorFrontend || !elementorFrontend.hooks) {
 				return;
 			}
-			['tools-adapter-testimonials'].forEach(function (widget) {
+			['tools-adapter-testimonials', 'tools-adapter-hero-carousel', 'tools-adapter-image-box'].forEach(function (widget) {
 				elementorFrontend.hooks.addAction('frontend/element_ready/' + widget + '.default', function ($scope) {
 					var root = $scope[0].querySelector('[data-ta-carousel]');
 					if (root) {

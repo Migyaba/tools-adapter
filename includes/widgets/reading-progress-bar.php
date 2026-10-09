@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Barre de progression de lecture — barre fixe indiquant l'avancement de lecture.
  */
-class Reading_Progress_Bar extends Widget_Base {
+class Reading_Progress_Bar extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-reading-progress';

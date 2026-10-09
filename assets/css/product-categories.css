@@ -195,3 +195,177 @@
 	margin: 0;
 	color: #666666;
 }
+
+/* =========================================
+   MODERN CARD LAYOUT (with ↗ action button)
+   Style maquette : image de fond plein cadre,
+   textes en haut à gauche, bouton rond ↗ en bas à droite.
+   ========================================= */
+
+.vv-product-categories {
+	--vv-modern-height: 260px;
+	--vv-modern-radius: 24px;
+	--vv-modern-pad: 24px;
+	--vv-modern-img-fit: cover;
+	--vv-modern-bg: #f8fafc;
+	--vv-modern-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0) 100%);
+	--vv-modern-lift: 5px;
+	--vv-modern-zoom: 1.06;
+	--vv-modern-btn-size: 44px;
+	--vv-modern-btn-icon-size: 18px;
+	--vv-modern-btn-bottom: 20px;
+	--vv-modern-btn-right: 20px;
+	--vv-modern-btn-bg: #f59e0b;
+	--vv-modern-btn-color: #ffffff;
+	--vv-modern-btn-bg-hover: #d97706;
+	--vv-modern-btn-color-hover: #ffffff;
+	--vv-modern-count-spacing: 4px;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	min-height: var(--vv-modern-height);
+	height: auto;
+	border-radius: var(--vv-modern-radius);
+	padding: var(--vv-modern-pad);
+	background-color: var(--vv-modern-bg);
+	overflow: hidden;
+	box-sizing: border-box;
+	text-decoration: none !important;
+	border: 0 solid transparent;
+	transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.3s ease;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card:hover {
+	transform: translateY(calc(var(--vv-modern-lift, 5px) * -1));
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__media {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 1;
+	background: transparent;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__image {
+	width: 100%;
+	height: 100%;
+	object-fit: var(--vv-modern-img-fit, cover);
+	object-position: center;
+	transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card:hover .vv-product-category__image,
+.vv-product-categories--image-cards .vv-product-category--modern-card.is-active .vv-product-category__image {
+	transform: scale(var(--vv-modern-zoom, 1.06));
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__overlay {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--vv-modern-overlay);
+	pointer-events: none;
+	z-index: 2;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__content {
+	position: relative;
+	z-index: 3;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	text-align: left;
+	gap: var(--vv-modern-count-spacing, 4px);
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-category-name {
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.25;
+	color: #0f172a;
+	transition: color 0.25s ease;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-category-count {
+	font-size: 0.95rem;
+	font-weight: 500;
+	line-height: 1.3;
+	color: #64748b;
+	transition: color 0.25s ease;
+}
+
+/* Action button ↗ */
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__action {
+	position: absolute;
+	bottom: var(--vv-modern-btn-bottom, 20px);
+	right: var(--vv-modern-btn-right, 20px);
+	z-index: 3;
+	width: var(--vv-modern-btn-size, 44px);
+	height: var(--vv-modern-btn-size, 44px);
+	border-radius: 50%;
+	background-color: var(--vv-modern-btn-bg, #f59e0b);
+	color: var(--vv-modern-btn-color, #ffffff);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+	transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+	pointer-events: none;
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__action svg {
+	width: var(--vv-modern-btn-icon-size, 18px);
+	height: var(--vv-modern-btn-icon-size, 18px);
+	transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card:hover .vv-product-category__action {
+	background-color: var(--vv-modern-btn-bg-hover, #d97706);
+	color: var(--vv-modern-btn-color-hover, #ffffff);
+	transform: scale(1.08) translate(1px, -1px);
+	box-shadow: 0 8px 20px rgba(245, 158, 11, 0.5);
+}
+
+.vv-product-categories--image-cards .vv-product-category--modern-card:hover .vv-product-category__action svg {
+	transform: translate(1px, -1px);
+}
+
+@media (max-width: 767px) {
+	.vv-product-categories--image-cards .vv-product-category--modern-card {
+		padding: 16px;
+		border-radius: 18px;
+	}
+
+	.vv-product-categories--image-cards .vv-product-category--modern-card .vv-category-name {
+		font-size: 1.05rem;
+	}
+
+	.vv-product-categories--image-cards .vv-product-category--modern-card .vv-category-count {
+		font-size: 0.85rem;
+	}
+
+	.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__action {
+		width: 36px;
+		height: 36px;
+		bottom: 14px;
+		right: 14px;
+	}
+
+	.vv-product-categories--image-cards .vv-product-category--modern-card .vv-product-category__action svg {
+		width: 15px;
+		height: 15px;
+	}
+}

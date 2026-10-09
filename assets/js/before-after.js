@@ -1,5 +1,10 @@
 /**
  * Tools Adapter — Slider Avant/Après.
+ *
+ * La position est stockée dans la variable CSS --ta-ba-pos du conteneur ;
+ * le CSS s'en sert pour découper l'image « Avant » et placer le curseur.
+ * Pointer Events + capture : le glisser continue même hors de l'image, et
+ * touch-action (pan-y / pan-x) laisse la page défiler dans l'autre sens.
  */
 (function () {
 	'use strict';
@@ -11,71 +16,113 @@
 		root.dataset.taBound = '1';
 
 		var handle = root.querySelector('[data-ba-handle]');
-		var clip = root.querySelector('[data-ba-clip]');
 		var vertical = root.classList.contains('ta-ba--vertical');
+		var follow = root.classList.contains('ta-ba--follow');
 		var dragging = false;
+		var current = parseFloat(root.getAttribute('data-position'));
+
+		if (isNaN(current)) {
+			current = 50;
+		}
 
 		function setPosition(percent) {
-			percent = Math.max(0, Math.min(100, percent));
-			if (vertical) {
-				clip.style.clipPath = 'polygon(0 0, 100% 0, 100% ' + percent + '%, 0 ' + percent + '%)';
-				handle.style.top = percent + '%';
-				handle.style.left = '';
-			} else {
-				clip.style.clipPath = 'polygon(0 0, ' + percent + '% 0, ' + percent + '% 100%, 0 100%)';
-				handle.style.left = percent + '%';
-				handle.style.top = '';
+			current = Math.max(0, Math.min(100, percent));
+			root.style.setProperty('--ta-ba-pos', current + '%');
+			if (handle) {
+				var rounded = Math.round(current);
+				handle.setAttribute('aria-valuenow', rounded);
+				handle.setAttribute('aria-valuetext', rounded + ' %');
 			}
 		}
 
-		function percentFromEvent(clientX, clientY) {
+		function percentFromEvent(e) {
 			var rect = root.getBoundingClientRect();
 			if (vertical) {
-				return ((clientY - rect.top) / rect.height) * 100;
+				return ((e.clientY - rect.top) / rect.height) * 100;
 			}
-			return ((clientX - rect.left) / rect.width) * 100;
+			return ((e.clientX - rect.left) / rect.width) * 100;
 		}
 
-		function onMove(e) {
-			if (!dragging) {
+		root.addEventListener('pointerdown', function (e) {
+			if (e.pointerType === 'mouse' && e.button !== 0) {
 				return;
 			}
-			var point = e.touches ? e.touches[0] : e;
-			setPosition(percentFromEvent(point.clientX, point.clientY));
-		}
+			dragging = true;
+			root.classList.add('is-dragging');
+			if (root.setPointerCapture) {
+				root.setPointerCapture(e.pointerId);
+			}
+			// Touch: wait for a move, so starting a page scroll on the image
+			// does not make the comparison jump.
+			if (e.pointerType !== 'touch') {
+				setPosition(percentFromEvent(e));
+			}
+		});
+
+		root.addEventListener('pointermove', function (e) {
+			if (dragging || (follow && e.pointerType === 'mouse')) {
+				setPosition(percentFromEvent(e));
+			}
+		});
 
 		function stopDrag() {
 			dragging = false;
+			root.classList.remove('is-dragging');
 		}
 
-		handle.addEventListener('mousedown', function () {
-			dragging = true;
-		});
-		handle.addEventListener('touchstart', function () {
-			dragging = true;
-		}, { passive: true });
+		root.addEventListener('pointerup', stopDrag);
+		// The browser took over the gesture (page scroll): stop dragging.
+		root.addEventListener('pointercancel', stopDrag);
 
-		root.addEventListener('mousemove', onMove);
-		root.addEventListener('touchmove', onMove, { passive: true });
-		window.addEventListener('mouseup', stopDrag);
-		window.addEventListener('touchend', stopDrag);
+		if (handle) {
+			handle.addEventListener('keydown', function (e) {
+				var step = e.shiftKey ? 10 : 2;
+				var next = null;
 
-		root.addEventListener('click', function (e) {
-			if (e.target.closest('[data-ba-handle]')) {
-				return;
-			}
-			setPosition(percentFromEvent(e.clientX, e.clientY));
-		});
+				switch (e.key) {
+					case 'ArrowLeft':
+					case 'ArrowUp':
+						next = current - step;
+						break;
+					case 'ArrowRight':
+					case 'ArrowDown':
+						next = current + step;
+						break;
+					case 'PageUp':
+						next = current - 10;
+						break;
+					case 'PageDown':
+						next = current + 10;
+						break;
+					case 'Home':
+						next = 0;
+						break;
+					case 'End':
+						next = 100;
+						break;
+				}
 
-		var initial = parseFloat(root.getAttribute('data-position'));
-		setPosition(isNaN(initial) ? 50 : initial);
+				if (next !== null) {
+					e.preventDefault();
+					setPosition(next);
+				}
+			});
+		}
+
+		setPosition(current);
 	}
 
-	function boot() {
-		document.querySelectorAll('[data-ta-before-after]').forEach(init);
+	function boot(scope) {
+		(scope || document).querySelectorAll('[data-ta-before-after]').forEach(init);
 	}
 
-	document.addEventListener('DOMContentLoaded', boot);
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', function () {
+			boot();
+		});
+	} else {
+		boot();
+	}
 
 	if (window.jQuery) {
 		window.jQuery(window).on('elementor/frontend/init', function () {
@@ -83,10 +130,7 @@
 				return;
 			}
 			elementorFrontend.hooks.addAction('frontend/element_ready/tools-adapter-before-after.default', function ($scope) {
-				var root = $scope[0].querySelector('[data-ta-before-after]');
-				if (root) {
-					init(root);
-				}
+				boot($scope[0]);
 			});
 		});
 	}

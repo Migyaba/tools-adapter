@@ -1,0 +1,192 @@
+/* Tools Adapter — Lookbook (Shop the look) */
+.ta-lookbook {
+	--ta-lb-dot: #ffffff;
+	--ta-lb-card-bg: #ffffff;
+	--ta-lb-card-color: #1c1c1c;
+	position: relative;
+}
+
+.ta-lookbook__media {
+	position: relative;
+	aspect-ratio: 4 / 5;
+	background: #e9e6e1;
+}
+
+.ta-lookbook__media .ta-lookbook__img {
+	display: block;
+	max-width: none;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.ta-lookbook__spot {
+	position: absolute;
+	z-index: 2;
+	transform: translate(-50%, -50%);
+}
+
+.ta-lookbook__spot.is-open {
+	z-index: 5;
+}
+
+.ta-lookbook__dot {
+	position: relative;
+	display: block;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.35);
+	cursor: pointer;
+	backdrop-filter: blur(2px);
+}
+
+.ta-lookbook__dot::after {
+	position: absolute;
+	inset: 8px;
+	border-radius: 50%;
+	background: var(--ta-lb-dot);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	content: "";
+	transition: transform 0.2s ease;
+}
+
+.ta-lookbook__spot.is-open .ta-lookbook__dot::after,
+.ta-lookbook__dot:hover::after {
+	transform: scale(1.3);
+}
+
+.ta-lookbook--pulse .ta-lookbook__dot::before {
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	background: var(--ta-lb-dot);
+	content: "";
+	opacity: 0.6;
+	animation: ta-lb-pulse 2s ease-out infinite;
+}
+
+@keyframes ta-lb-pulse {
+	to {
+		opacity: 0;
+		transform: scale(2);
+	}
+}
+
+.ta-lookbook__card {
+	position: absolute;
+	top: 50%;
+	left: calc(100% + 12px);
+	display: flex;
+	gap: 12px;
+	width: 260px;
+	padding: 10px;
+	background: var(--ta-lb-card-bg);
+	color: var(--ta-lb-card-color);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+	opacity: 0;
+	pointer-events: none;
+	transform: translate(6px, -50%);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.ta-lookbook__spot--left .ta-lookbook__card {
+	right: calc(100% + 12px);
+	left: auto;
+	transform: translate(-6px, -50%);
+}
+
+.ta-lookbook__spot--up .ta-lookbook__card {
+	top: auto;
+	bottom: -10px;
+	transform: translate(6px, 0);
+}
+
+.ta-lookbook__spot--up.ta-lookbook__spot--left .ta-lookbook__card {
+	transform: translate(-6px, 0);
+}
+
+.ta-lookbook__spot.is-open .ta-lookbook__card {
+	opacity: 1;
+	pointer-events: auto;
+	transform: translate(0, -50%);
+}
+
+.ta-lookbook__spot--up.is-open .ta-lookbook__card {
+	transform: none;
+}
+
+@media (hover: hover) {
+	.ta-lookbook__spot:hover .ta-lookbook__card {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translate(0, -50%);
+	}
+
+	.ta-lookbook__spot--up:hover .ta-lookbook__card {
+		transform: none;
+	}
+}
+
+.ta-lookbook__thumb {
+	flex: 0 0 72px;
+}
+
+.ta-lookbook__thumb img,
+.ta-lookbook .ta-lookbook__thumb img {
+	display: block;
+	width: 72px;
+	height: 72px;
+	object-fit: cover;
+	background: #f3f1ee;
+}
+
+.ta-lookbook__info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 2px;
+	min-width: 0;
+	font-size: 0.85rem;
+	line-height: 1.35;
+}
+
+.ta-lookbook__name {
+	overflow: hidden;
+	color: inherit;
+	font-weight: 500;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ta-lookbook__price del {
+	opacity: 0.55;
+}
+
+.ta-lookbook__price ins {
+	text-decoration: none;
+}
+
+.ta-lookbook__link {
+	margin-top: 4px;
+	color: inherit;
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+	.ta-lookbook__card {
+		width: 210px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ta-lookbook--pulse .ta-lookbook__dot::before {
+		animation: none;
+	}
+}

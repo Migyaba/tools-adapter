@@ -2,7 +2,7 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
+use ToolsAdapter\Base_Widget;
 use Elementor\Group_Control_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Table des matières — sommaire auto-généré à partir des titres de la page.
  */
-class Table_Of_Contents extends Widget_Base {
+class Table_Of_Contents extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-toc';

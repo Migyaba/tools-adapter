@@ -130,8 +130,11 @@ final class Admin_Settings {
 		return [
 			'widgets'  => $widgets,
 			'features' => [
-				'quick_view'         => 'yes',
-				'variation_swatches' => 'yes',
+				'header_footer_builder' => 'yes',
+				'quick_view'            => 'yes',
+				'variation_swatches'    => 'yes',
+				'wishlist'              => 'yes',
+				'dynamic_tags'          => 'yes',
 			],
 		];
 	}
@@ -204,10 +207,15 @@ final class Admin_Settings {
 				'label' => esc_html__( 'Mise en page générale', 'tools-adapter' ),
 				'items' => [
 					'tools-adapter-hero-banner'   => [ 'label' => esc_html__( 'Hero / Bannière', 'tools-adapter' ), 'description' => esc_html__( 'Section d\'accroche plein écran : titre, description, boutons, fond image/couleur/dégradé.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-hero-carousel' => [ 'label' => esc_html__( 'Hero Carrousel (Glassmorphism)', 'tools-adapter' ), 'description' => esc_html__( 'Grand bandeau carrousel avec carte en verre dépoli, animations séquentielles à l\'apparition, flèches circulaires et puces.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-cta-band'      => [ 'label' => esc_html__( 'Bande CTA', 'tools-adapter' ), 'description' => esc_html__( 'Bloc pleine largeur mettant en avant un appel à l\'action.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-marquee'       => [ 'label' => esc_html__( 'Ruban Défilant (Marquee)', 'tools-adapter' ), 'description' => esc_html__( 'Ligne continue de défilement fluide pour mots-clés, prestations et certifications.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-stats'         => [ 'label' => esc_html__( 'Compteurs / Statistiques', 'tools-adapter' ), 'description' => esc_html__( 'Chiffres clés animés au défilement.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-logos'         => [ 'label' => esc_html__( 'Logos partenaires', 'tools-adapter' ), 'description' => esc_html__( 'Grille statique ou défilement continu des logos clients/partenaires.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-faq'           => [ 'label' => esc_html__( 'FAQ Accordéon', 'tools-adapter' ), 'description' => esc_html__( 'Questions/réponses repliables avec données structurées SEO (FAQPage).', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-cta-banner'    => [ 'label' => esc_html__( 'Bannière CTA (styles)', 'tools-adapter' ), 'description' => esc_html__( 'Appel à l\'action en 4 styles : image partagée, image plein fond, centré, carte d\'accent.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-promo-grid'    => [ 'label' => esc_html__( 'Mosaïque promo (Bento)', 'tools-adapter' ), 'description' => esc_html__( 'Tuiles image avec titre, sur-titre et lien en disposition bento, 2, 3 ou 4 colonnes.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-lookbook'      => [ 'label' => esc_html__( 'Lookbook (Shop the look)', 'tools-adapter' ), 'description' => esc_html__( 'Image avec points interactifs reliés à des produits (vignette, prix, lien).', 'tools-adapter' ), 'requires_woo' => true ],
 					'tools-adapter-trust-badges'  => [ 'label' => esc_html__( 'Bloc réassurance', 'tools-adapter' ), 'description' => esc_html__( 'Icônes de réassurance : livraison, paiement sécurisé, retours…', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-category-banner' => [ 'label' => esc_html__( 'Bannière catégorie', 'tools-adapter' ), 'description' => esc_html__( 'Hero pour une page de catégorie WooCommerce (image, description, compteur, CTA).', 'tools-adapter' ), 'requires_woo' => true ],
 					'tools-adapter-icon-box'        => [ 'label' => esc_html__( 'Boîte d\'icône', 'tools-adapter' ), 'description' => esc_html__( 'Carte avec badge d\'icône flottant et fond décoratif décalé.', 'tools-adapter' ), 'requires_woo' => false ],
@@ -216,15 +224,23 @@ final class Admin_Settings {
 			'content'   => [
 				'label' => esc_html__( 'Contenu & preuve sociale', 'tools-adapter' ),
 				'items' => [
-					'tools-adapter-project-gallery' => [ 'label' => esc_html__( 'Galerie Projets Mosaïque', 'tools-adapter' ), 'description' => esc_html__( 'Grille Bento 6 cadres avec diaporama en fondu (FADE) par projet.', 'tools-adapter' ), 'requires_woo' => false ],
-					'tools-adapter-process-steps'   => [ 'label' => esc_html__( 'Étapes / Processus', 'tools-adapter' ), 'description' => esc_html__( 'Déroulement étape par étape avec ligne de connexion et badge Icône ou Numéro.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-image-box'        => [ 'label' => esc_html__( 'Boîtes d\'image (Grille & Carrousel)', 'tools-adapter' ), 'description' => esc_html__( 'Cartes de services/prestations avec image, badge flottant, puces et bouton, en grille ou carrousel défilant.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-image-stack'      => [ 'label' => esc_html__( 'Images superposées', 'tools-adapter' ), 'description' => esc_html__( 'Grande image avec médaillon secondaire qui la chevauche et pastille chiffrée animée (ex. « 27 ans d\'excellence »).', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-quick-choice'     => [ 'label' => esc_html__( 'Carte d\'orientation', 'tools-adapter' ), 'description' => esc_html__( 'Carte vitrée « De quoi avez-vous besoin ? » : liste de choix (icône, titre, sous-titre, flèche) et pied de carte téléphone.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-service-cards'    => [ 'label' => esc_html__( 'Cartes services Bento', 'tools-adapter' ), 'description' => esc_html__( 'Cartes image plein fond avec dégradé, badge, titre, description, pastilles et lien ; largeur de chaque carte réglable sur 12 colonnes.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-project-gallery'  => [ 'label' => esc_html__( 'Galerie Projets Mosaïque', 'tools-adapter' ), 'description' => esc_html__( 'Grille Bento 6 cadres avec diaporama en fondu (FADE) par projet.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-project-showcase' => [ 'label' => esc_html__( 'Galerie Réalisation (Miniatures & Plein Écran)', 'tools-adapter' ), 'description' => esc_html__( 'Visionneuse interactive avec grand visualiseur, bandeau de miniatures défilant, compteur, boutons de contrôle et modale diaporama plein écran.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-process-steps'    => [ 'label' => esc_html__( 'Étapes / Processus', 'tools-adapter' ), 'description' => esc_html__( 'Déroulement étape par étape avec ligne de connexion et badge Icône ou Numéro.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-testimonials'    => [ 'label' => esc_html__( 'Témoignages', 'tools-adapter' ), 'description' => esc_html__( 'Avis clients en grille ou carrousel (photo, note, citation).', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-team'            => [ 'label' => esc_html__( 'Équipe', 'tools-adapter' ), 'description' => esc_html__( 'Grille de membres avec photo, poste, bio et réseaux sociaux.', 'tools-adapter' ), 'requires_woo' => false ],
-					'tools-adapter-pricing-table'   => [ 'label' => esc_html__( 'Tableau de tarifs', 'tools-adapter' ), 'description' => esc_html__( 'Carte de plan : prix, fonctionnalités, bouton, ruban « populaire ».', 'tools-adapter' ), 'requires_woo' => false ],
-					'tools-adapter-timeline'        => [ 'label' => esc_html__( 'Timeline', 'tools-adapter' ), 'description' => esc_html__( 'Frise chronologique verticale, alternée ou en colonne unique.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-pricing-table'   => [ 'label' => esc_html__( 'Grille de tarifs (3 offres)', 'tools-adapter' ), 'description' => esc_html__( 'Tableau de tarification 3 colonnes : offres personnalisables, masquage individuel, badge populaire, encart d\'engagement.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-price-card'      => [ 'label' => esc_html__( 'Carte de tarifs', 'tools-adapter' ), 'description' => esc_html__( 'Carte titre + description + badge et lignes « libellé … prix / unité » (ex. tarifs du bois au stère), style clair ou sombre.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-cost-calculator' => [ 'label' => esc_html__( 'Simulateur de Devis / Bois', 'tools-adapter' ), 'description' => esc_html__( 'Calculateur interactif de volume et devis instantané (essence, taille, slider de quantité, total TTC).', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-timeline'        => [ 'label' => esc_html__( 'Frise des Étapes (Timeline)', 'tools-adapter' ), 'description' => esc_html__( 'Déroulement de projet en phases : badges bi-lignes (01 / PHASE), cartes interactives, ligne de liaison dégradée.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-before-after'    => [ 'label' => esc_html__( 'Avant / Après', 'tools-adapter' ), 'description' => esc_html__( 'Slider comparatif de deux images.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-toc'             => [ 'label' => esc_html__( 'Table des matières', 'tools-adapter' ), 'description' => esc_html__( 'Sommaire auto-généré à partir des titres de la page.', 'tools-adapter' ), 'requires_woo' => false ],
 					'tools-adapter-reading-progress' => [ 'label' => esc_html__( 'Barre de progression', 'tools-adapter' ), 'description' => esc_html__( 'Barre fixe indiquant l\'avancement de lecture de la page.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-interactive-map' => [ 'label' => esc_html__( 'Carte Interactive des Zones', 'tools-adapter' ), 'description' => esc_html__( 'Carte dynamique Leaflet avec rayons d\'intervention concentriques personnalisables, marqueurs animés (pulsation), filtres de communes et testeur d\'éligibilité postal.', 'tools-adapter' ), 'requires_woo' => false ],
 				],
 			],
 			'shop'      => [
@@ -246,6 +262,8 @@ final class Admin_Settings {
 					'tools-adapter-attribute-filter' => [ 'label' => esc_html__( 'Filtre par attributs', 'tools-adapter' ), 'description' => esc_html__( 'Pastilles/pilules pour filtrer par attribut WooCommerce (couleur, taille…).', 'tools-adapter' ), 'requires_woo' => true ],
 					'tools-adapter-brands'            => [ 'label' => esc_html__( 'Marques', 'tools-adapter' ), 'description' => esc_html__( 'Grille de logos de marques.', 'tools-adapter' ), 'requires_woo' => true ],
 					'tools-adapter-recently-viewed'   => [ 'label' => esc_html__( 'Produits récemment consultés', 'tools-adapter' ), 'description' => esc_html__( 'Historique client-side (localStorage) rendu en cartes produit.', 'tools-adapter' ), 'requires_woo' => true ],
+					'tools-adapter-category-showcase' => [ 'label' => esc_html__( 'Vitrine catégories', 'tools-adapter' ), 'description' => esc_html__( 'Catégories en tuiles superposées, grille éditoriale, liste typographique avec image au survol ou carrousel.', 'tools-adapter' ), 'requires_woo' => true ],
+					'tools-adapter-wishlist'          => [ 'label' => esc_html__( 'Liste de souhaits', 'tools-adapter' ), 'description' => esc_html__( 'Affiche les produits ajoutés à la liste de souhaits du visiteur.', 'tools-adapter' ), 'requires_woo' => true ],
 					'tools-adapter-sale-countdown'    => [ 'label' => esc_html__( 'Compte à rebours promo', 'tools-adapter' ), 'description' => esc_html__( 'Minuteur configurable (date fixe ou fin de promo produit).', 'tools-adapter' ), 'requires_woo' => true ],
 					'tools-adapter-stock-urgency'     => [ 'label' => esc_html__( 'Barre de stock / urgence', 'tools-adapter' ), 'description' => esc_html__( 'Message + barre de progression selon le stock restant.', 'tools-adapter' ), 'requires_woo' => true ],
 				],
@@ -261,6 +279,15 @@ final class Admin_Settings {
 					'tools-adapter-blog-grid'     => [ 'label' => esc_html__( 'Grille de blog', 'tools-adapter' ), 'description' => esc_html__( 'Grille personnalisable d\'articles WordPress.', 'tools-adapter' ), 'requires_woo' => false ],
 				],
 			],
+			'header_footer' => [
+				'label' => esc_html__( 'Header & Footer Builder', 'tools-adapter' ),
+				'items' => [
+					'tools-adapter-site-logo'      => [ 'label' => esc_html__( 'Logo du Site', 'tools-adapter' ), 'description' => esc_html__( 'Affichage du logo personnalisé ou image libre, avec titre, slogan et lien d\'accueil.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-nav-menu'      => [ 'label' => esc_html__( 'Menu de Navigation', 'tools-adapter' ), 'description' => esc_html__( 'Menu WordPress responsive avec sous-menus animés et volet mobile tactile.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-site-search'    => [ 'label' => esc_html__( 'Recherche du Site', 'tools-adapter' ), 'description' => esc_html__( 'Barre de recherche intégrée ou icône loupe ouvrant une fenêtre modale.', 'tools-adapter' ), 'requires_woo' => false ],
+					'tools-adapter-site-copyright' => [ 'label' => esc_html__( 'Droits d\'auteur / Copyright', 'tools-adapter' ), 'description' => esc_html__( 'Texte de pied de page avec balises dynamiques {year} et {site_title}.', 'tools-adapter' ), 'requires_woo' => false ],
+				],
+			],
 		];
 
 		return self::$widgets_map;
@@ -273,6 +300,16 @@ final class Admin_Settings {
 	 */
 	public static function get_features_map() {
 		return [
+			'header_footer_builder' => [
+				'label'        => esc_html__( 'Constructeur En-tête & Pied de page (Header & Footer)', 'tools-adapter' ),
+				'description'  => esc_html__( 'Permet de créer et d\'assigner des modèles Elementor personnalisés pour remplacer le header et le footer de votre thème.', 'tools-adapter' ),
+				'requires_woo' => false,
+			],
+			'dynamic_tags'       => [
+				'label'        => esc_html__( 'Balises dynamiques', 'tools-adapter' ),
+				'description'  => esc_html__( 'Active le bouton « Balises dynamiques » (icône base de données) sur les champs lien, texte et image des widgets, avec des balises prêtes à l\'emploi : lien de page, téléphone, e-mail, WhatsApp, itinéraire Google Maps, titre, image mise en avant, paramètre d\'URL… Fonctionne sans Elementor Pro.', 'tools-adapter' ),
+				'requires_woo' => false,
+			],
 			'quick_view'         => [
 				'label'        => esc_html__( 'Vue rapide produit', 'tools-adapter' ),
 				'description'  => esc_html__( 'Bouton « œil » sur les cartes produit (Grille, Carrousel, Archive) ouvrant une fiche AJAX en modale. Se désactive aussi via le réglage du widget concerné.', 'tools-adapter' ),
@@ -281,6 +318,11 @@ final class Admin_Settings {
 			'variation_swatches' => [
 				'label'        => esc_html__( 'Sélecteur de variations visuel', 'tools-adapter' ),
 				'description'  => esc_html__( 'Remplace les listes déroulantes WooCommerce par des pastilles de couleur / pilules de texte sur les pages produit variable.', 'tools-adapter' ),
+				'requires_woo' => true,
+			],
+			'wishlist'           => [
+				'label'        => esc_html__( 'Liste de souhaits', 'tools-adapter' ),
+				'description'  => esc_html__( 'Bouton cœur sur les cartes produit, compteur [ta_wishlist_count] et page liste [ta_wishlist] (ou widget « Liste de souhaits »). Mémorisée dans le navigateur et synchronisée sur le compte client.', 'tools-adapter' ),
 				'requires_woo' => true,
 			],
 		];

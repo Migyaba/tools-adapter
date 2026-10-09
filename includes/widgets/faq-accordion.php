@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
 
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: FAQ Accordéon.
  */
-class Faq_Accordion extends Widget_Base {
+class Faq_Accordion extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-faq';

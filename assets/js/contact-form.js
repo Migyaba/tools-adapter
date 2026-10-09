@@ -15,6 +15,7 @@
 		var successText = form.getAttribute('data-success') || '';
 		var errorText = form.getAttribute('data-error') || '';
 		var recipient = form.getAttribute('data-recipient') || '';
+		var recipientSig = form.getAttribute('data-recipient-sig') || '';
 
 		function showNotice(message, type) {
 			if (!notice) {
@@ -47,6 +48,7 @@
 			formData.append('action', window.ToolsAdapterContactForm.action);
 			formData.append('nonce', window.ToolsAdapterContactForm.nonce);
 			formData.append('recipient', recipient);
+			formData.append('recipient_sig', recipientSig);
 
 			fetch(window.ToolsAdapterContactForm.ajaxUrl, {
 				method: 'POST',

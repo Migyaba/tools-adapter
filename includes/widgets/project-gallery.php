@@ -2,8 +2,8 @@
 namespace ToolsAdapter\Widgets;
 
 use Elementor\Controls_Manager;
-use Elementor\Widget_Base;
-use Elementor\Repeater;
+use ToolsAdapter\Base_Widget;
+use ToolsAdapter\Repeater;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Utils;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Widget: Galerie Projets Mosaïque — grille Bento 6 cadres avec diaporama en fondu (FADE) par projet.
  */
-class Project_Gallery extends Widget_Base {
+class Project_Gallery extends Base_Widget {
 
 	public function get_name() {
 		return 'tools-adapter-project-gallery';

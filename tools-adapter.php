@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Tools Adapter
  * Description: Extension Elementor — widgets WooCommerce (archive filtrable, catégories, prix, grille & carrousel).
- * Version:     2.2.0
+ * Version:     2.15.0
  * Author:      Miguel Missetcho
  * Author URI:  https://miguelmissetcho.com/
  * Text Domain: tools-adapter
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TOOLS_ADAPTER_VERSION', '2.2.0' );
+define( 'TOOLS_ADAPTER_VERSION', '2.15.0' );
 define( 'TOOLS_ADAPTER_FILE', __FILE__ );
 define( 'TOOLS_ADAPTER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TOOLS_ADAPTER_URL', plugin_dir_url( __FILE__ ) );
@@ -40,10 +40,20 @@ function tools_adapter_init() {
 		return;
 	}
 
+	// Boot at `init` (not plugins_loaded): the settings read here contain
+	// translated labels, and WordPress 6.7+ warns when translations are loaded
+	// before `init`.
+	add_action( 'init', 'tools_adapter_boot', 1 );
+}
+add_action( 'plugins_loaded', 'tools_adapter_init' );
+
+/**
+ * Load the plugin core (widgets, assets, AJAX endpoints).
+ */
+function tools_adapter_boot() {
 	require_once TOOLS_ADAPTER_PATH . 'includes/plugin.php';
 	\ToolsAdapter\Plugin::instance();
 }
-add_action( 'plugins_loaded', 'tools_adapter_init' );
 
 /**
  * Admin notice when Elementor is missing.

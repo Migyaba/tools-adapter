@@ -1,0 +1,123 @@
+/**
+ * Tools Adapter — Widget: Ruban Défilant Continu (Marquee).
+ */
+.ta-marquee {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	user-select: none;
+	background-color: #0b192c;
+	padding: 14px 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ta-marquee__inner {
+	display: flex;
+	width: max-content;
+	will-change: transform;
+}
+
+.ta-marquee__track {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	white-space: nowrap;
+	animation: ta-marquee-scroll 28s linear infinite;
+}
+
+@keyframes ta-marquee-scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+/* Pause on hover */
+.ta-marquee--pause-yes:hover .ta-marquee__track {
+	animation-play-state: paused;
+}
+
+/* Fade edges */
+.ta-marquee--fade-yes::before,
+.ta-marquee--fade-yes::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 80px;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.ta-marquee--fade-yes::before {
+	left: 0;
+	background: linear-gradient(to right, var(--ta-marquee-fade, #0b192c), rgba(11, 25, 44, 0));
+}
+
+.ta-marquee--fade-yes::after {
+	right: 0;
+	background: linear-gradient(to left, var(--ta-marquee-fade, #0b192c), rgba(11, 25, 44, 0));
+}
+
+/* Items */
+.ta-marquee__item {
+	display: inline-flex;
+	align-items: center;
+	color: #e2e8f0;
+	font-size: 0.95rem;
+	font-weight: 500;
+	text-decoration: none;
+	margin-right: 28px;
+	transition: color 0.2s ease;
+}
+
+.ta-marquee__item:hover {
+	color: #ffffff;
+}
+
+.ta-marquee__item--highlight {
+	color: #dda853;
+	font-weight: 700;
+}
+
+.ta-marquee__icon {
+	display: inline-flex;
+	align-items: center;
+	margin-right: 8px;
+	font-size: 0.9em;
+	color: #dda853;
+}
+
+.ta-marquee__icon svg {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+.ta-marquee__sep {
+	display: inline-block;
+	margin-left: 28px;
+	color: rgba(221, 168, 83, 0.45);
+	font-weight: 700;
+	opacity: 0.8;
+}
+
+@media (max-width: 767px) {
+	.ta-marquee--fade-yes::before,
+	.ta-marquee--fade-yes::after {
+		width: 35px;
+	}
+	.ta-marquee__item {
+		font-size: 0.88rem;
+		margin-right: 20px;
+	}
+	.ta-marquee__sep {
+		margin-left: 20px;
+	}
+}
